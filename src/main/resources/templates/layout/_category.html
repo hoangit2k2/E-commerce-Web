@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+    <div class="panel panel-primary">
+
+      <div class="panel-heading">
+          <b class="glyphycon glyphicon-briefcase">Danh Mục</b>
+      </div>
+      <div class="list-group">
+        <a th:each ="c:${cates}" th:href="@{|/product/list?cid=${c.id}|}" 
+        class="list-group-item list-group-item-action">[[${c.name}]]</a>
+      </div>
+    </div>
+
+</body>
+</html>
