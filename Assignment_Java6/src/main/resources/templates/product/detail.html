@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+        th:replace = "~{/layout/index :: dynamic(~{::main})}"
+>
+<body>
+    <main th:object = "${item}">
+		<h1>[[*{name}]]</h1>
+		<img class="card-img-top" th:src="*{image}" alt="Card image"
+				style="width: 100%">
+		<h1>[[*{category.name}]]</h1>
+		<h2>Cùng Loại</h2>
+			<ul>
+				<li th:each = "p:*{category.products}">
+				<a th:href = "@{|/product/detail/${p.id}|}">[[${p.name}]]</a>
+				</li>
+			</ul>
+		
+    </main>
+</body>
+</html>
