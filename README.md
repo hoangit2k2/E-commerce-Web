@@ -1,5 +1,6 @@
 # lovepink - DỰ ÁN TỐT NGHIỆP
 
-XIN CHÀO hahaha🎆
+XIN CHÀO🎆
 <hr>
-Có quà nè <h1>🎁</h1>
+<h1>Có quà nè 🎁</h1>
+Dự án viết Spring + angular
