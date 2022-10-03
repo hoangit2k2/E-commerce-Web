@@ -39,6 +39,7 @@ public class Content {
 	private String status;
 	private String localhost;
 	private String contact;
+	private String price;
 	
 	// Relationships
 	@ElementCollection @Column(name = "image") @JoinTable(

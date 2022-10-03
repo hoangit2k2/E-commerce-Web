@@ -15,6 +15,7 @@ import rrs.model.utils.InterDAO;
 
 @Service
 public class ApiService implements InterDAO<Api, String> {
+	
 	@Autowired private ApiRepository rep;
 	
 	@Override // get entities and no conditional
