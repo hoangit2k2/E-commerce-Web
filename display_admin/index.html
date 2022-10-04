@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+        crossorigin="anonymous"></script>
+    <!-- Fontawesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css"
+        integrity="sha512-1sCRPdkRXhBV2PBLUdRb4tMg1w2YPf37qatUFeS7zlBy7jJI8Lf4VHwWfZZfpXtYSLy85pkm9GaYVYMfw5BC1A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- Angular JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular-route.min.js"></script>
+    <!-- Qrcode -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" integrity="sha512-CNgIRecGo7nphbeZ04Sc13ka07paqdeTu0WR1IM4kNcpmBAUSHSQX0FslNhTDadL4O5SAGapGt4FodqL8My0mA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <!-- ----------------------------------- -->
+    <style>
+        
+    /* Text vertical */
+        .min-img {
+            min-height: 100%;
+            min-width: 100%;
+        }
+
+        .text-vr {
+            writing-mode: vertical-lr;
+            text-orientation: mixed;
+        }
+
+        .o-fit-cover {
+            object-fit: cover;
+        }
+
+        .o-fit-contain {
+            object-fit: contain;
+        }
+
+        .size-2 {
+            width: calc(100%/2 - 2*.25em);
+        }
+
+        .size-3 {
+            width: calc(100%/3 - 2*.25em);
+        }
+
+        .size-4 {
+            width: calc(100%/4 - 2*.25em);
+        }
+
+        .size-5 {
+            width: calc(100%/5 - 2*.25em);
+        }
+
+    </style>
+    <title>DEVELOPMENT MODE</title>
+</head>
+
+<body class="bg-dark text-light">
+    <div class="container-xxl">
+       <div class="row">
+            <div class="col-12 mb-2 border">
+                <div class="d-flex m-3 ms-0 w-100">
+                    <h1 class="text-center">DEVELOPMENT MODE</h1>
+                    <a class="ms-auto btn btn-outline-info" data-bs-toggle="offcanvas" href="#MailoffCanvas" role="button" aria-controls="MailoffCanvas">
+                        <i class="fs-1 m-auto fa-regular fa-envelope"></i>
+                    </a>
+                </div>
+            </div>
+       </div>
+        
+        <div class="row" ng-app="app" ng-controller="control">
+            <!-- show iamges -->
+            <div class="col-6 p-2 border overflow-auto border-end-0" style="max-height: 50vh;">
+                <h1 class="text-center border-bottom">Prepare images</h1>
+                <div class="d-flex p-2 flex-wrap" id="showPrepareFiles">
+                </div>
+            </div>
+            <div class="col-6 p-2 border overflow-auto" style="max-height: 50vh;">
+                <h1 class="text-center border-bottom">images uploaded</h1>
+                <div class="d-flex p-2 flex-wrap" id="showUploadFiles">
+                    <div class="size-3 m-1 p-1 text-center border" ng-repeat="file in files">
+                        <div class="btn-group">
+                            <a ng-href="{{file}}" target="_blank" class="btn btn-outline-primary">read</a>
+                            <button class="btn btn-outline-danger" ng-click="deleteFile(file)">delete</button>
+                        </div>
+                        <a ng-href="{{file}}" target="_blank" class="mw-100">
+                            <img ng-src="{{file}}" alt="{{file}}" class="mt-1 rounded border w-100">
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="mt-2">
+            <!-- controls -->
+            <div class="col-8 p-2 border border-end-0">
+                <h1 class="text-center border-bottom">Server request</h1>
+                <main>
+                    <div class="mt-3">
+                        <label for="host" class="form-label fw-bold">Host</label>
+                        <input type="text" class="text-end form-control" placeholder="host" id="host" ng-model="serverIO">
+                    </div>
+                    <div class="mt-3">
+                        <label for="path" class="form-label fw-bold d-flex">paths</label>
+                        <input type="text" class="text-end form-control" placeholder="/rest/entityIO" id="path" ng-model="entityIO">
+                    </div>
+                </main>
+            </div>
+            <div class="col-4 p-2 border position-relative">
+                <h1 class="text-center border-bottom">File setup</h1>
+                <main>
+                    <input type="file" id="getFiles" multiple accept="image/*" class="form-control" onchange="angular.element(this).scope().prepare(this)">
+                    <div class="m-2 position-absolute end-0 bottom-0 d-flex align-items-center">
+                        <input type="text" class="form-control" ng-model="folder" ng-init="folder='dir/images/content'">
+                        <div class="ms-1 btn-group p-1 border border-primary rounded-3 text-nowrap">
+                            <button type="button" class="btn btn-outline-primary" ng-click="getAllFiles()">get all</button>
+                            <button type="button" class="btn btn-outline-success" ng-click="postFiles()">upload</button>
+                        </div>
+                    </div>
+                </main>
+            </div>
+            <div class="col-12 mt-2 p-1 border">
+                <div class="d-flex align-items-center">
+                    <div class="btn-group fw-bold">
+                        <a href="" ng-click="get(entityIO='rest/api')">api</a>&nbsp;|&nbsp;
+                        <a href="" ng-click="get(entityIO='rest/accounts')">accounts</a>&nbsp;|&nbsp;
+                        <a href="" ng-click="get(entityIO='rest/categories')">categories</a>&nbsp;|&nbsp;
+                        <a href="" ng-click="get(entityIO='rest/contents')">contents</a>&nbsp;|&nbsp;
+                        <a href="" ng-click="get(entityIO='rest/roles')">roles</a>&nbsp;|&nbsp;
+                        <a href="" ng-click="get(entityIO='rest/likes')">likes</a>
+                    </div>
+                    <div class="ms-auto btn-group p-1 border border-info rounded-3">
+                        <button type="button" class="btn btn-outline-success text-uppercase" ng-click="get()">GET DATA</button>
+                        <button type="button" class="btn btn-outline-primary text-uppercase" ng-click="post()">ADD</button>
+                    </div>
+                    <div class="ms-1 btn-group p-1 border border-info rounded-3" ng-if="data.length == NaN && data">
+                        <button type="button" class="btn btn-outline-warning text-uppercase" ng-click="put()">UPDATE</button>
+                        <button type="button" class="btn btn-outline-danger text-uppercase" ng-click="delete()">DELETE</button>
+                    </div>
+                    <div class="ms-1 btn-group p-1 border border-info rounded-3">
+                        <button class="btn btn-outline-secondary text-uppercase" onclick="location.reload()">RELOAD</button>
+                    </div>
+                </div>
+                <!-- result -->
+                <div class="d-flex align-items-center justify-content-between">
+                    <h1>Result</h1>
+                    <h1>{{data.length == NaN  ? 'Object' : 'Array.size: '+data.length}}</h1>
+                </div>
+                <div class="row align-items-center">
+                    <div class="col-10">
+                        <div id="message"></div>
+                    </div>
+                    <div class="col-2 p-2 text-end" ng-if="data.length != NaN">
+                        <button class="btn btn-outline-success fs-2 me-1" onclick="alert('(づ￣ 3￣)づ Chưa làm... ')">
+                            <i class="fa-regular fa-file-excel"></i>&nbsp;Export
+                        </button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-10">
+                        <textarea class="w-100 bg-transparent text-light" style="min-height: 300px;" ng-model="showDataJson">
+                        </textarea>
+                    </div>
+                    <!-- GENERAL QRCode -->
+                    <div class="col-2">
+                        <div class="border rounded" style="width: min-content; padding: .1em;">
+                            <div class="p-1 bg-transparent" id="qrCode"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Offcanvas send mail -->
+    <div class="offcanvas offcanvas-end w-50 bg-gradient bg-transparent" tabindex="-1" id="MailoffCanvas" aria-labelledby="offcanvasExampleLabel">
+        <div class="offcanvas-header border-bottom text-nowrap">
+            <h5 class="offcanvas-title" id="offcanvasExampleLabel">Send mail</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <form method="post" id="subMail" enctype="multipart/form-data">
+                <div class="mt-2">
+                    <label class="form-label fw-bold" for="addresses">Addresses</label>
+                    <input type="text" class="form-control" id="addresses" name="addresses" placeholder="Your mail">
+                </div>
+                <div class="mt-2">
+                    <label class="form-label fw-bold" for="subject">Subject</label>
+                    <input type="text" class="form-control" id="subject" name="subject" placeholder="mail's subject">
+                </div>
+                <div class="mt-2">
+                    <label class="form-label fw-bold" for="text">Text</label>
+                    <textarea class="form-control" placeholder="email messages" id="text" name="text" rows="5"></textarea>
+                </div>
+                <div class="mt-2">
+                    <label class="form-label fw-bold" for="filesOfMail">Files</label>
+                    <input type="file" class="form-control" id="filesOfMail" name="files" multiple>
+                </div>
+            </form>
+        </div>
+        <div class="border-top p-3">
+            <div class="w-100 d-flex justify-content-between">
+                <div>
+                    <label class="form-label fw-bold">Send:&nbsp;</label>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="type" id="mailTO" form="subMail" value="TO" checked>
+                        <label class="form-check-label" for="mailTO">TO</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="type" id="mailCC" form="subMail" value="CC">
+                        <label class="form-check-label" for="mailCC">CC</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="type" id="mailBCC" form="subMail" value="BCC">
+                        <label class="form-check-label" for="mailBCC">BCC</label>
+                    </div>
+                </div>
+                <div class="btn-group">
+                    <button type="submit" class="btn btn-primary" form="subMail" formaction="http://localhost:8080/rest/mail/send">Submit</button>
+                    <button type="reset" class="btn btn-secondary" form="subMail" >reset</button>
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+
+    <script>
+
+        const app = angular.module('app', ['ngRoute']);
+        const serverIO = 'http://localhost:8080';
+        var message = document.getElementById('message');
+        var qrCode = document.querySelector("#qrCode");
+
+        app.controller('control', function ($scope, $http) {
+            $scope.serverIO = serverIO;
+            $scope.entityIO = ['rest', 'roles']
+            generalQR(qrCode, "input text");
+
+            // ___________________________________________________________________________________ DATA
+            // FUNCTIONS
+            $scope.get = function (message) {
+                let url = getLink($scope.serverIO, $scope.entityIO);
+                generalQR(qrCode, url);
+                
+                $http.get(url).then(
+                    result => { // get
+                        $scope.showDataJson = JSON.stringify($scope.data=result.data, null, "\t");
+                        mes = message ? message : `Get data from ${url}`, `status:${result.status}`
+                        refresh(`<p class='text-info'>Success: url:"<a href='${url}'>${url}</a>" - status: <span class='text-success'>${result.status}</span></p>`,$scope.data);
+                    }
+                ).catch(err => {
+                    console.error(`Errors`, err);
+                    refresh(`<p class='text-danger'>Errors: url:"<a href='${url}'>${url}</a>" - status: ${err.status}</p>`,$scope.data=undefined);
+                });
+            };
+
+            $scope.post = function () { // post to save
+                let url = getLink($scope.serverIO, $scope.entityIO);
+                generalQR(qrCode, url);
+                try {
+                    $scope.data = JSON.parse($scope.showDataJson);
+
+                    $http.post(url,$scope.data).then(result => $scope.get(`Save data from ${url}`, `status:${result.status}`)).catch(err => {
+                        console.error(`Errors`, err);
+                        refresh(`<p class='text-danger'>Errors: url:"<a href='${url}'>${url}</a>" - status: ${err.status}</p>`);
+                    });
+                } catch (error) {
+                    console.error(error);
+                    refresh(`<p class='text-danger'>Errors: ${error}`);
+                }
+            };
+
+            $scope.put = function () { // put to save
+                let url = getLink($scope.serverIO, $scope.entityIO);
+                generalQR(qrCode, url);
+                try {
+                    $scope.data = JSON.parse($scope.showDataJson);
+
+                    $http.put(url, $scope.data).then(
+                        result => result => $scope.get(`Update data from ${url}`, `status:${result.status}`)).catch(err => {
+                        console.error(`Errors`, err);
+                        refresh(`<p class='text-danger'>Errors: url:"<a href='${url}'>${url}</a>" - status: ${err.status}</p>`);
+                    });
+                } catch (error) {
+                    console.error(error);
+                    refresh(`<p class='text-danger'>Errors: ${error}`);
+                }
+            };
+
+            $scope.delete = function () { // delete
+                let url = getLink($scope.serverIO, $scope.entityIO);
+                generalQR(qrCode, url);
+                $http.delete(url).then(
+                    result => result => $scope.get(`Delete data from ${url}`, `status:${result.status}`)).catch(err => {
+                    console.error(`Errors`, err);
+                    refresh(`<p class='text-danger'>Errors: url:"<a href='${url}'>${url}</a>" - status: ${err.status}</p>`);
+                });
+            };
+
+            // ___________________________________________________________________________________ FILE
+            var fileData = new FormData();
+            // PREPARE FILE
+            $scope.prepare = function (getFiles) {
+                fileData = new FormData(); // new data before call append method
+                for (const e of getFiles.files) fileData.append("files", e);
+                showFiles("#showPrepareFiles", getFiles);
+            }
+            
+            $scope.getAllFiles = function(){
+				$http.get(getLink(serverIO,"rest",$scope.folder)).then(
+                    (result) => $scope.files = result.data
+				).catch((err) => console.error(err));
+            }
+
+            // Save all files
+            $scope.postFiles = function () {
+                let url = getLink(serverIO,"rest",$scope.folder)
+                $http.post(url, fileData, {
+                    TransformRequest: angular.identity,
+                    headers: { 'content-Type': undefined }
+                }).then((resp) => {
+                    if (resp.status == 200) {
+                        $scope.getAllFiles();
+                        refresh(`Files saved, sent data to server with: ${url}`, `status:${resp.status}`);
+                    } else console.log("cannot save");
+                }
+                ).catch((err) => console.error(err));
+            }
+
+            $scope.deleteFile = function (fileName) {
+                var index = $scope.files.findIndex(name => name === fileName);
+                fileName = fileName.substring(fileName.lastIndexOf("/") + 1);
+                let url = getLink(serverIO,"rest",$scope.folder,fileName);
+
+                $http.delete(url).then((resp) =>{
+                    if (resp.status == 200) {
+                        $scope.getAllFiles();
+                        refresh(`Files saved, sent data to server with: ${url}`, `status:${resp.status}`);
+                    } else console.log("cannot delete")
+                }).catch((err) => console.error(err));
+            }
+        });
+
+        // ___________________________________________________________________________________ UTILS
+        function refresh(alert) {
+            message.innerHTML = alert;
+            let getFiles = document.querySelector("#getFiles");
+            getFiles.setAttribute("type", "text")
+            getFiles.setAttribute("type", "file");
+            showFiles("#showPrepareFiles", getFiles);
+        }
+
+        function getLink(host, ...paths) {
+            return !paths instanceof String ? host + "/" + paths : host.concat('/', paths).replaceAll(',', '/')
+        }
+
+        function showFiles(toSetup, input) {
+            var imageParent = document.querySelector(toSetup);
+
+            if (imageParent != null && input) { // null !== undefined
+                while (imageParent.lastChild) imageParent.removeChild(imageParent.firstChild);
+
+                for (let i = 0; i < input.files.length; i++) {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        var img = document.createElement("img");
+                        img.src = e.target.result;
+                        img.setAttribute("class", "m-1 p-1 rounded border o-fit-cover size-3");
+                        img.setAttribute("title", img.alt=input.files[i].name);
+                        imageParent.appendChild(img);
+                    }
+                    reader.readAsDataURL(input.files[i]);
+                }
+            } else imageParent.innerHTML = null;
+        }
+
+        function generalQR(element, qrText) {
+		    element.innerHTML = null;
+		    new QRCode(element, {
+		        text: qrText,
+		        width: 128,
+		        height: 128,
+		        colorDark: "#000000",
+		        colorLight: "transparent",
+		        correctLevel: QRCode.CorrectLevel.H
+			})
+		}
+    </script>
+</body>
+
+</html>
