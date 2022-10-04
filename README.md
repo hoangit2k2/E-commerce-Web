@@ -7,5 +7,4 @@ Dự án viết Spring + angular
 
 # Other versions
 <h3>Các phiên bản sao lưu của Hòa</h3>
-[a relative link](other_file.md)
-[Another link](https://drive.google.com/drive/folders/1ZIKCk5TmzG2e32TNBFQgDZLbtNz4b-Hj?usp=sharing)
+[share-versions](https://drive.google.com/drive/folders/1ZIKCk5TmzG2e32TNBFQgDZLbtNz4b-Hj?usp=sharing)
