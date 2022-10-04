@@ -122,11 +122,13 @@ app.controller('control', function ($scope, $http) {
             path.endsWith('/') ? path.substring(path.length-1,-1) : path, uri
         )).then(resp => {
             if(resp.status == 200) {
-                $scope.mapFile.files.push(resp.data)
-            } else {
-                $scope.mes = {b:'bg-warning', t:title, c:`Đã tạo mới có mã: ${key}`}
-            }
-        }).catch(err => console.error(err));
+                $scope.mapFile.files.push(resp.data);
+                $scope.mes = {b:'bg-warning', t:title, c:`Đã tạo thư mục ${key}`}
+            } else $scope.mes = {b:'bg-warning', t:title, c:`Tạo mới thư mục ${key} không thành công`}
+        }).catch(err => {
+            console.error('Create folder error', err.data ? err.data.message : err);
+            $scope.mes = {b:'bg-danger', t:title, c:`Lỗi tạo thư mục: ${err.data ? err.data.message : err.status}`}
+        });
     }
 
     $scope.postFiles = function (path) {
