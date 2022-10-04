@@ -1,11 +1,14 @@
 
 const app = angular.module('app', ['ngRoute']);
 const serverIO = "http://localhost:8080"; // protocol://host:port
+const toast = new bootstrap.Toast(liveToast);
 
 app.controller('control', function ($scope, $http) {
 
     $scope.read = function (data, entityName) {
         if(data) $scope[entityName] = angular.copy(data);
+        $scope.mes = {b:'bg-info', t:`Lấy dữ liệu ${data.id}`, c:`Đọc thông tin của: ${data.id}`}
+        toast.show();
     }
     
     // _______________________________________________________________________ CRUD DATA
@@ -25,7 +28,7 @@ app.controller('control', function ($scope, $http) {
             console.error('get data error', err);
             $scope.mes = {b:'bg-danger', t:title, c:`Lỗi tải dữ liệu!`}
         });
-        new bootstrap.Toast(liveToast).show();
+        toast.show();
     }
 
     $scope.post = function (entity, arrName, ...otherPaths) { // post to save and return data saved
@@ -49,7 +52,7 @@ app.controller('control', function ($scope, $http) {
             );
             $scope.mes = {b:'bg-danger', t:title, c:`Lỗi thêm dữ liệu ${err.data ? err.data.message : err.status}`}
         }); else $scope.mes = {b:'bg-warning', t:title, c:`${entity.id} đã tồn tại, không thể thêm`}
-        new bootstrap.Toast(liveToast).show();
+        toast.show();
     };
 
     $scope.put = function (entity, arrName) { // put to update and return data updated
@@ -74,7 +77,7 @@ app.controller('control', function ($scope, $http) {
             );
             $scope.mes = {b:'bg-danger', t:title, c:`Lỗi cập nhật dữ liệu ${err.data ? err.data.message : err.status}`}
         }); else $scope.mes = {b:'bg-warning', t:title, c:`${entity.id} không tồn tại, không thể cập nhật thông tin`}
-        new bootstrap.Toast(liveToast).show();
+        toast.show();
     };
 
     $scope.delete = function (key, arrName) { // delete data by key("id") and *not return.
@@ -99,7 +102,7 @@ app.controller('control', function ($scope, $http) {
             );
             $scope.mes = {b:'bg-danger', t:title, c:`Lỗi xóa dữ liệu ${err.data ? err.data.message : err.status}`}
         }); else $scope.mes = {b:'bg-warning', t:title, c:`${entity.id} không tồn tại, không thể xóa thông tin`}
-        new bootstrap.Toast(liveToast).show();
+        toast.show();
     };
 
     // _______________________________________________________________________ FILES
@@ -123,16 +126,18 @@ app.controller('control', function ($scope, $http) {
         )).then(resp => {
             if(resp.status == 200) {
                 $scope.mapFile.files.push(resp.data);
-                $scope.mes = {b:'bg-warning', t:title, c:`Đã tạo thư mục ${key}`}
-            } else $scope.mes = {b:'bg-warning', t:title, c:`Tạo mới thư mục ${key} không thành công`}
+                $scope.mes = {b:'bg-primary', t:title, c:`Đã tạo thư mục ${uri}`}
+            } else $scope.mes = {b:'bg-warning', t:title, c:`Tạo mới thư mục ${uri} không thành công`}
         }).catch(err => {
             console.error('Create folder error', err.data ? err.data.message : err);
             $scope.mes = {b:'bg-danger', t:title, c:`Lỗi tạo thư mục: ${err.data ? err.data.message : err.status}`}
         });
+        toast.show();
     }
 
     $scope.postFiles = function (path) {
         var data = new FormData(); // prepare files data
+        let title = "Tạo mới tệp";
         for(file of formFile.files) data.append('files', file);
 
         $http.post( // post data to save
@@ -145,18 +150,20 @@ app.controller('control', function ($scope, $http) {
                 $scope.mapFile.files.push(...resp.data);
                 for(t of [,'file']) formFile.type = t;
                 prepareFile(showImage, formFile);
-                $scope.mes = {b:'bg-primary', t:title, c:`đã lưu thành công các tệp\n${resp.data.tostring().replaceAll(',','\n')}`}
+                $scope.mes = {b:'bg-primary', t:title, c:`đã lưu thành công các tệp\n${resp.data.toString().replaceAll(',','\n')}`}
             } else $scope.mes = {b:'bg-warning', t:title, c:`Lưu ${formFile.files.length} tệp không thành công`}
         }).catch(err => {
             console.error('Files upload error', err.data ? err.data.message : err);
             $scope.mes = {b:'bg-danger', t:title, c:`Lỗi tải lên tệp dữ liệu ${err.data ? err.data.message : err.status}`}
         });
+        toast.show();
     }
 
     $scope.deleteFile = function(name) {
         let fileName = name.substring(name.lastIndexOf('/')+1);
         let i = getIndex(null, fileName, $scope.mapFile.files);
         let path = pathSP(name);
+        let title = `Xóa tệp ${fileName}`;
         path = path.endsWith('/') ? path.substring(path.length-1,-1): path;
         
         if(i>-1) $http.delete(path).then((resp) => {
@@ -164,11 +171,11 @@ app.controller('control', function ($scope, $http) {
                 $scope.mapFile.files.splice(i, 1);
                 $scope.mes = {b:'bg-primary', t:title, c:`Đã xóa tệp ${fileName} thành công`}
             } else $scope.mes = {b:'bg-warning', t:title, c:`Xóa tệp ${fileName} không thành công`}
-        }).catch((err) => {
+        }).catch(err => {
             console.error('Delete file error', err.data ? err.data.message : err);
             $scope.mes = {b:'bg-danger', t:title, c:`Lỗi xóa tệp ${err.data ? err.data.message : err.status}`}
         }); else $scope.mes = {b:'bg-warning', t:title, c:`${fileName} không tồn tại, không thể xóa tệp`}
-        new bootstrap.Toast(liveToast).show(); 
+        toast.show(); 
     }
 
     // EX: (http://localhost:8080/data/images/any/a/...,"any") => http://localhost:8080/rest/dirmap/images

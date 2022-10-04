@@ -12,9 +12,12 @@
 .o-fit-cover, .o-fit-contain:active {
     object-fit: cover;
 }
-
 .o-fit-contain, .o-fit-cover:active {
     object-fit: contain;
+}
+.hover:hover{
+    opacity: 1;
+    animation: effect1 forwards 1s;
 }
 
 .size-2 {
@@ -31,4 +34,15 @@
 
 .size-5 {
     width: calc(100%/5);
+}
+
+/* Effects */
+@keyframes effect1 {
+    50% {
+        opacity: .5;
+        transform: translateY(-2rem);
+        box-shadow: 0 0 1.5rem #ff4800;
+    } to {
+        opacity: 1;
+    }
 }

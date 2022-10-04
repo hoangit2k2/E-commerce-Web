@@ -236,18 +236,18 @@
                         <i class="fa-solid fa-file"></i>&nbsp;File
                     </h1>
                     <div>
-                        <label class="fw-bold">File upload</label>
-                        <form class="border p-1 d-flex" enctype="multipart/form-data">
-                            <input type="file" id="formFile" name="files" class="form-control" accept="image/png,image/jpeg" multiple onchange="prepareFile(showImage, this)">
-                            <button class="ms-1 btn btn-outline-success" ng-click="postFiles(mapFile.path)">UPFILES</button>
-                        </form>
-                    </div>
-                    <div>
                         <label class="fw-bold">Create folder</label>
                         <form class="border p-1 d-flex">
                             <input type="text" class="form-control" placeholder="folder's name" ng-model="folderNames">
                             <button class="ms-1 btn btn-outline-success" ng-click="postDirs(mapFile.path, folderNames)">CREATE</button>
                             <button class="ms-1 btn btn-outline-secondary" ng-click="folderNames=null">RESET</button>
+                        </form>
+                    </div>
+                    <div>
+                        <label class="fw-bold">File upload</label>
+                        <form class="border p-1 d-flex" enctype="multipart/form-data">
+                            <input type="file" id="formFile" name="files" class="form-control" accept="image/png,image/jpeg" multiple onchange="prepareFile(showImage, this)">
+                            <button class="ms-1 btn btn-outline-success" ng-click="postFiles(mapFile.path)">UPFILES</button>
                         </form>
                     </div>
                     <div>
@@ -262,9 +262,15 @@
                             <input type="text" class="form-control" ng-model="fil.$file.search" placeholder="keywords">
                         </div>
                     </div>
-                    <div class="d-flex align-items-center">
-                        <button type="button" class="me-3 btn btn-outline-warning btn-sm" onclick="new bootstrap.Toast(liveToast).show()">view message</button>
-                        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                    <div>
+                        <div class="d-flex align-items-center">
+                            <button type="button" class="me-3 btn btn-outline-warning btn-sm" onclick="new bootstrap.Toast(liveToast).show()">view message</button>
+                            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                        </div>
+                        <div class="text-center">
+                            <label><em>Tổng:</em> <u>{{mapFile.files.length}}</u></label>
+                            <label><em>hiển thị:</em> <u>{{(mapFile.files | filter:fil.$file.search).length}}</u></label>
+                        </div>
                     </div>
                 </div>
                 <div class="offcanvas-body">
@@ -283,19 +289,20 @@
 
                     <!-- Show data -->
                     <div class="border-top border-3 border-danger d-flex flex-wrap">
-                        <div ng-repeat="name in mapFile.files | filter:fil.$file.search" class="flex-lg-grow-1 p-1 size-5 border position-relative" title="{{name}}" data="{{srcFile = (mapFile.path+name)}}">
+                        <div ng-repeat="name in mapFile.files | filter:fil.$file.search" class="flex-lg-grow-1 p-2 size-5 position-relative" title="{{name}}" data="{{srcFile = (mapFile.path+name)}}">
                             <!-- Show folder -->
-                            <a ng-if="!(isFileV = isFile(name))" ng-dblclick="get(srcFile, 'mapFile')" class="d-block text-center">
+                            <a ng-if="!(isFileV = isFile(name))" ng-dblclick="get(srcFile, 'mapFile')" class="d-block text-center border border-dark border-1">
                                 <i class="display-1 fa-solid fa-folder-open"></i>
                                 <p class="fs-1" ng-bind="&nbsp;name"></p>
                             </a>
                             <!-- show file images -->
-                            <img ng-if="isFileV" ng-src="{{srcFile}}" class="fit-img o-fit-cover" alt="{{name}}">
+                            <img ng-if="isFileV" ng-src="{{srcFile}}" class="fit-img o-fit-cover rounded-1 hover" alt="{{name}}">
 
+                            
                             <!-- Action buttons -->
-                            <div class="m-1 position-absolute top-0 end-0">
+                            <div class="m-2 position-absolute top-0 end-0">
                                 <div class="btn-group-vertical">
-                                    <button class="btn btn-outline-danger" ng-click="deleteFile(srcFile)">
+                                    <button class="btn {{isFileV ? 'btn-outline-danger' : 'btn-danger'}}" ng-click="deleteFile(srcFile)">
                                         <i class="fa-solid fa-trash"></i>
                                     </button>
                                     <a class="btn btn-outline-info" href="{{srcFile}}" target="_blank" ng-if="isFileV">
@@ -306,14 +313,18 @@
                                     </a>
                                 </div>
                             </div>
+                            
+                            <label class="position-absolute m-2 bottom-0 start-0 end-0 bg-dark bg-opacity-25 text-center border-top" ng-if="isFileV" style="z-index: 1050;">
+                                <span class="text-primary fw-bolder" ng-bind="name"></span>
+                            </label>
                         </div>
                     </div>
                 </div>
             </div>
 
-            
-            <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 10000;">
-                <div id="liveToast" class="toast bg-gradient bg-opacity-50 {{mes.b}}" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="3000">
+            <!-- Show message -->
+            <div class="toast-container position-fixed bottom-0 p-3" style="z-index: 1100;">
+                <div id="liveToast" class="toast bg-gradient bg-opacity-75 {{mes.b}}" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="3000">
                     <div class="toast-header">
                         <strong class="me-auto" ng-bind="mes.t"></strong>
                         <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
