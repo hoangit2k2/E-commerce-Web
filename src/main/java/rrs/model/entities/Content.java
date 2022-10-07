@@ -27,9 +27,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Entity(name = "CONTENTS")
 public class Content {
-	
+
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Id private Long id;
+	@Id
+	private Long id;
 	private String subject;
 	private String content;
 	@DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
@@ -40,22 +41,24 @@ public class Content {
 	private String localhost;
 	private String contact;
 	private String price;
-	
+
 	// Relationships
-	@ElementCollection @Column(name = "image") @JoinTable(
-		name = "CONTENT_IMAGES",
-		joinColumns = @JoinColumn(name = "content_id")
-	) private Set<String> content_images; // Content's images
-		
-	@ElementCollection @Column(name = "category_id")
+	@ElementCollection
+	@Column(name = "image")
+	@JoinTable(name = "CONTENT_IMAGES", joinColumns = @JoinColumn(name = "content_id"))
+	private Set<String> content_images; // Content's images
+
+	@ElementCollection
+	@Column(name = "category_id")
 	@CollectionTable(name = "CONTENT_TYPES", joinColumns = @JoinColumn(name = "content_id"))
 	private Set<String> categories;
-	
-	@ManyToOne @JsonIncludeProperties({"username","name","email"}) @JoinColumn(name = "account_id")
+	@ManyToOne
+	@JsonIncludeProperties({ "phone", "username", "name", "email", "image" })
+	@JoinColumn(name = "account_id")
 	private Account account;
 
 	public Content(Long id) {
 		this.id = id;
 	}
-	
+
 }
