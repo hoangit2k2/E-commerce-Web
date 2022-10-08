@@ -6,7 +6,7 @@ XIN CHÀO ĐÂY LÀ BRANCH CHO HÒA
 Dự án viết Spring + angular
 
 <hr>
-# Other versions
+#Other versions
 
 ("bản mới nhất được lưu lại ở link dưới")
 Tìm theo mẫu này: [Ctrl] + [f] -> (Mapping "yy-MM-yyyy h:mm".rar)<br>
