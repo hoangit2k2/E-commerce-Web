@@ -127,6 +127,6 @@ function setImage(input, toSet){
         : getImage();
 }
 
-function refresh(alert, entity) {
+function refresh(alert) {
     message.innerHTML = alert;
 }

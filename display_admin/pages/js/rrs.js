@@ -38,18 +38,23 @@ function showPass(input, control) {
     }                              
 }
 
-function prepareFile(setTo, input) {
-   if (setTo != null) {
-        while (setTo.lastChild) setTo.removeChild(setTo.firstChild);
+// _________________________________________________________________________________________________
+// Dropdown
+function drdActive(p) {
+    var element = p.getElementsByClassName("dropdown-menu")[0];
+    var cls = element.getAttribute("class");
+    setClass(element, cls);
+}
 
-        total = 0;
-        for (file of input.files) {
-            total+=file.size;
 
-            let div = document.createElement('div');
-            div.setAttribute('class', 'size-5')
-            div.innerHTML = `<img src="${URL.createObjectURL(file)}" class="fit-img o-fit-cover" alt="${file.name}">`
-            setTo.appendChild(div);
-        }
-    }
+/** _______________________________________________
+ * @param e element
+ * @param cls class
+ *  */
+ function setClass(e, cls) {
+    // e is element, cls is class's attribute
+    // replace content of the class
+    e.setAttribute("class",
+        cls.search("show") > -1 ? cls.replace(" show", "") : (cls + " show")
+    );
 }

@@ -1,8 +1,7 @@
-
 const app = angular.module('app', []);
 const serverIO = "http://localhost:8080"; // protocol://host:port
-const path = "rest/contents"; // get all entities
-var defaultImg = "content.png"; // default image
+const path = "rest/contents"; // get all entities\
+
 
 /*
     ____________________IDs
@@ -17,6 +16,16 @@ var defaultImg = "content.png"; // default image
     {id, views, active, viewImgs, [...categories.id]}
 */
 
+app.filter('fil2Many', function() {
+    return function (array, columns) {
+        if(!array || !columns) return [];
+        try {
+            var column = Object.keys(columns);
+            return array.filter(x => columns[column].includes(x[column]));
+        } catch (error) {return};
+    }
+});
+
 app.directive('ngEnter', function () {
     return function (scope,element,attrs) {
         element.bind("keydown keypress", function (e) {
@@ -28,7 +37,6 @@ app.directive('ngEnter', function () {
 });
 
 app.controller('control', function ($scope, $http) {
-
     // prepare
     function format(entity) {
         if(!entity) return {
@@ -36,8 +44,7 @@ app.controller('control', function ($scope, $http) {
             regTime: new Date(),
             views: 0, 
             categories:[],
-            content_images: [],
-            account_likes:[]
+            content_images: []
         };
 
         // modifiy type of column to required value
@@ -57,16 +64,19 @@ app.controller('control', function ($scope, $http) {
         $scope.entity.id = Math.round((Math.random()-1)*1000);
     }
 
-    // categories
-    $scope.hasAny = function (id, array) {
-        return !id || !array ? false : getIndex(undefined, id, array) > -1;
+    $scope.isFile = function(str) {
+        if(str) return str.lastIndexOf('.') > -1;
     }
 
-    $scope.setAny = function (id, array) {
-        console.log(id, array);
-        let i = getIndex(undefined, id, array);
+    // categories
+    $scope.hasAny = function (entity, array) {
+        return !entity || !array ? false : getIndex(undefined, entity.id, array) > -1;
+    }
+
+    $scope.setAny = function (entity, array) {
+        let i = getIndex(undefined, entity.id, array);
         if(!array) array = []; // i == -1 && new Array();
-        if(!document.getElementById(id).checked) array.push(id);
+        if(!document.getElementById(entity.id).checked) array.push(entity.id);
         else if (-1<i) array.splice(i,1);
     }
 
@@ -86,9 +96,17 @@ app.controller('control', function ($scope, $http) {
         }
     }
 
+    // get account
+    $scope.read_A = function(username) {
+        if(!username) return
+        let i = getIndex('username',username,$scope.accounts);
+        if(-1<i) return $scope.accounts[i];
+        return
+    }
+
     // ________________________________________________________________________ CRUD
     $scope.get = function (key) {
-        $http.get(getLink(serverIO, path, key)).then(resp => {
+        $http.get(getLink(serverIO, path, key ? key : 'active?a')).then(resp => {
             $scope.data = resp.data;
             $scope.entity = format($scope.entity);
             refresh(`<span class="text-success"><b>Data received successfully</b></span>`);
@@ -96,6 +114,15 @@ app.controller('control', function ($scope, $http) {
             refresh(`<span class="text-danger"><b>Getting data failed</b></span>`);
             console.error('get error: ' + error);
         });
+    }
+
+    $scope.getTo = function(uri,to) {
+        if(!to || !uri) return;
+        $http.get(getLink(serverIO, path, uri)).then(
+            resp => console.log($scope[to] = resp.data)
+        ).catch(
+            error => console.error('get error: ' + error)
+        );
     }
 
     $scope.post = function (entity) {
@@ -145,10 +172,9 @@ app.controller('control', function ($scope, $http) {
     }
 
     // prepare image
-    $scope.getImage = function(imgName) {
-        if(imgName) return imgName.startsWith('http') || imgName.startsWith('blob') ? imgName.trim() : getLink(serverIO, 'data/images/content', imgName);
-        return getLink(serverIO, 'data/images/content', defaultImg);
-    }
+    $scope.getImage = function (name, director) {
+        return getImage(name, director ? `data/images/${director}` : 'data/images/content')
+    };
 
     $scope.setImage = function(input) {
         if(input.files) {
@@ -186,18 +212,20 @@ app.controller('control', function ($scope, $http) {
 
     // load first to get data
     $scope.get(); // get contents
-    $http.get(getLink(serverIO, 'rest/accounts')).then(resp => {
-        $scope.accounts = resp.data; // get accounts
-    }).catch(error => {
-        console.error('get error: ' + error);
-    });
+
     $http.get(getLink(serverIO, 'rest/categories')).then(resp => {
         $scope.categories = resp.data; // get categories
     }).catch(error => {
         console.error('get error: ' + error);
     });
+
 });
 
 function refresh(alert) {
     message.innerHTML = alert;
+}
+
+function getImage(name, director) {
+    if(name) return name.startsWith('http') ? name : getLink(serverIO, director, name);
+    return getLink(serverIO, director, name);
 }

@@ -19,4 +19,10 @@ public class Category {
 	public Category() {
 		id = Random.NumUppLow("", 8);
 	}
+
+	public Category(String id) {
+		super();
+		this.id = id;
+	}
+		
 }

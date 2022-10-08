@@ -2,8 +2,6 @@ package rrs.control.rests;
 
 import java.util.Optional;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -25,7 +23,7 @@ public abstract class AbstractRESTful<E, K> {
 	@Autowired protected InterDAO<E, K> dao;
 
 	@GetMapping({"","/{id}"}) // reading method to get data
-	public ResponseEntity<Object> getData(@PathVariable(name = "id", required = false) K id, HttpServletRequest request) {
+	public ResponseEntity<Object> getData(@PathVariable(required = false) K id) {
 		if(id!=null) { // get one by id or get all entities
 			Optional<E> optional = dao.getOptional(id);
 			return optional.isPresent()

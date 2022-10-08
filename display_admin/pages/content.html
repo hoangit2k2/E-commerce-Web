@@ -48,8 +48,8 @@
                                             <div ng-if="entity.content_images.length > 0" class="m-auto mt-1 w-100">
                                                 <div id="contentImage" class="carousel slide rounded-3 flex-fill" data-bs-ride="true">
                                                     <div class="carousel-inner">
-                                                        <div class="carousel-item {{i==0 ? 'active' : ''}}" ng-repeat="(i,image) in entity.content_images">
-                                                            <img ng-src="{{getImage(image)}}" class="fit-img" id="showImage">
+                                                        <div class="carousel-item {{i==0 ? 'active' : ''}} ar4x3" ng-repeat="(i,image) in entity.content_images">
+                                                            <img ng-src="{{getImage(image)}}" class="fit-img o-fit-cover" id="showImage">
                                                             <div class="w-100 border overflow-auto text-center">
                                                                 <label class="text-muted text-nowrap" ng-bind="image ? image : 'default image'"></label>
                                                             </div>
@@ -89,7 +89,7 @@
                                         </div>
                                         <div class="mt-1">
                                             <label for="content" class="form-label fw-bold">content</label>
-                                            <textarea style="max-height: 50vh;" class="form-control" ng-bind="entity.content"></textarea>
+                                            <textarea style="max-height: 50vh;" class="form-control" ng-model="entity.content"></textarea>
                                         </div>
                                         <div class="mt-1">
                                             <label class="form-label fw-bold">register time</label>
@@ -136,6 +136,18 @@
                     <div class="col-xl-4 border-start text-end d-flex flex-column">
                         <!-- CONTENT FILTERS -->
                         <h3 class="text-center border-bottom text-uppercase">Bộ lọc nội dung</h3>
+                        <div class="text-black">
+                            <div class="text-start">
+                                <label class="fw-bold">Tài khoản thích nội dung</label>
+                                <input type="text" class="form-control" ng-model="fil.s_account">
+                                <div class="overflow-auto" style="max-height: 10rem;">
+                                    <div class="text-start hover-bg" ng-repeat="e in accounts | filter:{name:fil.s_account}" ng-if="fil.s_account" ng-click="setAny(e.username, entity.account_likes)">
+                                        <input type="checkbox" class="form-check-input" id="{{e.username}}" ng-value="e.username" ng-checked="hasAny(e.username, entity.account_likes)">
+                                        {{e.name+' ("'+e.username+'")'}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <div class="mt-auto"></div>
                         <div class="mt-1 p-1 border text-start">
                             <div class="mt-1">
@@ -230,8 +242,9 @@
                                         <th>views</th>
                                         <th>active</th>
                                         <th>content_images</th>
-                                        <th>account</th>
+                                        <th class="border-start">account</th>
                                         <th>categories</th>
+                                        <th>account_likes</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -256,14 +269,22 @@
                                                 </div>
                                             </div>
                                         </td>
-                                        <td class="text-end">
+                                        <td class="border-start text-end">
                                             <span>{{'[ '+e.account.username +" - "+ e.account.name+' ]'}}</span>
                                         </td>
-                                        <td class="text-end">
+                                        <td class="border-start text-end">
                                             <div class="d-flex">
                                                 <span class="d-inline-block fw-bold me-auto">tổng loại: {{e.categories.length}}</span>
                                                 <div style="max-width: 30vw;" class="d-inline-block overflow-auto">
                                                     <span ng-repeat="id in e.categories">&nbsp;{{id}}</span>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="border-start text-end">
+                                            <div class="d-flex">
+                                                <span class="d-inline-block fw-bold me-auto">tài khoản: {{e.account_likes.length}}</span>
+                                                <div style="max-width: 30vw;" class="d-inline-block overflow-auto">
+                                                    <span ng-repeat="id in e.account_likes">&nbsp;{{id}}</span>
                                                 </div>
                                             </div>
                                         </td>
@@ -276,7 +297,7 @@
             </div>
 
             <!-- Off canavas categories and account -->
-            <div class="offcanvas offcanvas-top text-dark" tabindex="-1" id="offcanvasTop" aria-labelledby="offcanvasTopLabel" style="min-height: 30vh;">
+            <div class="offcanvas offcanvas-top text-dark" tabindex="-1" id="offcanvasTop" aria-labelledby="offcanvasTopLabel" style="height: 80%;">
                 <div class="offcanvas-header">
                     <h5 class="offcanvas-title" id="offcanvasTopLabel">Thông tin sở hữu</h5>
                     <div class="ms-auto d-flex text-center">
@@ -297,10 +318,23 @@
                 </div>
                 <div class="offcanvas-body text-white border-top">
                     <label class="fw-bolder text-warning text-uppercase">Phân loại nội dung: <u>{{entity.categories.length}}</u></label>
-                    <div class="d-inline-flex align-items-center overflow-auto">
+                    <div class="d-inline-flex flex-wrap align-items-center overflow-auto">
                         <div class="m-2 ps-2 pe-2 rounded-3 fw-bold" ng-repeat="e in categories" title="{{e.id}}">
-                            <input type="checkbox" name="categories" class="btn-check" id="{{e.id}}" ng-checked="hasAny(e, entity.categories)">
-                            <label class="btn btn-outline-primary" ng-bind="e.name" ng-click="setAny(e, entity.categories)"></label>
+                            <input type="checkbox" name="categories" class="btn-check" id="{{e.id}}" ng-checked="hasAny(e.id, entity.categories)">
+                            <label class="btn btn-outline-primary text-nowrap" ng-click="setAny(e.id, entity.categories)">
+                                {{e.name+' ("'+e.id+'")'}}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="offcanvas-body text-white border-top">
+                    <label class="fw-bolder text-warning text-uppercase">Tài khoản đã thích: <u>{{entity.account_likes.length}}</u></label>
+                    <div class="d-inline-flex flex-wrap align-items-center overflow-auto">
+                        <div class="m-2 ps-2 pe-2 rounded-3 fw-bold" ng-repeat="e in accounts" title="{{e.username}}">
+                            <input type="checkbox" name="accountLikes" class="btn-check" id="{{e.username}}" ng-checked="hasAny(e.username, entity.account_likes)">
+                            <label class="btn btn-outline-primary text-nowrap" ng-click="setAny(e.username, entity.account_likes)">
+                                {{e.name+' ("'+e.username+'")'}}
+                            </label>
                         </div>
                     </div>
                 </div>

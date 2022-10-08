@@ -12,14 +12,29 @@
 .o-fit-cover, .o-fit-contain:active {
     object-fit: cover;
 }
+
 .o-fit-contain, .o-fit-cover:active {
     object-fit: contain;
 }
+
+/* hover */
 .hover:hover{
     opacity: 1;
     animation: effect1 forwards 1s;
 }
 
+.hover-bg:hover {
+    background: #0000004d;
+}
+.hover-box:hover {
+    box-shadow: 0 0 10px #0000004d;
+}
+
+.showA:hover>a{
+    display: inline !important;
+}
+
+/* size */
 .size-2 {
     width: calc(100%/2);
 }
@@ -34,6 +49,22 @@
 
 .size-5 {
     width: calc(100%/5);
+}
+
+.ar1x1{
+    aspect-ratio: 1/1;
+}
+
+.ar4x3{
+    aspect-ratio: 4/3;
+}
+
+.ar16x9{
+    aspect-ratio: 16/9;
+}
+
+.ar16x10{
+    aspect-ratio: 16/19;
 }
 
 /* Effects */

@@ -1,14 +1,16 @@
 package rrs.model.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
 import rrs.model.entities.Content;
-import rrs.model.utils.UpviewContent;
+import rrs.model.repositories.ContentRepository;
+import rrs.model.utils.SupportContent;
 
 @Service
-public class ContentService extends AbstractService<Content, Long> implements UpviewContent{
+public class ContentService extends AbstractService<Content, Long> implements SupportContent {
 
 	@Override
 	protected Long getId(Content entity) {
@@ -26,4 +28,22 @@ public class ContentService extends AbstractService<Content, Long> implements Up
 		} else throw new IllegalArgumentException("Cannot upview, content's id: "+id+" doesn't exist.");
 	}
 
+	@Override // get all Content by active
+	public List<Content> getByActive(Boolean active) throws IllegalArgumentException {
+		if(active == null) return super.getList();
+		return ((ContentRepository) super.rep).findAllActive(active);
+	}
+	
+	@Override
+	public List<Content> getByCategoryId(String category_id) throws IllegalArgumentException {
+		if(category_id == null) return super.getList();
+		return ((ContentRepository) super.rep).findByCategory(category_id);
+	}
+	
+	@Override
+	public List<Content> getByAccountId(String account_id) throws IllegalArgumentException {
+		if(account_id == null) return super.getList();
+		return ((ContentRepository) super.rep).findByAccountId(account_id);
+	}
+	
 }

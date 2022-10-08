@@ -48,11 +48,25 @@ public class Content {
 	@CollectionTable(name = "CONTENT_TYPES", joinColumns = @JoinColumn(name = "content_id"))
 	private Set<String> categories;
 	
-	@ManyToOne @JsonIncludeProperties({"username","name","email"}) @JoinColumn(name = "account_id")
+	@ManyToOne @JsonIncludeProperties({"username","name","email", "image"}) @JoinColumn(name = "account_id")
 	private Account account;
+
+	/* <strong>TO GET Object Account</strong>
+	 * 	
+	 *	@ManyToMany @JsonIncludeProperties({"username","name"})
+	 *	@JoinTable(name = "LIKES",  
+	 *			joinColumns = @JoinColumn(name = "content_id"),
+	 *			inverseJoinColumns = @JoinColumn(name = "account_id")
+	 *	) private Set<Account> account_likes;
+	 *
+	 */
+	// get only account's id
+	@ElementCollection @Column(name = "account_id")
+	@CollectionTable(name = "LIKES", joinColumns = @JoinColumn(name = "content_id"))
+	private Set<String> account_likes;
 
 	public Content(Long id) {
 		this.id = id;
 	}
-	
+
 }
