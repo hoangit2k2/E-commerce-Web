@@ -1,13 +1,13 @@
 const app = angular.module('app', []);
 const serverIO = "http://localhost:8080"; // protocol://host:port
 const path = "rest/contents"; // get all entities\
+const toast = new bootstrap.Toast(liveToast);
 
 
 /*
     ____________________IDs
     entity > form
     fields > div
-    prepareImg > input[file]
     contentImage > div
     showImage > img
     message > div
@@ -26,53 +26,18 @@ app.filter('fil2Many', function() {
     }
 });
 
-app.directive('ngEnter', function () {
-    return function (scope,element,attrs) {
-        element.bind("keydown keypress", function (e) {
-            if (e.which === 13) { // 13 == "enter key"
-                scope.$apply(scope.$eval(attrs.ngEnter));
-            }
-        });
-    };
-});
-
 app.controller('control', function ($scope, $http) {
-    // prepare
-    function format(entity) {
-        if(!entity) return {
-            id: Math.round((Math.random()-1)*1000),
-            regTime: new Date(),
-            views: 0, 
-            categories:[],
-            content_images: []
-        };
-
-        // modifiy type of column to required value
-        entity['regTime'] = new Date(entity.regTime);
-        if(entity.content_images) if(entity.content_images.length > 0) {
-            for (let j = i = 0; i < entity.content_images.length; i++) {
-                // get the name of URL-Local to post data
-                if(entity.content_images[i].startsWith('blob')) 
-                    entity.content_images[i] = prepareImg.files[j++].name;
-            }
-        }
-
-        return entity;
-    }
-
-    $scope.random = function() {
-        $scope.entity.id = Math.round((Math.random()-1)*1000);
-    }
 
     $scope.isFile = function(str) {
         if(str) return str.lastIndexOf('.') > -1;
     }
 
-    // categories
-    $scope.hasAny = function (entity, array) {
+    // has any Object[id] set to array
+    $scope.hasAny = function (entity, array) { 
         return !entity || !array ? false : getIndex(undefined, entity.id, array) > -1;
     }
 
+    // set id to array when entity.id exist
     $scope.setAny = function (entity, array) {
         let i = getIndex(undefined, entity.id, array);
         if(!array) array = []; // i == -1 && new Array();
@@ -81,94 +46,32 @@ app.controller('control', function ($scope, $http) {
     }
 
     // read in client
-    $scope.read = function (data) {
-        for(t of [,'file']) prepareImg.type = t;
-        // number is type of id
-        if(typeof data === 'number') {
-            let i = getIndex('id', data, $scope.data);
-            if (-1 < i) {
-                $scope.entity = format(angular.copy($scope.data[i]));
-                refresh(`<span class="text-success"><b>Read</b> <u>${data}</u> has subject's <em>${$scope.entity.subject}</em></span>`);
-            } else refresh(`<span class="text-danger"><b>Cannot read because</b> <u>${data}</u> does not exists</span>`);
-        } else {
-            $scope.entity = format(angular.copy(data));
-            refresh(`<span class="text-success"><b>Read</b> <u>${data?data.id:data}</u> has subject's <em>${$scope.entity.subject}</em></span>`);
-        }
+    $scope.read = function (entity) {
+        if (!entity) return; // entity is null don't update
+        if (entity['id'] == $scope.entity['id']) return; // this callback, don't update
+
+        let i = getIndex('id', entity.id, $scope.data); // get data on server and upload views
+        if(i > -1) $http.get(getLink(serverIO, path, 'upview', entity.id)).then(result => {
+            if(result.status == 200) $scope.entity = $scope.data[i] = result.data
+        }).catch(error => console.error(`upviews ${entity.id} failed:`, error));
+
+        $scope.mes = {b:'bg-info', t:`Xem chi tiết thông tin ${entity.subject}`, c:entity.content}
+        toast.show();
     }
 
-    // get account
-    $scope.read_A = function(username) {
-        if(!username) return
-        let i = getIndex('username',username,$scope.accounts);
-        if(-1<i) return $scope.accounts[i];
-        return
-    }
-
-    // ________________________________________________________________________ CRUD
-    $scope.get = function (key) {
-        $http.get(getLink(serverIO, path, key ? key : 'active?a')).then(resp => {
-            $scope.data = resp.data;
-            $scope.entity = format($scope.entity);
-            refresh(`<span class="text-success"><b>Data received successfully</b></span>`);
-        }).catch(error => {
-            refresh(`<span class="text-danger"><b>Getting data failed</b></span>`);
-            console.error('get error: ' + error);
-        });
-    }
-
+    // get data and post to
     $scope.getTo = function(uri,to) {
         if(!to || !uri) return;
         $http.get(getLink(serverIO, path, uri)).then(
-            resp => console.log($scope[to] = resp.data)
-        ).catch(
-            error => console.error('get error: ' + error)
-        );
-    }
-
-    $scope.post = function (entity) {
-        $http.post(getLink(serverIO, path), format(entity)).then(result => {
-            if (result.status == 200) {
-                if (prepareImg.files.length > 0) $scope.pushFile(entity); // add image if input.files already;
-                $scope.entity = format(angular.copy(result.data)); // new form inputs
-                $scope.data.push(result.data); // add in client or reload to $http.get();               
-                refresh(`<span class="text-success"><b>saved successfully</b></span>`);
-            } refresh(`<span class="text-success"><b>saved successfully</b></span>`);
-        }).catch(error => {
-            refresh(`<span class="text-danger"><b>data failed to save</b></span>`);
-            console.error('save failed:', error);
-        });
-    }
-
-    $scope.put = function (entity) {
-        if (!entity) return; // entity is null don't update
-        let i = getIndex('id', entity.id, $scope.data);
-
-        if (-1 < i) $http.put(getLink(serverIO, path), format(entity)).then(result => {
-            if (result.status == 200) {
-                if (prepareImg.files.length > 0) $scope.pushFile(entity); // add image if input.files already;
-                $scope.entity = format(angular.copy(result.data)); // new form inputs
-                $scope.data[i] = result.data; // update in client or reload to $http.get();
-                refresh(`<span class="text-success"><b>updated successfully</b></span>`);
+            resp => {
+                if(resp.status == 200) len = ($scope[to] = resp.data).length;
+                else console.warn(`status is ${resp.status}`);
+                $scope.mes = {b:'bg-info', t:`Lấy thông tin liên quan`, c: `Đã lấy tổng cộng ${len} dữ liệu`}
             }
-        }).catch(error => {
-            refresh(`<span class="text-danger"><b>data failed to update</b></span>`);
-            console.error('update failed:', error);
-        }); else refresh(`<span class="text-danger"><b>${entity.id} does not exists!</b></span>`);
-    }
+        ).catch(error => console.error('get error: ' + error));
 
-    $scope.delete = function (key) {
-        if (!key) return; // key undefined, definitely does not exist.
-        let i = getIndex('id', key, $scope.data);
         
-        if(-1 < i) $http.delete(getLink(serverIO, path, key)).then(result => {
-            if(result.status == 200) {
-                $scope.data.splice(i,1); // delete in array data at the client
-                refresh(`<span class="text-secondary"><b>delete successfully</b></span>`);
-            }
-        }).catch(error => {
-            refresh(`<span class="text-danger"><b>failed to delete</b></span>`);
-            console.error('delete failed:', error);
-        });
+        toast.show();
     }
 
     // prepare image
@@ -188,31 +91,15 @@ app.controller('control', function ($scope, $http) {
         }
     }
 
-    $scope.pushFile = function (entity) {
-        // prepare form data and url to post
-        var formFiles = new FormData(); // <form></form>
-        for (let f of prepareImg.files) {
-            formFiles.append('files', f);
-        } // param's named 'files' in post method on server
-        let url = getLink(serverIO, 'rest/dir/images/content');
+    // load first to get contents data
+    $http.get(getLink(serverIO, path)).then(resp => {
+        $scope.data = resp.data;
+        $scope.entity = $scope.entity ? $scope.entity :  $scope.data[0];
+    }).catch(error => {
+        console.error('get error: ' + error);
+    });
 
-        // post to save file
-        $http.post(url, formFiles, {
-            TransformRequest: angular.identity,
-            headers: { 'content-Type': undefined }
-        }).then((resp) => {
-            if (resp.status == 200) {
-                for(t of [,'file']) prepareImg.type = t;
-            } else console.error(`file failed to save - status: ${resp.status}`);
-        }).catch((err) => {
-            if (err.status == 500) refresh(`<span class="text-danger"><b>${err.data.message}</b></span>`);
-            else console.error(err);
-        });
-    }
-
-    // load first to get data
-    $scope.get(); // get contents
-
+    // get categories
     $http.get(getLink(serverIO, 'rest/categories')).then(resp => {
         $scope.categories = resp.data; // get categories
     }).catch(error => {
@@ -220,10 +107,6 @@ app.controller('control', function ($scope, $http) {
     });
 
 });
-
-function refresh(alert) {
-    message.innerHTML = alert;
-}
 
 function getImage(name, director) {
     if(name) return name.startsWith('http') ? name : getLink(serverIO, director, name);

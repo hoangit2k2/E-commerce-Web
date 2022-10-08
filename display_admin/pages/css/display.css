@@ -9,6 +9,13 @@
     text-orientation: mixed;
 }
 
+.accountAvatar {
+    border-radius: 20px;
+    max-width: 2.5rem;
+    border: 1px solid #ffff00;
+}
+
+/* fit image */
 .o-fit-cover, .o-fit-contain:active {
     object-fit: cover;
 }
@@ -30,6 +37,10 @@
     box-shadow: 0 0 10px #0000004d;
 }
 
+.showA:hover{
+    border-radius: 0 1.5rem 0 .5rem;
+    background-color: #000000a2;
+}
 .showA:hover>a{
     display: inline !important;
 }
