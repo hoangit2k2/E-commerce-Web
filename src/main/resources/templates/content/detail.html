@@ -7,7 +7,7 @@
 <title>List Content</title>
 
 <body>
-	<main>
+	<main  ng-app="app" >
 	<div ng-app="app" ng-controller="controldetail" >
 
 	<div th:object="${data}">
@@ -60,11 +60,11 @@
         <div class="row">
           <div class="col-6">
             <div class="infomation-detail">
-              <i class="bi bi-bookmark-star"></i> Hãng :
+              <i class="bi bi-bookmark-star"></i> {{ data.detail}}
               <br>
-              <i class="bi bi-calendar-check"></i> Ngày sản Xuất
+              <i class="bi bi-calendar-check"></i> {{ data.request}}
               <br>
-              <i class="bi bi-clipboard-data"></i> Tình trạng
+              <i class="bi bi-clipboard-data"></i> {{ data.condition}}
               <br>
             </div>
 
@@ -72,11 +72,11 @@
           <div class="col-6">
             <div class="infomation-detail">
 
-              <i class="bi bi-flag"></i> Xuất Xứ
+              <i class="bi bi-flag"></i> {{ data.parameter}}
               <br>
-              <i class="bi bi-bookmarks"></i> Ngày Rao
+              <i class="bi bi-bookmarks"></i> {{ data.origin}}
               <br>
-              <i class="bi bi-cassette"></i>Thông số
+              <i class="bi bi-cassette"></i> {{ data.regTime}}
               <br>
             </div>
 
@@ -154,42 +154,23 @@
       <div class="row">
       <div class="br"></div>
       <h3>Những Sản Phẩm khác của shop</h3>
-      <div class="slider">
-        <input type="radio" name="testimonial" id="t-1">
-        <input type="radio" name="testimonial" id="t-2">
-        <input type="radio" name="testimonial" id="t-3" checked>
-        <input type="radio" name="testimonial" id="t-4">
-        <input type="radio" name="testimonial" id="t-5">
-        <div class="testimonials">
-          <label class="item" for="t-1">
-            <img src="https://www.w3schools.com/howto/img_avatar.png" alt="picture">
-            <p>Description 1</p>
-          </label>
-          <label class="item" for="t-2">
-            <img src="https://www.w3schools.com/howto/img_avatar.png" alt="picture">
-            <p>Description 2</p>
-          </label>
-          <label class="item" for="t-3">
-            <img src="https://www.w3schools.com/howto/img_avatar.png" alt="picture">
-            <p>Description 3</p>
-          </label>
-          <label class="item" for="t-4">
-            <img src="https://www.w3schools.com/howto/img_avatar.png" alt="picture">
-            <p>Description 4</p>
-          </label>
-          <label class="item" for="t-5">
-            <img src="https://www.w3schools.com/howto/img_avatar.png" alt="picture">
-            <a href="gô">
-              <p>Description 5</p>
-            </a>
-         
-          </label>
-        </div>
+  			<div class="product-list" ng-controller="controlconten">
+					<div class="row">
+						<div class="col-2dot4" ng-repeat="e in data">
+							<a th:href="@{|/content/{{e.id}}|}"> 
+								<img th:src=@{/data/images/content/{{e.content_images[0]}}} alt="">
+							</a>
+							<div class="link-subjec">
+								<a href="">
+									<div class="subject">{{e.subject}}</div>
+								</a>
+							</div>
+							<div class="price">{{e.price}} VNĐ</div>
+							<div class="text">{{e.account.username}}</div>
+						</div>
+					</div>
+				</div>
       </div>
-      </div>
-      <hr>
-     
-    
   </div>
   </div>
   	</div>

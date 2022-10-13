@@ -41,6 +41,12 @@ public class Content {
 	private String localhost;
 	private String contact;
 	private String price;
+	private String detail;
+	private String request;
+	private String condition;
+	private String the_firm;
+	private String parameter;
+	private String origin;
 
 	// Relationships
 	@ElementCollection
