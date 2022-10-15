@@ -51,7 +51,8 @@ app.controller('control', function ($scope, $http) {
         if (entity['id'] == $scope.entity['id']) return; // this callback, don't update
 
         let i = getIndex('id', entity.id, $scope.data); // get data on server and upload views
-        if(i > -1) $http.get(getLink(serverIO, path, 'upview', entity.id)).then(result => {
+        // getLink(serverIO, path, 'upview', entity.id) to upviews
+        if(i > -1) $http.get(getLink(serverIO, path, entity.id)).then(result => {
             if(result.status == 200) $scope.entity = $scope.data[i] = result.data
         }).catch(error => console.error(`upviews ${entity.id} failed:`, error));
 

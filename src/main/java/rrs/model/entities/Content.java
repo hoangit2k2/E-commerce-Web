@@ -48,7 +48,8 @@ public class Content {
 	@CollectionTable(name = "CONTENT_TYPES", joinColumns = @JoinColumn(name = "content_id"))
 	private Set<String> categories;
 	
-	@ManyToOne @JsonIncludeProperties({"username","name","email", "image"}) @JoinColumn(name = "account_id")
+	@ManyToOne @JsonIncludeProperties({"username","name","email", "image"})
+	@JoinColumn(name = "account_id")
 	private Account account;
 
 	/* <strong>TO GET Object Account</strong>

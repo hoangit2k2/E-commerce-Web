@@ -105,9 +105,11 @@ app.controller('control', function ($scope, $http) {
                 $scope.entity = format(angular.copy(result.data)); // new form inputs
                 $scope.data.push(result.data); // add in client or reload to $http.get();               
                 refresh(`<span class="text-success"><b>saved successfully</b></span>`);
-            } refresh(`<span class="text-success"><b>saved successfully</b></span>`);
+            } console.warn('status is '+result.status);
         }).catch(error => {
-            refresh(`<span class="text-danger"><b>data failed to save</b></span>`);
+            refresh(`<span class="text-danger"><b>${
+				error.data ? error.data.message : 'data failed to save'
+			}</b></span>`);
             console.error('save failed:', error);
         });
     }
@@ -123,9 +125,14 @@ app.controller('control', function ($scope, $http) {
                 $scope.data[i] = result.data; // update in client or reload to $http.get();
                 refresh(`<span class="text-success"><b>updated successfully</b></span>`);
             }
-        }).catch(error => {
-            refresh(`<span class="text-danger"><b>data failed to update</b></span>`);
-            console.error('update failed:', error);
+        }).catch(err => {
+            console.error(err.data 
+                ? `error's ${err.data.message} cannot delete!` 
+                : 'delete error', err
+            );
+            let mes = `Lỗi cập nhật dữ liệu ${err.data ? err.data.message: err.status}`
+            refresh(`<span class="text-danger"><b>${mes.substring(mes.lastIndexOf('Unable'))}</b></span>`);
+            console.error('update failed:', err);
         }); else refresh(`<span class="text-danger"><b>${entity.id} does not exists!</b></span>`);
     }
 

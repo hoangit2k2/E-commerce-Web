@@ -53,8 +53,7 @@ function buttonActive(p, namedClasses) {
 	}
 }
 
-function buttonClick(id, open) {
-	var element = document.getElementById(id);
+function buttonClick(element, open) {
 	if (open) {
 		element.style.visibility = "visible";
 		cls = element.getAttribute("class");
@@ -63,17 +62,4 @@ function buttonClick(id, open) {
 		element.style.visibility = "hidden";
 		element.getAttribute("class").replace(" show", "");
 	}
-}
-
-/** _______________________________________________
- * @param e element
- * @param cls class
- * 
- */
-function setClass(e, cls) {
-	// e is element, cls is class's attribute
-	// replace content of the class
-	e.setAttribute("class",
-		cls.search("show") > -1 ? cls.replace(" show", "") : (cls + " show")
-	);
 }

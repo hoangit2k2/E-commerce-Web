@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import rrs.model.utils.InterDAO;
+import rrs.utils.CustomException;
 
 /**
  * @param <E> is entity
@@ -23,7 +24,7 @@ public abstract class AbstractRESTful<E, K> {
 	@Autowired protected InterDAO<E, K> dao;
 
 	@GetMapping({"","/{id}"}) // reading method to get data
-	public ResponseEntity<Object> getData(@PathVariable(required = false) K id) {
+	public ResponseEntity<Object> getData(@PathVariable(required = false) K id) throws IllegalArgumentException, CustomException {
 		if(id!=null) { // get one by id or get all entities
 			Optional<E> optional = dao.getOptional(id);
 			return optional.isPresent()
@@ -33,22 +34,21 @@ public abstract class AbstractRESTful<E, K> {
 	}
 	
 	@PostMapping({"","/{id}"}) // Post method to create entity
-	public ResponseEntity<E> save(@RequestBody E entity) {
+	public ResponseEntity<E> save(@RequestBody E entity) throws IllegalArgumentException, CustomException {
 		return ResponseEntity.ok(dao.save(entity));
 	}
 	
 	@PutMapping({"","/{id}"}) // Put method to update entity
-	public ResponseEntity<E> update(@RequestBody E entity) {
+	public ResponseEntity<E> update(@RequestBody E entity) throws IllegalArgumentException, CustomException	{
 		return ResponseEntity.ok(dao.update(entity));
 	}
 	
 	@DeleteMapping({"/{id}"}) // Delete method to remove entity
-	public ResponseEntity<Void> delete(@PathVariable(required = false) K id) {
+	public ResponseEntity<Void> delete(@PathVariable(required = false) K id) throws IllegalArgumentException, CustomException {
 		if(id != null) {
 			dao.remove(id);
 			return ResponseEntity.ok().build();
-		} else return ResponseEntity.noContent().build();
-		
+		} else return ResponseEntity.noContent().build();		
 	}
 
 	// @formatter:on

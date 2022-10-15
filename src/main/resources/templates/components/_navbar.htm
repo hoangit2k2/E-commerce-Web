@@ -1,24 +1,126 @@
 <nav class="navbar navbar-expand-lg bg-light">
     <div class="container-fluid">
-        <a class="navbar-brand" href="/rrs">RRs</a>
+        <a class="navbar-brand" href="/rrs">
+            &Ropf;&Ropf;&sopf;
+            <sup style="font-size: .6rem;">service</sup>
+        </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll"
             aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
+            <i class="fa fa-2xl fa-bars text-secondary"></i>
         </button>
         <div class="collapse navbar-collapse" id="navbarScroll">
             <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
+                <!-- PAGES HOME -->
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="/rrs/pages/home">Home</a>
+                    <a class="nav-link active" aria-current="page" href="/rrs/pages/home">
+                        <i class="fa fa-home-lg"></i>
+                        Home
+                    </a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/rrs/pages/develop">Dev mode</a>
+                                       
+                <!-- _________________________________________ MANAGEMENT FOR ROLE'S ADMIN -->
+                <li class="nav-item dropdown" onmouseenter="drdActive(this)" onmouseleave="drdActive(this)">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fa fa-desktop-alt"></i>
+                        manager
+                    </a>
+                    <ul class="dropdown-menu">
+                        <!-- users're account management -->
+                        <a class="nav-link" href="/rrs/pages/admin/account">
+                            <i class="fa fa-user-friends"></i>
+                            tài khoản
+                        </a>
+                        <a class="nav-link" href="/rrs/pages/admin/staff">
+                            <i class="fa fa-user-gear"></i>
+                            nhân viên
+                        </a>
+                        <!-- contents management -->
+                        <li><hr class="m-0 dropdown-divider"></li>
+                        <a class="nav-link" href="/rrs/pages/admin/content">
+                            <i class="fa fa-circle-nodes"></i>
+                            nội dung
+                        </a>
+                        <a class="nav-link" href="/rrs/pages/admin/content_detail">
+                            <i class="fa fa-id-card-clip"></i>
+                            thông tin chi tiết
+                        </a>
+                        <!-- others management -->
+                        <li><hr class="m-0 dropdown-divider"></li>
+                        <a class="nav-link" href="/rrs/pages/admin/setting">
+                            <i class="fa fa-file"></i>
+                            file and others
+                        </a>
+                        <a class="nav-link" href="/rrs/pages/admin/develop">
+                            <i class="fa fa-code"></i>
+                            Dev mode
+                        </a>
+                    </ul>
+                </li>
+            </ul>
+
+            
+            <!-- _________________________________________ SECURITY -->
+            <ul class="navbar-nav my-2 my-lg-0 navbar-nav-scroll">
+                <li class="nav-item dropdown" onmouseenter="drdActive(this)" onmouseleave="drdActive(this)" th:unless="${#request.remoteUser}">
+                    <a class="nav-link dropdown-toggle" href="/security/login" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fa fa-sign-in"></i>&nbsp;Đăng nhập
+                    </a>
+                    <ul class="dropdown-menu">
+                        <!-- users're account management -->
+                        <a class="nav-link" href="/security/loginForm">
+                            <i class="fa fa-sign-in-alt"></i>
+                            Đăng nhập
+                        </a>
+                        <a class="nav-link disabled" href="">
+                            <i class="fa-brands fa-facebook-square"></i>
+                            Google</a>
+                        <a class="nav-link disabled" href="">
+                            <i class="fa-brands fa-google"></i>
+                            Facebook
+                        </a>
+                        
+                        <li><hr class="m-0 dropdown-divider"></li>
+                        <a class="nav-link" href="/security/register">
+                            <i class="fa fa-registered"></i>
+                            Đăng ký
+                        </a>
+
+                        <li><hr class="m-0 dropdown-divider"></li>
+                        <a class="nav-link" href="/security/forgot_password">
+                            <i class="fa fa-question-circle"></i>
+                            Quên mật khẩu
+                        </a>
+                    </ul>
+                </li>
+
+                <li class="nav-item dropdown" onmouseenter="drdActive(this)" onmouseleave="drdActive(this)" th:if="${#request.remoteUser}">
+                    <a class="nav-link dropdown-toggle" href="/security/logoutForm" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fa fa-sign-out"></i>&nbsp;Đăng xuất
+                    </a>
+                    <ul class="dropdown-menu">
+                        <!-- users're account management -->
+                        <a class="nav-link" href="/security/logoutForm">
+                            <i class="fa fa-sign-out-alt"></i>
+                            Đăng xuất
+                        </a>
+                        <!-- contents management -->
+                        <li><hr class="m-0 dropdown-divider"></li>
+                        <a class="nav-link" href="/security/change_password">
+                            <i class="fa fa-refresh"></i>
+                            Đổi mật khẩu
+                        </a>
+                        <a class="nav-link" href="/security/about_me">
+                            <i class="fa fa-id-card"></i>
+                            Thông tin
+                        </a>
+                    </ul>
                 </li>
             </ul>
             <!-- 
-	            <form class="d-flex" role="search">
-	                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-	                <button class="btn btn-outline-success" type="submit">Search</button>
-	            </form>
+                <form class="d-flex" role="search">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success" type="submit">Search</button>
+                </form>
              -->
         </div>
     </div>

@@ -100,7 +100,9 @@ app.controller('control', function ($scope, $http) {
                 ? `error's ${err.data.message} cannot delete!` 
                 : 'delete error', err
             );
-            $scope.mes = {b:'bg-danger', t:title, c:`Lỗi xóa dữ liệu ${err.data ? err.data.message : err.status}`}
+            $scope.mes = {b:'bg-danger', t:title, c:`Lỗi xóa dữ liệu ${err.data ? 
+                err.data.status == 500 ? `mã ${key} đang liên kết, hiện không thể xóa` : 
+                `Lỗi thực hiện: ${err.data.message}` : err.status}`}
         }); else $scope.mes = {b:'bg-warning', t:title, c:`${entity.id} không tồn tại, không thể xóa thông tin`}
         toast.show();
     };
@@ -188,4 +190,8 @@ app.controller('control', function ($scope, $http) {
     function pathSP(str, ...directories) { // replace and concat paths
         return getLink(str.replace('0/data', '0/rest/dir'), directories)
     }
+    
+    function prepareFile (toShow, fileInput) {
+		
+	}
 });

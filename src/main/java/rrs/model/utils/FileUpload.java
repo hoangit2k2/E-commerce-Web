@@ -34,14 +34,29 @@ public interface FileUpload {
 	 * @return directory created;
 	 */
 	public String saveFolder(String...directories);
+	
 	/**
-	 * @param files're {@link MultipartFile} to save
+	 * @param file is {@link MultipartFile} to save
+	 * @param directories are contain folders or files
+	 * @return file name has been saved
+	 */
+	public String saveFile(MultipartFile file, String...directories);
+	
+	/**
+	 * @param file is {@link MultipartFile} to save
+	 * @param fileName to set name of file
+	 * @param directories are contain folders or files
+	 * @return file name has been saved
+	 */
+	public String saveFile(String fileName, MultipartFile file, String...directories);
+	
+	/**
+	 * @param files are {@link MultipartFile} to save
 	 * @param directories are contain folders or files
 	 * @return all files're name has been saved
 	 */
 	public List<String> saveFile(MultipartFile[] files, String...directories);
 	
-
 	/**
 	 * @param uri to delete
 	 * @throws IOException 

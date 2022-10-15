@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import rrs.model.entities.Content;
+import rrs.model.services.ContentService;
 import rrs.model.utils.SupportContent;
 
 @RestController
@@ -38,8 +39,18 @@ public class RestContent extends AbstractRESTful<Content, Long> {
 	
 	@GetMapping("/account") // reading method to get data active or else get all
 	public ResponseEntity<Object> getByAccount(@RequestParam(required = false) String account_id) {
-		return ResponseEntity.ok(sc.getByAccountId(account_id));
-		
+		return ResponseEntity.ok(sc.getByAccountId(account_id));		
+	}
+	
+	// _____________________________________________________________________ LIKES READ - DELETE
+	@GetMapping("/likes") // reading method to get data active or else get all
+	public ResponseEntity<Object> getLikes(@RequestParam(required = false) Long c) {
+		return ResponseEntity.ok(((ContentService) sc).getLikes(c));		
 	}
 
+	@DeleteMapping("/likes") // delete like by content_id
+	public ResponseEntity<Integer> deleteLikes(@RequestParam(required = false) Long c) {
+		int quantity = ((ContentService) sc).deleteLikes(c);
+		return c > 0 ? ResponseEntity.ok(quantity) : ResponseEntity.noContent().build();
+	}
 }

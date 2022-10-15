@@ -10,6 +10,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import rrs.model.utils.InterDAO;
+import rrs.utils.CustomException;
 
 public abstract class AbstractService<E, K> implements InterDAO<E, K> {
 	
@@ -37,25 +38,25 @@ public abstract class AbstractService<E, K> implements InterDAO<E, K> {
 	}
 
 	@Override
-	public <S extends E> S save(S entity) throws IllegalArgumentException {
+	public <S extends E> S save(S entity) throws CustomException, IllegalArgumentException {
 		K id = getId(entity);
 		Optional<E> optional = rep.findById(id);
 		if(optional.isEmpty()) {
 			return rep.save(entity);
-		} else throw new IllegalArgumentException(id+" already exists, cannot save.");
+		} else throw new CustomException(id+" đã tồn tại, không thể thêm mới.");
 	}
 
 	@Override
-	public <S extends E> S update(S entity) throws IllegalArgumentException {
+	public <S extends E> S update(S entity) throws CustomException, IllegalArgumentException {
 		K id = this.getId(entity);
 		Optional<E> optional = rep.findById(id);
 		if(optional.isPresent()) {
 			return rep.saveAndFlush(entity);
-		} else throw new IllegalArgumentException(id+" does not exists, cannot update.");
+		} else throw new CustomException(id+" không tồn tại, không thể cập nhật.");
 	}
 
 	@Override
-	public void remove(K id) throws IllegalArgumentException {
+	public void remove(K id) throws CustomException, IllegalArgumentException {
 		rep.deleteById(id);
 	}
 

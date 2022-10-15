@@ -45,6 +45,30 @@ public class FileService implements FileUpload {
 		return mkdirs(directories).getName();
 	}
 	
+	@Override
+	public String saveFile(MultipartFile file, String...directories) {
+		return this.saveFile(null, file, directories);
+	}
+	
+	@Override
+	public String saveFile(String fileName, MultipartFile file, String...directories) {
+		try {
+			String directory = mkdirs(directories).getAbsolutePath();
+			// check fileName
+			boolean check = fileName == null;
+			if(!check) check = fileName.isEmpty();
+			
+			Path path = Paths.get(directory, check ? file.getOriginalFilename() : fileName);
+			if(!path.toFile().exists()) {
+				file.transferTo(path);
+				return check ? file.getOriginalFilename() : fileName;
+			} else System.err.println("File name's "+fileName+" already exists, cannot be saved.");
+		} catch (IllegalStateException | IOException e) {
+			e.printStackTrace();
+		}	
+		return null;
+	}
+	
 	@Override // return all files're name saved
 	public List<String> saveFile(MultipartFile[] files, String...directories) {
 		if(files == null) return new ArrayList<>();
@@ -64,7 +88,6 @@ public class FileService implements FileUpload {
 			}
 		} return list;
 	}
-	
 	
 	@Override // delete file
 	public void deleteFile(String uri) throws IOException {

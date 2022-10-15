@@ -37,6 +37,5 @@ public interface SendMail {
 	 * 
 	 * @see SendMail#sendMimeMessage(String, String, File[], RecipientType, String...)
 	 */
-	public void sendMimeMessage(String subject, String text, MultipartFile[] files, RecipientType type, String... addresses)
-			throws MessagingException;
+	public void sendMimeMessage(String subject, String text, MultipartFile[] files, RecipientType type, String... addresses) throws MessagingException;
 }
