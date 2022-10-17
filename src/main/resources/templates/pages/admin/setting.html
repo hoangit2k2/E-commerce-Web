@@ -8,8 +8,8 @@
     <main>    
         <h1 class="text-light bg-dark text-center text-uppercase fw-bolder">Quản lý thông tin khác</h1>
 		<div class="position-relative p-1 border rounded-3 bg-warning" ng-app="app" ng-controller="control">
-            
-            
+
+
             <!-- NAVBAR -->
             <nav class="navbar navbar-expand-lg bg-dark navbar-dark">
                 <div class="container-fluid">
@@ -26,6 +26,12 @@
                                 <a class="nav-link" data-bs-toggle="offcanvas" href="#offcanvasCategory" role="button"
                                     aria-controls="offcanvasCategory" ng-click="get('categories')">
                                     <i class="fa-solid fa-layer-group"></i>&nbsp;Categories
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-bs-toggle="offcanvas" href="#offcanvasLike" role="button"
+                                    aria-controls="offcanvasLike" ng-click="get('likes')">
+                                    <i class="fa fa-thumbs-up"></i>&nbsp;likes
                                 </a>
                             </li>
                             <li class="nav-item">
@@ -79,7 +85,7 @@
                 </div>
                 <div class="offcanvas-body">
                     <div class="row">
-                        <div class="col-9 overflow-auto" style="max-height: 60vh;">
+                        <div class="col-lg-9 overflow-auto" style="max-height: 60vh;">
                             <h3 class="w-100 text-center">Show data</h3>
                             <table class="table table-hover">
                                 <thead class="text-center">
@@ -100,7 +106,7 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div class="col-3 border-start">
+                        <div class="col-lg-3 border-start">
                             <h3 class="w-100 text-center">Form data</h3>
                             <form id="category">
                                 <div class="mt-1">
@@ -121,6 +127,81 @@
                                 </div>
                             </form>
                         </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Likes -->
+            <div class="offcanvas offcanvas-bottom h-75" tabindex="-1" id="offcanvasLike" aria-labelledby="offcanvasLikeLabel">
+                <div class="offcanvas-header">
+                    <h5 class="offcanvas-title" id="offcanvasLikeLabel"><i class="fa fa-thumbs-up"></i>&nbsp;likes</h5>
+                    <div class="fs-5">
+                        <label class="fw-bold">Thống kê:</label>
+                        <span>tổng: <u>{{fil.$like.quantity=likes.length}}</u></span>
+                        <span>hiển thị: <u>{{fil.$like.length=(likes | filter:fil.$like.search).length}}</u></span>
+                    </div>
+                    <div class="d-flex">
+                        <div class="ms-1">
+                            <label class="fw-bold">tìm kiếm</label>
+                            <input type="text" class="form-control" placeholder="keywords" ng-model="fil.$like.search">
+                        </div>
+                        <div class="ms-1">
+                            <label class="fw-bold">Sắp xếp</label>
+                            <select class="form-select" ng-model="fil.$like.orderBy" ng-init="fil.$like.orderBy=0">
+                                <option class="bg-danger text-center fw-bold">A-Z</option>
+                                <option class="text-end" value="account_id">Tăng account_id ➡</option>
+                                <option class="text-end" value="content_id">Tăng content_id ➡</option>
+                                <option class="bg-danger text-center fw-bold">Z-A</option>
+                                <option class="text-start" value="-account_id">⬅Giảm account_id</option>
+                                <option class="text-start" value="-content_id">⬅Giảm content_id</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <button type="button" class="me-3 btn btn-outline-warning btn-sm" onclick="toast.show()">view message</button>
+                        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                    </div>
+                </div>
+                <div class="offcanvas-body">
+                    <div class="overflow-auto" style="max-height: 60vh;">
+                        <div class="row">
+                            <h3 class="col-lg-6 text-center">Show data</h3>
+                            <div class="col-lg-6 text-end d-flex">
+                                <input type="number" class="form-control me-1" ng-model="fil.$like.id.content_id">
+                                <button ng-if="!fil.checkLike" class="text-nowrap btn btn-outline-danger" 
+                                    ng-click="deletesByColumn(fil.$like.id.content_id,'content_id','likes')">
+                                    delete by content_id({{fil.$like.id.content_id}})
+                                </button>
+                            </div>
+                        </div>
+                        <table class="table table-hover">
+                            <thead class="text-center">
+                                <tr>
+                                    <th>ACCOUNT_ID</th>
+                                    <th>CONTENT_ID</th>
+                                    <th>ACTIONS</th>
+                                </tr>
+                                <tr>
+                                    <td><input type="text" class="form-control text-center" ng-model="like.account_id"></td>
+                                    <td><input type="number" class="form-control text-center" ng-model="like.content_id"></td>
+                                    <td class="text-end">
+                                        <div class="btn-group p-1 mw-100 border border-info bg-dark rounded-2 overflow-auto">
+                                            <button class="btn btn-outline-success" ng-click="post(like, 'likes')">create</button>
+                                            <button type="reset" class="ms-3 btn btn-outline-light" ng-click="like=null">reset</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="text-center" ng-repeat="e in likes | filter:fil.$like.search | orderBy:fil.$like.orderBy" ng-dblclick="read(e, 'like')">
+                                    <td ng-bind="e.account_id"></td>
+                                    <td ng-bind="e.content_id"></td>
+                                    <td class="text-end">
+                                        <button class="btn btn-outline-danger" ng-click="delete(e, 'likes')">DELETE</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -159,14 +240,14 @@
                 </div>
                 <div class="offcanvas-body">
                     <div class="row">
-                        <div class="col-9 overflow-auto" style="max-height: 60vh;">
+                        <div class="col-lg-9 overflow-auto" style="max-height: 60vh;">
                             <h3 class="w-100 text-center">Show data</h3>
                             <table class="table table-hover">
                                 <thead class="text-center">
                                     <tr>
                                         <th>ID</th>
                                         <th>VALUE</th>
-                                        <th>ACTIONS</th>
+                                        <th class="text-end">ACTIONS</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -180,7 +261,7 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div class="col-3 border-start">
+                        <div class="col-lg-3 border-start">
                             <h3 class="w-100 text-center">Form data</h3>
                             <form id="api">
                                 <div class="mt-1">
@@ -233,7 +314,7 @@
                             <label class="form-check-label" for="onlyFolder">file || folder</label>
                             <a href="" class="{{fil.$file.orElse==undefined ? 'text-primary' : 'text-danger'}}"
                                 ng-click="fil.$file.orElse=fil.$file.search=undefined">All</a>
-                          </div>
+                            </div>
                         <div class="d-flex">
                             <input type="text" class="form-control" ng-model="fil.$file.search" placeholder="keywords">
                         </div>
@@ -251,7 +332,7 @@
                 </div>
                 <div class="offcanvas-body">
                     <!-- Show files prepare -->
-                    <div class="pt-3 d-flex flex-wrap" id="showImage"></div>
+                    <div class="pt-3 d-flex flex-wrap overflow-auto" style="max-height: 50vh;" id="showImage"></div>
 
                     <!-- breadcrumb -->
                     <h5 class="border-top border-3 border-danger">
@@ -308,6 +389,9 @@
                     <div class="toast-body text-center fs-5 fw-bold" ng-bind="mes.c"></div>
                 </div>
             </div>
+
+
+
         </div>
 
 		<!-- Javascript app -->

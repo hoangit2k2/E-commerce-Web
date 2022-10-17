@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.security.Principal;
 import java.util.Optional;
 
-import javax.mail.MessagingException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 

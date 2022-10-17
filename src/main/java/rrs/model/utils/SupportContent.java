@@ -34,18 +34,5 @@ public interface SupportContent {
 	 * @throws IllegalArgumentException
 	 */
 	public List<Content> getByAccountId(String account_id) throws IllegalArgumentException;
-
-	// ________________________________________________________________________________________ LIKES
-	/**
-	 * @param content_id == -1 to get content_id is NULL;
-	 * @return List<Object[]> [account_id, content_id]
-	 * @throws IllegalArgumentException
-	 */
-	public List<Object[]> getLikes(Long content_id) throws IllegalArgumentException;
 	
-	/**
-	 * @param content_id to delete Likes
-	 * @return deleted quantity data
-	 */
-	public int deleteLikes(Long content_id) throws IllegalArgumentException;	
 }

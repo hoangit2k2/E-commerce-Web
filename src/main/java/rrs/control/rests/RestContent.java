@@ -5,7 +5,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import rrs.model.entities.Content;
-import rrs.model.services.ContentService;
 import rrs.model.utils.SupportContent;
 
 @RestController
@@ -15,11 +14,13 @@ public class RestContent extends AbstractRESTful<Content, Long> {
 	
 	@Autowired private SupportContent sc;
 	
+	// /upview/...
 	@GetMapping("/upview/{id}") // reading method to get data and upload view += 1
 	public ResponseEntity<Object> upview(@PathVariable Long id) throws Exception {
 		return ResponseEntity.ok(sc.upviews(id).get());
 	}
 	
+	// /active?a=true||false
 	@GetMapping("/active") // reading method to get data active or else get all
 	public ResponseEntity<Object> upview(@RequestParam(required = false) Object a) {
 		try {
@@ -31,26 +32,16 @@ public class RestContent extends AbstractRESTful<Content, Long> {
 		}
 	}
 	
+	// /category?category_id=...
 	@GetMapping("/category") // reading method to get data active or else get all
 	public ResponseEntity<Object> getByCategory(@RequestParam(required = false) String category_id) {
 		return ResponseEntity.ok(sc.getByCategoryId(category_id));
 		
 	}
 	
+	// /category?account_id=...
 	@GetMapping("/account") // reading method to get data active or else get all
 	public ResponseEntity<Object> getByAccount(@RequestParam(required = false) String account_id) {
 		return ResponseEntity.ok(sc.getByAccountId(account_id));		
-	}
-	
-	// _____________________________________________________________________ LIKES READ - DELETE
-	@GetMapping("/likes") // reading method to get data active or else get all
-	public ResponseEntity<Object> getLikes(@RequestParam(required = false) Long c) {
-		return ResponseEntity.ok(((ContentService) sc).getLikes(c));		
-	}
-
-	@DeleteMapping("/likes") // delete like by content_id
-	public ResponseEntity<Integer> deleteLikes(@RequestParam(required = false) Long c) {
-		int quantity = ((ContentService) sc).deleteLikes(c);
-		return c > 0 ? ResponseEntity.ok(quantity) : ResponseEntity.noContent().build();
 	}
 }

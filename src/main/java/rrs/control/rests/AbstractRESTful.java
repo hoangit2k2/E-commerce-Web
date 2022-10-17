@@ -48,7 +48,7 @@ public abstract class AbstractRESTful<E, K> {
 		if(id != null) {
 			dao.remove(id);
 			return ResponseEntity.ok().build();
-		} else return ResponseEntity.noContent().build();		
+		} else return ResponseEntity.noContent().build();
 	}
 
 	// @formatter:on

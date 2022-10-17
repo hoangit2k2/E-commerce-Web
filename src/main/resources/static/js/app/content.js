@@ -63,7 +63,6 @@ app.controller('control', function ($scope, $http) {
     }
 
     $scope.setAny = function (id, array) {
-        console.log(id, array);
         let i = getIndex(undefined, id, array);
         if(!array) array = []; // i == -1 && new Array();
         if(!document.getElementById(id).checked) array.push(id);

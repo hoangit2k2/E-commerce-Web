@@ -47,25 +47,11 @@ public class ContentService extends AbstractService<Content, Long> implements Su
 		return ((ContentRepository) super.rep).findByAccountId(account_id);
 	}
 
-	@Override // before remove to set like is null
+	@Override // delete the data in LIKES table before delete content
 	public void remove(Long id) throws IllegalArgumentException, CustomException {
-		int quality = ((ContentRepository) super.rep).setLike(id);
-		System.out.println("Set "+quality+" data to NULL with content_id: "+id);
+		int quality = ((ContentRepository) super.rep).deleteLike(id);
+		System.out.println("Delete "+quality+" data with content_id: "+id);
 		super.remove(id);
-	}
-	
-	// ________________________________________________________________________________________ LIKES
-	@Override // c content_id - <[account_id, content_id]>
-	public List<Object[]> getLikes(Long c) {
-		ContentRepository dao = (ContentRepository) super.rep;
-		return c==null ? dao.findAllLikes() 
-			: c==-1 ? dao.findLikesByContentId() : dao.findLikesByContentId(c);
-	}
-
-	@Override
-	public int deleteLikes(Long c) throws IllegalArgumentException {
-		ContentRepository dao = (ContentRepository) super.rep;
-		return c==null || c==-1 ? dao.deleteLikesByContentId() : dao.deleteLikesByContentId(c);
 	}
 	
 }
