@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+
 import rrs.model.utils.SendMail;
 
 @CrossOrigin("*")
@@ -21,7 +22,7 @@ public class MailRestControl {
 	@Autowired private SendMail mail;
 	
 	@RequestMapping("/send")
-	public ResponseEntity<String> sendMail (
+	public ResponseEntity<String> sendMail(
 			@RequestParam(required = false) String subject,
 			@RequestParam(required = false) String text,
 			@RequestParam(required = false) MultipartFile[] files,
@@ -31,7 +32,7 @@ public class MailRestControl {
 		
 		try {
 			addresses = addresses.trim().replaceAll("\n", ",");
-			mail.sendMimeMessage(subject, text, files, type, addresses.split(","));
+			mail.sendMimeMessage(subject, text, files, type,addresses.split(","));
 		} catch (MessagingException e) {
 			e.printStackTrace();
 			System.err.println("Mail sending failed!");

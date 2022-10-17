@@ -40,7 +40,7 @@ public class MailService implements SendMail {
 		else {
 			MimeMessageHelper mm = new MimeMessageHelper(mailSender.createMimeMessage(), true, "UTF-8");
 			mm.setSubject(subject);
-			mm.setText(text, true);
+			mm.setText(text);
 			if(files != null) for(MultipartFile file: files) mm.addAttachment(file.getOriginalFilename(), file);
 			
 			if(type == RecipientType.CC) mm.setCc(addresses);

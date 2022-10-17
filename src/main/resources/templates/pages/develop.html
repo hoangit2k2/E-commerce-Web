@@ -5,7 +5,7 @@
 <title>Developer mode</title>
 </head>
 <body>
-	<main class="container-fluid">
+	<main class="container-xxl bg-dark text-light">
 		<div class="row">
             <div class="col-12 mb-2 border">
                 <div class="d-flex m-3 ms-0 w-100">
@@ -67,30 +67,27 @@
                     </div>
                 </div>
             </div>
-            <div class="mt-2"></div>
-            <div class="col-xl-6">
-			    <div class="btn-group fw-bold mt-3">
-			        <a href="" ng-click="get(entityIO='rest/apis')">api</a>&nbsp;|&nbsp;
-			        <a href="" ng-click="get(entityIO='rest/accounts')">accounts</a>&nbsp;|&nbsp;
-			        <a href="" ng-click="get(entityIO='rest/categories')">categories</a>&nbsp;|&nbsp;
-			        <a href="" ng-click="get(entityIO='rest/contents')">contents</a>&nbsp;|&nbsp;
-			        <a href="" ng-click="get(entityIO='rest/likes')">likes</a>&nbsp;|&nbsp;
-			        <a href="" ng-click="get(entityIO='rest/staffs')">staffs</a>
-			    </div>
-			</div>
-			<div class="col-xl-6 text-end">
-			    <div class="ms-auto btn-group p-1 border border-info rounded-3">
-			        <button type="button" class="btn btn-outline-success text-uppercase" ng-click="get()">GET DATA</button>
-			        <button type="button" class="btn btn-outline-primary text-uppercase" ng-click="post()">ADD</button>
-			    
-			        <button type="button" class="btn btn-outline-warning text-uppercase" ng-click="put()">UPDATE</button>
-			        <button type="button" class="btn btn-outline-danger text-uppercase" ng-click="delete()">DELETE</button>
-			        
-			    	<button class="ms-3 btn btn-outline-secondary text-uppercase" onclick="location.reload()">RELOAD</button>
-			    </div>
-			</div>
-                
             <div class="col-12 mt-2 p-1 border">
+                <div class="d-flex align-items-center">
+                    <div class="btn-group fw-bold">
+                        <a href="" ng-click="get(entityIO='rest/api')">api</a>&nbsp;|&nbsp;
+                        <a href="" ng-click="get(entityIO='rest/accounts')">accounts</a>&nbsp;|&nbsp;
+                        <a href="" ng-click="get(entityIO='rest/categories')">categories</a>&nbsp;|&nbsp;
+                        <a href="" ng-click="get(entityIO='rest/contents')">contents</a>&nbsp;|&nbsp;
+                        <a href="" ng-click="get(entityIO='rest/staffs')">staffs</a>
+                    </div>
+                    <div class="ms-auto btn-group p-1 border border-info rounded-3">
+                        <button type="button" class="btn btn-outline-success text-uppercase" ng-click="get()">GET DATA</button>
+                        <button type="button" class="btn btn-outline-primary text-uppercase" ng-click="post()">ADD</button>
+                    </div>
+                    <div class="ms-1 btn-group p-1 border border-info rounded-3" ng-if="data.length == NaN && data">
+                        <button type="button" class="btn btn-outline-warning text-uppercase" ng-click="put()">UPDATE</button>
+                        <button type="button" class="btn btn-outline-danger text-uppercase" ng-click="delete()">DELETE</button>
+                    </div>
+                    <div class="ms-1 btn-group p-1 border border-info rounded-3">
+                        <button class="btn btn-outline-secondary text-uppercase" onclick="location.reload()">RELOAD</button>
+                    </div>
+                </div>
                 <!-- result -->
                 <div class="d-flex align-items-center justify-content-between">
                     <h1>Result</h1>
@@ -107,16 +104,14 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-xxl-10">
-                        <textarea class="w-100 bg-transparent" style="min-height: 300px;" ng-model="showDataJson">
+                    <div class="col-10">
+                        <textarea class="w-100 bg-transparent text-light" style="min-height: 300px;" ng-model="showDataJson">
                         </textarea>
                     </div>
                     <!-- GENERAL QRCode -->
-                    <div class="col-xxl-2">
+                    <div class="col-2">
                         <div class="border rounded" style="width: min-content; padding: .1em;">
-                            <a href="" onmouseenter="this.href=qrCode.title">
-                            	<div class="p-1 bg-transparent" id="qrCode"></div>
-                            </a>
+                            <div class="p-1 bg-transparent" id="qrCode"></div>
                         </div>
                     </div>
                 </div>

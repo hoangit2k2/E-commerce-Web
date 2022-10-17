@@ -1,9 +1,10 @@
 package rrs.control.rests;
 
+import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
+import java.nio.file.Path;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -12,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -22,58 +24,58 @@ import rrs.model.utils.FileUpload;
 
 @CrossOrigin("*")
 @RestController
-@RequestMapping({"/rest"})
+@RequestMapping({"/rest/"})
 public class FileRestControl {
 
 	// @formatter:off
 	@Autowired private FileUpload service;
-	
+
+	// get file
+	@GetMapping("file/{folder}/{file}")
+	public byte[] readFile(@PathVariable("folder") String folder, @PathVariable("file") String file) {
+		return service.getByte(folder, file);
+	}
+
 	// get file's paths
-	@GetMapping("/dir/**")
+	@GetMapping("dir/**")
 	public ResponseEntity<List<String>> getList(HttpServletRequest req) {
-		String uri = getURI(req, "dir/");
-		String path = service.pointingFolder(uri);
-		List<String> list = Arrays.asList(service.fileNames(true, uri));
+		StringBuffer pathIO = req.getRequestURL(); // cut director path
+		String path = pathIO.substring(pathIO.lastIndexOf("dir/")+4);
+		return ResponseEntity.ok(service.getFilePaths(path));
+	}
+
+	@PostMapping("dir/**") // save file
+	public ResponseEntity<List<String>> save(HttpServletRequest req,
+			@RequestParam(required = false) MultipartFile[] files) throws Exception{
+		StringBuffer pathIO = req.getRequestURL(); // cut director path
+		String path = pathIO.substring(pathIO.lastIndexOf("dir/")+4);
+		List<String> list = new LinkedList<>();
 		
-		for (int i = 0; i < list.size(); i++) list.set(
-			i, new StringBuilder(path).append("/").append(list.get(i)).toString()
-		);
-		
+		if(files != null) for (MultipartFile file : files) {
+			String name = file.getOriginalFilename(); // Get file name
+			Path sysPath = service.getSysPath(path, name);
+			try {
+				// save file if file doesn't exists
+				if(!sysPath.toFile().exists()) file.transferTo(sysPath);
+				else System.err.println("File name's "+file.getOriginalFilename()+" already exists, cannot be saved.");
+				list.add(service.getFilePath(path, name));
+			} catch (IllegalStateException | IOException e) {
+				e.printStackTrace();
+			}
+		}
 		return ResponseEntity.ok(list);
 	}
-	
-	@GetMapping("/dirmap/**")
-	public ResponseEntity<Map<String, Object>> getMap(HttpServletRequest req) {
-		String uri = getURI(req, "dirmap/");
+
+	@DeleteMapping("dir/**")
+	public ResponseEntity<Void> delete(HttpServletRequest req) {
+		StringBuffer pathIO = req.getRequestURL(); // cut director path
+		String path = pathIO.substring(pathIO.lastIndexOf("dir/")+4, pathIO.lastIndexOf("/"));
+		String fileName = pathIO.substring(pathIO.lastIndexOf("/")+1);
 		
-		Map<String, Object> map = Map.of(
-			"path",service.pointingFolder(uri),
-			"files", Arrays.asList(service.fileNames(null, uri))
-		); return ResponseEntity.ok(map);
-	}
-
-	@PostMapping("/dir/**") // save file
-	public ResponseEntity<List<String>> save(HttpServletRequest req,
-			@RequestParam(required = false) MultipartFile[] files) {
-		String uri = getURI(req, "dir/");
-		return ResponseEntity.ok(files != null 
-				? service.saveFile(files, uri) 
-				: Arrays.asList(service.saveFolder(uri))
-			);
-	}
-
-	@DeleteMapping("/dir/**")
-	public ResponseEntity<Void> delete(HttpServletRequest req, 
-			@RequestParam(required = false) String[] fileNames) throws IOException {
-		String uri = getURI(req, "dir/");
-		if(fileNames != null) service.deleteFiles(fileNames, uri);
-		else service.deleteFile(uri);
-		return ResponseEntity.ok().build();
+		File file = service.getSysPath(path, fileName).toFile();
+		return file.delete() ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
 	}
 	 
 	// @formatter:on
-	private String getURI(HttpServletRequest req, String cutAt) {
-		String uri = req.getRequestURI();
-		return uri.substring(uri.indexOf(cutAt)+cutAt.length());
-	}
+
 }

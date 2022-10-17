@@ -1,118 +1,36 @@
+@charset "UTF-8";
+
 /* Text vertical */
 .fit-img {
-    height: 100%;
-    width: 100%;
+	height: 100%;
+	width: 100%;
 }
 
 .text-vr {
-    writing-mode: vertical-lr;
-    text-orientation: mixed;
+	writing-mode: vertical-lr;
+	text-orientation: mixed;
 }
 
-.accountAvatar {
-    border-radius: 20px;
-    max-width: 2.5rem;
-    border: 1px solid #ffff00;
+.o-fit-cover {
+	object-fit: cover;
 }
 
-.subject-content {
-	overflow: hidden;
-	text-overflow: ellipsis;
-	white-space: nowrap;
-	position: absolute;
-	background-color: #ffff00;
-	width: calc(100% - .5rem);
-    padding: 0 1rem;
+.o-fit-contain {
+	object-fit: contain;
 }
 
-.fit-choose-img {
-    position: absolute;
-    left: 1rem;
-    top: 1rem;
-    right: 1rem;
-    bottom: 1rem;
-    opacity: 0;
-}
-
-.fit-label-img {
-    position: absolute;
-    left: 1rem;
-    right: 1rem;
-    bottom: 1rem;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-/* fit image */
-.o-fit-cover, .o-fit-contain:active {
-    object-fit: cover;
-}
-
-.o-fit-contain, .o-fit-cover:active {
-    object-fit: contain;
-}
-
-/* hover */
-.hover:hover{
-    opacity: 1;
-    animation: effect1 forwards 1s;
-}
-
-.hover-bg:hover {
-    background: #0000004d;
-}
-.hover-box:hover {
-    box-shadow: 0 0 10px #0000004d;
-}
-
-.showA:hover{
-    border-radius: 0 1.5rem 0 .5rem;
-    background-color: #000000a2;
-}
-.showA:hover>a{
-    display: inline !important;
-}
-
-/* size */
 .size-2 {
-    width: calc(100%/2);
+	width: calc(100%/ 2 - 2 * .25em);
 }
 
 .size-3 {
-    width: calc(100%/3);
+	width: calc(100%/ 3 - 2 * .25em);
 }
 
 .size-4 {
-    width: calc(100%/4);
+	width: calc(100%/ 4 - 2 * .25em);
 }
 
 .size-5 {
-    width: calc(100%/5);
-}
-
-.ar1x1{
-    aspect-ratio: 1/1;
-}
-
-.ar4x3{
-    aspect-ratio: 4/3;
-}
-
-.ar16x9{
-    aspect-ratio: 16/9;
-}
-
-.ar16x10{
-    aspect-ratio: 16/19;
-}
-
-/* Effects */
-@keyframes effect1 {
-    50% {
-        opacity: .5;
-        transform: translateY(-2rem);
-        box-shadow: 0 0 1.5rem #ff4800;
-    } to {
-        opacity: 1;
-    }
+	width: calc(100%/ 5 - 2 * .25em);
 }

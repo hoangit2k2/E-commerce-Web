@@ -4,7 +4,7 @@
 * @returns url connect to server
 */
 function getLink(host, ...paths) {
-    return !paths instanceof String ? host.concat('/', paths) : host.concat('/', paths).replaceAll(',', '/')
+    return !paths instanceof String ? host + "/" + paths : host.concat('/', paths).replaceAll(',', '/')
 }
  
  /**
@@ -14,45 +14,22 @@ function getLink(host, ...paths) {
  */
 function getIndex(column, value, array) {
     if(!value || !array) return -1;
-    
-    if(column) {
-        for (let i = 0; i < array.length; i++) 
-            if(array[i][column] == value) return i;
-    } else {
-        for (let i = 0; i < array.length; i++) 
-            if(array[i] == value) return i;
-    } return -1;
+    for (let i = 0; i < array.length; i++)
+        if(array[i][column] == value) 
+            return i;
+    return -1;
 }
 
-// _________________________________________________________________________________________________
 /**
-* <h3>show password form input</h3>
-* @param element is input[type="password"] => change type to password or text
-* @param eye is control to set type input
+* @param input to set type text || pass
+* @param control's eye icon
 */
-function showPass(element, eye) {
-	if(element.type=="text"){
-		element.type = "password";
-		if(eye) eye.setAttribute("class", "fa-solid fa-eye-slash");
-	} else {
-		element.type = "text";
-		if(eye) eye.setAttribute("class", "fa-solid fa-eye");
-	}
-}
-
-function setImage(input, toSet) {
-    if(input.files.length>0) toSet.src = URL.createObjectURL(input.files[0]);
-}
-
-/** _______________________________________________
- * @param e element
- * @param cls class
- * 
- */
-function setClass(e, cls) {
-	// e is element, cls is class's attribute
-	// replace content of the class
-	e.setAttribute("class",
-		cls.search("show") > -1 ? cls.replace(" show", "") : (cls + " show")
-	);
+function showPass(input, control) {
+    if(input.type == 'password') {
+        input.type = 'text';
+        control.setAttribute('class', 'fa-solid fa-eye')
+    } else {
+        input.type = 'password';
+        control.setAttribute('class', 'fa-solid fa-eye-slash')
+    }                              
 }

@@ -2,22 +2,21 @@
 <html xmlns="http://www.thymleaf.org" th:replace="~{/index::dynamic(~{::main})}">
 <head>
 <meta charset="UTF-8">
-<title>Developer mode</title>
+<title>Accounts - manager</title>
 </head>
 <body>
 	<main>
-		<h1 class="text-light bg-dark text-center text-uppercase fw-bolder">Quản lý tài khoản người dùng</h1>
         <div class="position-relative p-1 border rounded-3 bg-warning" ng-app="app" ng-controller="control">
             <!-- Display -->
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-xl-8">
-                        <h3 class="text-center border-bottom text-uppercase">Quản lý thông tin</h3>
-                        <form class="border rounded p-1" id="entity">
+                        <h3 class="text-center border-bottom text-uppercase">Quản lý nội dung</h3>
+                        <form class="border rounded p-1" id="entity" ng-model="entity">
                             <div id="fields">
                                 <div class="row">
                                     <div class="col-4 border-end">
-                                        <div class="d-flex flex-wrap h-100 align-items-end align-content-center">
+                                        <div class="d-flex flex-wrap h-100 align-items-end justify-content-center">
                                             <input type="file" accept="image/png, image/jpeg" id="prepareImg" class="form-control" onchange="setImage(this,showImage)">
                                             <div class="o-fit-cover w-100">
                                                 <img ng-src="{{getImage(entity.image)}}" class="fit-img" id="showImage">
@@ -39,25 +38,26 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <label for="name" class="form-label fw-bold">fullname</label>
                                         <div class="mt-1" id="name">
+                                        	<label for="name" class="form-label fw-bold">fullname</label>
                                             <input type="text" class="form-control" ng-model="entity.name">
                                         </div>
                                         <div class="mt-1" id="email">
                                             <label for="email" class="form-label fw-bold">account's email</label>
                                             <input type="email" class="form-control" ng-model="entity.email">
                                         </div>
+                                        <div class="mt-1 overflow-auto">
+                                            <label for="authorities" class="form-label fw-bold">authorities</label>
+                                            <div class="d-flex w-100" id="authorities">
+                                                <div class="me-3 form-check form-switch border-bottom border-info" ng-repeat="r in roles">
+                                                    <input type="checkbox" role="switch" name="authorities" id="{{r.id}}" class="form-check-input" ng-checked="hasAnyRole(r.id)">
+                                                    <label for="{{r.id}}" class="me-1 form-check-label" ng-bind="r.name"></label>
+                                                </div>
+                                            </div>
+                                        </div>
                                         <div id="regDate">
                                             <label for="regDate" class="form-label fw-bold">register date</label>
-                                            <input type="date" class="form-control" ng-model="entity.regDate">
-                                        </div>
-                                        <div id="image">
-                                            <label for="image" class="form-label fw-bold">image</label>
-                                            <input type="text" class="form-control" ng-model="entity.image">
-                                        </div>
-                                        <div id="likeContent">
-                                            <label for="like" class="form-label fw-bold">likes</label>
-                                            <input type="text" class="form-control" ng-model="entity.likes" ng-List>
+                                            <input type="date" class="form-control" ng-model="entity.regDate" ng-init="" disabled>
                                         </div>
                                     </div>
                                 </div>
@@ -71,54 +71,17 @@
 
                             <div class="btn-group p-1 mw-100 border border-info bg-dark rounded-2 overflow-auto">
                                 <button class="btn btn-outline-primary" ng-click="read(entity.username)">read</button>
-                                <button class="btn btn-outline-success" ng-click="post(entity)">create</button>
-                                <button class="btn btn-outline-warning" ng-click="put(entity)">update</button>
+                                <button class="btn btn-outline-success" ng-click="post()">create</button>
+                                <button class="btn btn-outline-warning" ng-click="put()">update</button>
                                 <button class="btn btn-outline-danger" ng-click="delete(entity.username)">delete</button>
                                 <button type="reset" class="ms-3 btn btn-outline-light" form="entity" ng-click="entity=null">refresh</button>
                             </div>
                         </div>
                     </div>
                     <div class="col-xl-4 border-start text-end d-flex flex-column">
-                        <!-- LIKE CONTENT -->
-                        <h3 class="text-center border-bottom text-uppercase">Nội dung đã thích</h3>
-                        <div class="fs-4 fw-bold text-dark">
-                            {{entity.likes ? entity.likes.length + ' trong ' : ''}}tổng số {{contents.length}} nội dung
-                        </div>
-                        <hr class="mt-auto">
-                        <div class="d-flex overflow-auto flex-wrap">
-                            <div id="accountLikeContent" class="carousel slide" data-bs-ride="carousel">
-                                <div class="carousel-inner">
-                                    <div class="carousel-item {{i==0 ? 'active' : ''}}" ng-repeat="(i,c) in contents | fil2Many:{id:entity.likes}">
-                                        <div class="row">
-                                            <div class="col-2">
-                                                <h1 class="text-danger">id:{{c.id}}</h1>
-                                            </div>
-                                            <div class="col-10">
-                                                <h5 class="text-capitalize" ng-bind="c.subject"></h5>
-                                            </div>
-                                            <div class="col-6 h-100">
-                                                <div class="w-100 overflow-auto fs-3">
-                                                    {{c.content}}
-                                                </div>
-                                            </div>
-                                            <div class="col-6">
-                                                <img ng-src="{{getImage(c.content_images[0], 'data/images/content')}}" class="fit-img o-fit-cover">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <button class="carousel-control-prev" type="button" data-bs-target="#accountLikeContent" data-bs-slide="prev">
-                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                    <span class="visually-hidden">Previous</span>
-                                </button>
-                                <button class="carousel-control-next" type="button" data-bs-target="#accountLikeContent" data-bs-slide="next">
-                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                    <span class="visually-hidden">Next</span>
-                                </button>
-                            </div>
-                        </div>
                         <!-- CONTENT FILTERS -->
                         <h3 class="text-center border-bottom text-uppercase">Bộ lọc nội dung</h3>
+                        <div class="mt-auto"></div>
                         <div class="mt-1 p-1 border text-start">
                             <div class="mt-1">
                                 <label for="fil" class="form-label fw-bold">Sắp xếp</label>
@@ -128,13 +91,15 @@
                                     <option class="text-end" value="name">Fullname tăng➡</option>
                                     <option class="text-end" value="email">Email tăng➡</option>
                                     <option class="text-end" value="regDate">Date tăng➡</option>
-                                    <option class="text-end fw-bold" value="likes.lenght">Số lượng thích tăng➡</option>
+                                    <option class="text-end fw-bold" value="likes">Số lượng thích tăng➡</option>
+                                    <option class="text-end fw-bold" value="roles">Tổng số phân quyền tăng➡</option>
                                     <option class="bg-danger text-center fw-bold">Z-A</option>
                                     <option class="text-start" value="-username">⬅Giảm username</option>
                                     <option class="text-start" value="-name">⬅Giảm fullname</option>
                                     <option class="text-start" value="-email">⬅Giảm email</option>
                                     <option class="text-start" value="-regDate">⬅Giảm date</option>
-                                    <option class="text-start fw-bold" value="-likes.lenght">⬅Giảm số lượng thích</option>
+                                    <option class="text-start fw-bold" value="-likes">⬅Giảm số lượng thích</option>
+                                    <option class="text-start fw-bold" value="-roles">⬅Giảm tổng số phân quyền</option>
                                 </select>
                             </div>
                             <div class="mt-1">
@@ -159,13 +124,12 @@
                                     <td>số lượng</td>
                                     <td>
                                         <input type="number" style="max-width: 80px;" class="text-end bg-transparent rounded" ng-model="fil.quantity"
-                                        ng-init="fil.quantity=3" min="" max="{{fil.lenght}}">
-                                    </td>
+                                        ng-init="fil.quantity=3" min="" max="{{fil.lenght}}"></td>
                                 </tr>
                             </table>
                         </div>
                     </div>
-                    <div class="mt-1 border-top col-12 overflow-auto" style="max-height: 80vh;">
+                    <div class="mt-1 border-top col-12 overflow-auto mh-100">
                         <div class="border-bottom p-1 d-flex justify-content-between align-items-center">
                             <h3 class="text-start text-uppercase">Dữ liệu hiển thị</h3>
                             
@@ -196,11 +160,12 @@
                                     <th>email</th>
                                     <th>date</th>
                                     <th>likes're id</th>
+                                    <th>roles're id</th>
                                     <th class="border-start">controls</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="e in data | filter:keywords | orderBy:fil.orderBy | limitTo: fil.quantity:fil.page*fil.quantity" ng-dblClick="read(e)">
+                                <tr ng-repeat="e in data | filter:keywords | orderBy:fil.orderBy | limitTo: fil.quantity:fil.page*fil.quantity" ng-dblClick="read(e.username)">
                                     <td ng-bind="e.image"></td>
                                     <td ng-bind="e.username"></td>
                                     <td class="text-center" ng-bind="e.password"></td>
@@ -208,7 +173,10 @@
                                     <td ng-bind="e.email"></td>
                                     <td ng-bind="e.regDate | date:'EEE, dd-MM-yyyy'"></td>
                                     <td class="text-end">
-                                        <span ng-repeat="e2 in e.likes">&nbsp;{{e2}}</span>
+                                        <span ng-repeat="e2 in e.likes">&nbsp;{{e2.content.id}}</span>
+                                    </td>
+                                    <td class="text-end">
+                                        <span ng-repeat="e2 in e.roles">&nbsp;{{e2.id}}</span>
                                     </td>
                                     <td class="border-start text-center">
                                         <div class="btn-group">
@@ -222,10 +190,8 @@
                 </div>
             </div>
         </div>
-
-		<!-- Javascript app -->
+        <!-- Javascript app -->
 		<script type="text/javascript" th:src="@{/js/app/account.js}"></script>
     </main>
 </body>
-
 </html>

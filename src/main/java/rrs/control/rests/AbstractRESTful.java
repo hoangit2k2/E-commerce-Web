@@ -2,6 +2,8 @@ package rrs.control.rests;
 
 import java.util.Optional;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -12,7 +14,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import rrs.model.utils.InterDAO;
-import rrs.utils.CustomException;
 
 /**
  * @param <E> is entity
@@ -24,7 +25,7 @@ public abstract class AbstractRESTful<E, K> {
 	@Autowired protected InterDAO<E, K> dao;
 
 	@GetMapping({"","/{id}"}) // reading method to get data
-	public ResponseEntity<Object> getData(@PathVariable(required = false) K id) throws IllegalArgumentException, CustomException {
+	public ResponseEntity<Object> getData(@PathVariable(name = "id", required = false) K id, HttpServletRequest request) {
 		if(id!=null) { // get one by id or get all entities
 			Optional<E> optional = dao.getOptional(id);
 			return optional.isPresent()
@@ -34,21 +35,22 @@ public abstract class AbstractRESTful<E, K> {
 	}
 	
 	@PostMapping({"","/{id}"}) // Post method to create entity
-	public ResponseEntity<E> save(@RequestBody E entity) throws IllegalArgumentException, CustomException {
+	public ResponseEntity<E> save(@RequestBody E entity) {
 		return ResponseEntity.ok(dao.save(entity));
 	}
 	
 	@PutMapping({"","/{id}"}) // Put method to update entity
-	public ResponseEntity<E> update(@RequestBody E entity) throws IllegalArgumentException, CustomException	{
+	public ResponseEntity<E> update(@RequestBody E entity) {
 		return ResponseEntity.ok(dao.update(entity));
 	}
 	
 	@DeleteMapping({"/{id}"}) // Delete method to remove entity
-	public ResponseEntity<Void> delete(@PathVariable(required = false) K id) throws IllegalArgumentException, CustomException {
+	public ResponseEntity<Void> delete(@PathVariable(required = false) K id) {
 		if(id != null) {
 			dao.remove(id);
 			return ResponseEntity.ok().build();
 		} else return ResponseEntity.noContent().build();
+		
 	}
 
 	// @formatter:on

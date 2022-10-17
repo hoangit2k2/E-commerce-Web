@@ -6,6 +6,6 @@ import rrs.model.entities.Api;
 
 @RestController
 @CrossOrigin(value = "*")
-@RequestMapping(value = "/rest/apis")
+@RequestMapping(value = "/rest/api")
 public class RestApi extends AbstractRESTful<Api, String>{
 }

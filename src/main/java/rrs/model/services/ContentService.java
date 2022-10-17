@@ -3,55 +3,63 @@ package rrs.model.services;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import rrs.model.entities.Content;
 import rrs.model.repositories.ContentRepository;
-import rrs.model.utils.SupportContent;
-import rrs.utils.CustomException;
+import rrs.model.utils.InterDAO;
+import rrs.model.utils.UpviewContent;
 
 @Service
-public class ContentService extends AbstractService<Content, Long> implements SupportContent {
+public class ContentService implements InterDAO<Content, Long>, UpviewContent {
+	@Autowired private ContentRepository rep;
 	
-	@Override
-	protected Long getId(Content entity) {
-		return entity.getId();
+	@Override // get entities and no conditional
+	public List<Content> getList() {
+		return rep.findAll();
+	}
+
+	@Override // get entities and sort conditional
+	public List<Content> getList(Sort sort) {
+		return rep.findAll(sort);
+	}
+	
+	@Override // get page of the entities
+	public Page<Content> getPage(Pageable pageable) {
+		return rep.findAll(pageable);
+	}
+
+	@Override // find one entity and return optional result
+	public Optional<Content> getOptional(Long id) throws IllegalArgumentException{
+		return rep.findById(id);
 	}
 	
 	@Override // find one entity, update view +1 and return optional result
 	public Optional<Content> upviews(Long id) throws IllegalArgumentException{
 		Optional<Content> optional = rep.findById(id);
-		if(optional.isPresent()) {
-			Content c = optional.get();
-			c.setViews(c.getViews()+1);
-			super.rep.save(c);
-			return optional;
-		} else throw new IllegalArgumentException("Cannot upview, content's id: "+id+" doesn't exist.");
+		if(optional.isPresent()) rep.upviews(id);
+		else throw new IllegalArgumentException("Cannot upview, content's id: "+id+" doesn't exist.");
+		return rep.findById(id);
+	}
+	
+	@Override // create and update data of the entity
+	public <S extends Content> S save(S entity) throws IllegalArgumentException{
+		entity.setId(rep.save(new Content(-1L)).getId()); // get new Id
+		return this.update(entity);
+	}
+	
+	@Override // create and update data of the entity
+	public <S extends Content> S update(S entity) throws IllegalArgumentException{
+		Optional<Content> optional = rep.findById(entity.getId());
+		return optional.isPresent() ? rep.save(entity) : null;
 	}
 
-	@Override // get all Content by active
-	public List<Content> getByActive(Boolean active) throws IllegalArgumentException {
-		if(active == null) return super.getList();
-		return ((ContentRepository) super.rep).findAllActive(active);
+	@Override // remove entity by entity's id
+	public void remove(Long id) throws IllegalArgumentException {
+		rep.deleteById(id);
 	}
-	
-	@Override
-	public List<Content> getByCategoryId(String category_id) throws IllegalArgumentException {
-		if(category_id == null) return super.getList();
-		return ((ContentRepository) super.rep).findByCategory(category_id);
-	}
-	
-	@Override
-	public List<Content> getByAccountId(String account_id) throws IllegalArgumentException {
-		if(account_id == null) return super.getList();
-		return ((ContentRepository) super.rep).findByAccountId(account_id);
-	}
-
-	@Override // delete the data in LIKES table before delete content
-	public void remove(Long id) throws IllegalArgumentException, CustomException {
-		int quality = ((ContentRepository) super.rep).deleteLike(id);
-		System.out.println("Delete "+quality+" data with content_id: "+id);
-		super.remove(id);
-	}
-	
 }

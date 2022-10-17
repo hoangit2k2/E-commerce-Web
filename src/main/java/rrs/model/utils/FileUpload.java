@@ -1,71 +1,54 @@
 package rrs.model.utils;
 
-import java.io.IOException;
+import java.nio.file.Path;
 import java.util.List;
-
-import org.springframework.web.multipart.MultipartFile;
 
 import rrs.model.services.FileService;
 
 /**
  * {@link FileService} implements this code ༼ つ ◕_◕ ༽つ
- * @see FileService#uri(String...) concat to path
  */
 public interface FileUpload {
-	
 	public static final String DEFAULT_FOLDER = "/data";
 	
 	/**
-	 * @param directories are contain folders or files
-	 * @return the path path to the server - EX: http://localhost:8080/data/images/...
+	 * @param folder containing files 
+	 * @param name of file to read
+	 * 
+	 * @return bytes of file
 	 */
-	public String pointingFolder(String...directories);
+	public byte[] getByte(String folder, String name);
 
 	/**
-	 * @param fileOrDir get only files or folders else all
-	 * @param directories are contain folders or files
-	 * @return all file're path with condition's fileOrDir
-	 * <h3><b>EX: </b>[abc.png, bcd.jpg, cde.pdf, ...]</h3>
+	 * @param folder containing files 
+	 * @param name of file to read
+	 * 
+	 * @return {@link String} is href link to file
 	 */
-	public String[] fileNames(Boolean fileOrDir, String...directories);
+	public String getFilePath(String folder, String name);
 
 	/**
-	 * @param directories to create
-	 * @return directory created;
+	 * @param folder containing files
+	 * @return {@link List<@link String>} all paths with any files in parameter folder
 	 */
-	public String saveFolder(String...directories);
-	
-	/**
-	 * @param file is {@link MultipartFile} to save
-	 * @param directories are contain folders or files
-	 * @return file name has been saved
-	 */
-	public String saveFile(MultipartFile file, String...directories);
-	
-	/**
-	 * @param file is {@link MultipartFile} to save
-	 * @param fileName to set name of file
-	 * @param directories are contain folders or files
-	 * @return file name has been saved
-	 */
-	public String saveFile(String fileName, MultipartFile file, String...directories);
-	
-	/**
-	 * @param files are {@link MultipartFile} to save
-	 * @param directories are contain folders or files
-	 * @return all files're name has been saved
-	 */
-	public List<String> saveFile(MultipartFile[] files, String...directories);
-	
-	/**
-	 * @param uri to delete
-	 * @throws IOException 
-	 */
-	public void deleteFile(String uri) throws IOException;
+	public List<String> getFilePaths(String folder);
 
 	/**
-	 * @param fileNames're name to delete in directories
-	 * @param directories are contain folders or files
+	 * @param folder containing files
+	 * @return all files're name
 	 */
-	public void deleteFiles(String[] fileNames, String...directories);
+	public String[] getFileNames(String folder);
+
+	/**
+	 * @param folder containing files
+	 * @param fileName is file's name (●'◡'●)
+	 * @return {@link Path} absolute link to file of system
+	 */
+	public Path getSysPath(String folder, String fileName);
+
+	/**
+	 * @param folder is name to create new folder in the system
+	 * @return {@link Path} has been created
+	 */
+	public Path createSysFolder(String folder);
 }

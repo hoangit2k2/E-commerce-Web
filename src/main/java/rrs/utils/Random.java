@@ -20,7 +20,7 @@ public class Random {
             int i = r.nextInt(122);
             if (i > 47 && i < 58) builder.append((char) i);
         }
-        return builder.length() > length ? builder.substring(0, length) : builder.toString();
+        return builder.toString();
     }
 
     /**
@@ -34,7 +34,7 @@ public class Random {
              int i = r.nextInt(122);
              if (i > 64 && i < 91) builder.append((char) i);
          }
-         return builder.length() > length ? builder.substring(0, length) : builder.toString();
+         return builder.toString();
     }
 
     /**
@@ -47,7 +47,7 @@ public class Random {
         while (builder.length() < length) {
             int i = r.nextInt(122);
             if (i > 96 && i < 123) builder.append((char) i);
-        } return builder.length() > length ? builder.substring(0, length) : builder.toString();
+        } return builder.toString();
     }
 
     /**
@@ -61,7 +61,7 @@ public class Random {
             int i = r.nextInt(122);
             if (i > 47 && i < 58) builder.append((char) i);
             else if (i > 64 && i < 91) builder.append((char) i);
-        } return builder.length() > length ? builder.substring(0, length) : builder.toString();
+        } return builder.toString();
     }
 
     /**
@@ -75,7 +75,7 @@ public class Random {
              int i = r.nextInt(122);
              if (i > 47 && i < 58) builder.append((char) i);
              else if (i > 96 && i < 123) builder.append((char) i);
-         } return builder.length() > length ? builder.substring(0, length) : builder.toString();
+         } return builder.toString();
     }
 
     /**
@@ -90,7 +90,7 @@ public class Random {
              int i = r.nextInt(122);
              if (i > 64 && i < 91) builder.append((char) i);
              else if (i > 96 && i < 123) builder.append((char) i);
-         } return builder.length() > length ? builder.substring(0, length) : builder.toString();
+         } return builder.toString();
     }
 
     /**
@@ -106,6 +106,6 @@ public class Random {
             if (i > 47 && i < 58) builder.append((char) i);
             else if (i > 64 && i < 91) builder.append((char) i);
             else if (i > 96 && i < 123) builder.append((char) i);
-        } return builder.length() > length ? builder.substring(0, length) : builder.toString();
+        } return builder.toString();
     }
 }

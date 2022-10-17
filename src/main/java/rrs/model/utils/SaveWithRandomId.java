@@ -6,7 +6,7 @@ public interface SaveWithRandomId<E> {
 	 * 		find all categories
 	 * </h1>
 	 * @param entity to save
-	 * @param isRandom == true, then category_id is default, otherwise category_id'll be random
+	 * @param isEntityId == true, then category_id is default, otherwise category_id'll be random
 	 * @return category saved successfully
 	 * @throws IllegalArgumentException when idEntityId == true and isEntityId already exists
 	 */

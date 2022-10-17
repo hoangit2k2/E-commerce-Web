@@ -13,7 +13,6 @@ import javax.mail.Message.RecipientType;
  * @see SendMail#sendMimeMessage(String, String, MultipartFile[], RecipientType, String...) with attachment
  */
 public interface SendMail {
-	
 	public static final String HTML_REGEX = "<([A-Za-z][A-Za-z0-9]*)\\b[^>]*>(.*?)</\\1>";
 	
 	/**
@@ -37,5 +36,6 @@ public interface SendMail {
 	 * 
 	 * @see SendMail#sendMimeMessage(String, String, File[], RecipientType, String...)
 	 */
-	public void sendMimeMessage(String subject, String text, MultipartFile[] files, RecipientType type, String... addresses) throws MessagingException;
+	public void sendMimeMessage(String subject, String text, MultipartFile[] files, RecipientType type, String... addresses)
+			throws MessagingException;
 }

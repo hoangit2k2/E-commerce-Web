@@ -7,8 +7,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
-import rrs.utils.CustomException;
-
 public interface InterDAO<E, K> {
 	/**
 	 * <h1 style="text-align: center; color: yellow; font-size: 2em; text-transform: uppercase;">
@@ -37,7 +35,7 @@ public interface InterDAO<E, K> {
 
 	/**
 	 * <h1 style="text-align: center; color: yellow; font-size: 2em; text-transform: uppercase;">
-	 * 		find {@link Optional<E>} by id
+	 * 		find all entities
 	 * </h1>
 	 * @param id is key
 	 * @return {@link Optional} entity -> {@link Optional#isPresent()} or {@link Optional#isEmpty()}
@@ -47,29 +45,30 @@ public interface InterDAO<E, K> {
 	
 	/**
 	 * <h1 style="text-align: center; color: yellow; font-size: 2em; text-transform: uppercase;">
-	 * 		save entity to database
+	 * 		find all entities
 	 * </h1>
 	 * @param entity to save
 	 * @return entity saved successfully
+	 * @throws IllegalArgumentException
 	 */
-	public <S extends E> S save(S entity) throws CustomException, IllegalArgumentException;
+	public <S extends E> S save(S entity) throws IllegalArgumentException;
 	
 	/**
 	 * <h1 style="text-align: center; color: yellow; font-size: 2em; text-transform: uppercase;">
-	 * 		update entity into database
+	 * 		find all entities
 	 * </h1>
 	 * @param entity to update
 	 * @return entity updated successfully
 	 * @throws IllegalArgumentException
 	 */
-	public <S extends E> S update(S entity) throws CustomException, IllegalArgumentException;
+	public <S extends E> S update(S entity) throws IllegalArgumentException;
 
 	/**
 	 * <h1 style="text-align: center; color: yellow; font-size: 2em; text-transform: uppercase;">
-	 * 		delete data by {@link Id}
+	 * 		delete by {@link Id}
 	 * </h1>
 	 * @param id is key
 	 * @throws IllegalArgumentException 
 	 */
-	public void remove(K id) throws CustomException, IllegalArgumentException;
+	public void remove(K id) throws IllegalArgumentException;
 }
