@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html xmlns="http://www.thymleaf.org" th:replace="~{/index::dynamic(~{::main})}">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<main>
+		<h1>This home page</h1>
+		<div th:text="${user}"></div>
+	</main>
+</body>
+</html>

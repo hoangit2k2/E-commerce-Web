@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html xmlns="http://www.thymleaf.org" th:replace="~{/index::dynamic(~{::main})}">
+<head>
+<meta charset="UTF-8">
+<title>Developer mode</title>
+</head>
+<body>
+
+	<main ng-app="app" ng-controller="control">
+	    <div class="container-fluid" ng-if="(arr = r_contents.length > 0 ? r_contents : data).length > 0">
+	        <div class="row p-2 bg-light">
+	            <div class="d-flex align-items-center justify-content-between">
+	                <h1 class="fw-bolder text-uppercase">Quản lý tài chi tiết nội dung</h1>
+	                <h3>Số lượng: {{fil.quantity = (arr | filter:{active:checkActive}).length}}</h3>
+	                <div class="form-check form-switch">
+	                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" ng-model="checkActive">
+	                <label class="form-check-label" for="flexSwitchCheckChecked">Active</label>
+	                <a href ng-click="checkActive=undefined">All</a>
+	                </div>
+	            </div>
+	        </div>
+	
+	        <div class="row border-top {{entity && entity.active ? 'bg-light' : 'bg-warning'}} bg-gradient">
+	            <!-- Show images -->
+	            <div class="col-lg-6 p-2">
+	                <div class="d-flex flex-wrap align-content-between">
+	                    <h3 class="text-break" style="text-align: justify;">{{entity.subject}}</h3>
+	                    <div ng-if="entity.content_images.length > 0" class="m-auto mt-1 w-100">
+	                        <!-- carousel images -->
+	                        <div id="contentImage" class="carousel slide rounded-3 flex-fill" data-bs-ride="true">
+	                            <div class="carousel-inner">
+	                                <div class="carousel-item {{i==0 ? 'active' : ''}} ar16x9" ng-repeat="(i,image) in entity.content_images">
+	                                    <img ng-src="{{getImage(image)}}" class="fit-img o-fit-cover" id="showImage" alt="{{image}}">
+	                                    <div class="w-100 border overflow-auto text-center">
+	                                        <label class="text-muted text-nowrap">{{image ? image : 'default image'}}</label>
+	                                    </div>
+	                                </div>
+	                            </div>
+	                        </div>
+	                        <div class="w-100 border text-nowrap overflow-auto" ng-if="entity.content_images.length > 1">
+	                            <button type="button" data-bs-target="#contentImage" data-bs-slide-to="{{i}}" class="btn size-5 p-1 ar16x9 {{e.active}}"
+	                                ng-repeat="(i,image) in entity.content_images">
+	                                <img class="fit-img o-fit-cover" ng-src="{{getImage(image)}}" alt="{{image}}">
+	                            </button>
+	                        </div>
+	                    </div>
+	                    <div class="w-100 ar4x3" ng-if="1 > entity.content_images.length">
+	                        <img class="fit-img" style="object-fit: contain;" ng-src="{{getImage('default.png')}}" alt="default.png" title="Nội dung này chưa có ảnh">
+	                    </div>
+	                </div>
+	            </div>
+	            <!-- Content description -->
+	            <div class="border-start p-2 col-lg-6 fs-3">
+	                <p class="mt-1" style="text-align: justify;">
+	                    <strong>Mô tả:</strong>&nbsp;{{entity.content}}
+	                </p>
+	                <p class="mt-1" >
+	                    <div class="fw-bold">Thời gian tải:</div>
+	                    {{entity.regTime | date :'EEEE, dd-MM-yyyy (hh:mm:ss)'}}
+	                </p>
+	                <p class="mt-1">
+	                    <strong>Lượt xem:</strong>
+	                    <u>{{entity.views}}</u>
+	                </p>
+	    
+	                <hr>
+	                <p class="mt-1" style="text-align: justify;">
+	                    <div class="">
+	                        <label class="fw-bold">Họ Tên</label>
+	                        <a href="" title="Các sản phẩm liên quan của {{entity.account.name}}"
+	                            ng-if="entity.account" ng-click="getTo('account?account_id='+entity.account.username,'r_contents')">
+	                            {{entity.account.name}}
+	                        </a>
+	                    </div>
+	                    <div class="">
+	                        <label class="fw-bold">Liên hệ</label>
+	                        <a href="mailto:{{entity.account.email}}" title="Liên hệ tới email {{entity.account.email}}">
+	                            {{entity.account.email}}
+	                        </a>
+	                    </div>
+	                </p>
+	                <hr>
+	                <p class="mt-1" style="text-align: justify;">
+	                    <div><b>Phân loại:</b></div>
+	                    <a class="ms-2" style="cursor: pointer;" ng-click="all(fil.page=null)">
+	                        <span class="fa-hashtag">Tất cả</span>
+	                    </a>
+	                    <a class="ms-2" style="cursor: pointer;" 
+	                        ng-click="getTo('category?category_id='+e.id, 'r_contents', fil.page=null)" 
+	                        ng-repeat="e in categories | fil2Many:{id:entity.categories}">
+	                        <span class="fa-hashtag">{{e.name}}</span>
+	                    </a>    
+	                </p>
+	                <div class="mt-1 p-2 border-top text-end">
+	                    <div class="btn-group">
+	                        <button class="btn btn-{{entity.active ? 'secondary':'primary'}} fs-3" ng-click="toggleActive()">{{entity.active ? 'Ẩn' : 'Hiện'}}</button>
+	                        <button class="btn btn-danger fs-3" ng-click="delete(entity)">Xóa</button>
+	                    </div>
+	                    <button class="btn btn-outline-danger fs-3" ng-click="closeByAccountId()">ẩn nội dung từ [{{entity.account.username}}]</button>
+	                </div>
+	            </div>
+	        </div>
+	        
+	        <!-- recommended contents -->
+	        <div class="row flex-wrap border-top">
+	            <h1 class="text-end p-0">Nội dung liên quan</h1>
+	            <div class="{{e.active ? 'bg-info' : 'bg-warning'}} position-relative p-1 text-center size-5 hover-box" ng-dblclick="read(e)"
+	                ng-repeat="e in arr | filter:{active:checkActive} | limitTo:10:10*fil.page">
+	                <!-- Subject and content's avatar -->
+	                   <strong class="subject-content">{{e.subject}}</strong>
+	                <img class="fit-img" alt="{{e.content_images[0]}}" style="object-fit: cover;"
+	                    ng-src="{{getImage(e.content_images[0])}}" ng-if="hasImg = e.content_images.length>0">
+	                <img style="width: 100%;" alt="default.png" 
+	                    ng-src="{{getImage('default.png')}}" ng-if="!hasImg">
+	                
+	                <!-- Show account and related products control bar -->
+	                <div class="m-1 position-absolute bottom-0 end-0 text-end showA text-nowrap p-1" style="width: calc(100% - 0.5em);">
+	                    <a style="display: none;" href="mailTo:{{e.account.email}}" class="btn btn-light">Gửi email</a>
+	                    <a style="display: none;" href="" class="btn btn-light" ng-click="getTo('account?account_id='+e.account.username,'r_contents')">Sản phẩm</a>
+	                    <!-- Show account posted content -->
+	                    <button class="btn p-0 ar1x1">
+	                        <img class="fit-img o-fit-cover accountAvatar"
+	                            ng-src="{{getImage(e.account.image ? e.account.image : 'default.png','account')}}" 
+	                            alt="{{e.account.image}}" title="{{e.account.name}}">
+	                    </button>
+	                </div>
+	            </div>
+	    
+	            <!-- Show pages control -->
+	            <div class="mt-1 w-100 border-top border-bottom text-center bg-light">
+	                <span ng-if="fil.maxPage=(fil.quantity/10 | number:0)"></span>
+	                <div class="btn-group w-50">
+	                    <button class="btn btn-outline-primary ms-1 me-1" ng-click="fil.page = 0">
+	                        <i class="fa-solid fa-backward-step"></i>
+	                    </button>
+	                    <button class="btn btn-outline-primary ms-1 me-1" ng-click="fil.page = fil.page-1" ng-disabled="1>fil.page">
+	                        <i class="fa-solid fa-chevron-left"></i>
+	                    </button>
+	                    <button class="btn btn-outline-primary ms-1 me-1" ng-click="fil.page = fil.page+1" ng-disabled="fil.page>fil.maxPage-1">
+	                        <i class="fa-solid fa-chevron-right"></i>
+	                    </button>
+	                    <button class="btn btn-outline-primary ms-1 me-1" ng-click="fil.page = fil.maxPage">
+	                        <i class="fa-solid fa-forward-step"></i>
+	                    </button>
+	                </div>
+	            </div>
+	        </div>
+	    
+	        <!-- Show message -->
+	        <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 1100;">
+	            <div id="liveToast" class="toast bg-gradient bg-opacity-75 {{mes.b}}" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="3000">
+	                <div class="toast-header">
+	                    <strong class="me-auto">{{mes.t}}</strong>
+	                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+	                </div>
+	                <div class="toast-body fs-5 fw-bold" style="text-align: justify;">{{mes.c}}</div>
+	            </div>
+	        </div>
+	
+	    </div>
+	    <h1 ng-if="1 > arr.length" class="text-danger text-center">Không có dữ liệu hiển thị</h1>
+		    
+		<!-- Javascript app -->
+		<script type="text/javascript" th:src="@{/js/app/content_manager_detail.js}"></script>
+     </main>
+</body>
+
+</html>
