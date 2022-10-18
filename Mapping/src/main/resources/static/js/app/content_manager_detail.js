@@ -96,9 +96,9 @@ app.controller('control', function ($scope, $http) {
 
     $scope.closeByAccountId = function() {
         let username = $scope.entity.account.username;
-        var arr = $scope.arr.filter(x => {
+        $scope.arr.filter(x => {
             // only update content is active and content of account
-            if(x.account.username == username && x.active) {
+            if((x.account ? x.account.username==username : false) && x.active) {
                 x.active = !x.active;
                 $http.put(getLink(serverIO, path), x).then(
                     r => x = r.status==200 ? r.data : x
