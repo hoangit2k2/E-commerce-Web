@@ -13,7 +13,7 @@ import rrs.model.entities.Like;
 public interface LikeRepository extends JpaRepository<Like, Like> {
 
 	@Query(value = "SELECT * FROM LIKES WHERE content_id IS NULL", nativeQuery = true)
-	public List<Like> findLikesByContentId();
+	public List<Like> findLikesByContentId(); // get likes's content_id is null
 	
 	@Query(value = "SELECT * FROM LIKES WHERE content_id = :content_id", nativeQuery = true)
 	public List<Like> findLikesByContentId(Long content_id);

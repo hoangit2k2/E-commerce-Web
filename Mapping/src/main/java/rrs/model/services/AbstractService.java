@@ -39,7 +39,7 @@ public abstract class AbstractService<E, K> implements InterDAO<E, K> {
 
 	@Override
 	public <S extends E> S save(S entity) throws CustomException, IllegalArgumentException {
-		K id = getId(entity);
+		K id = this.getId(entity);
 		Optional<E> optional = rep.findById(id);
 		if(optional.isEmpty()) {
 			return rep.save(entity);

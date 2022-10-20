@@ -103,7 +103,19 @@
 }
 
 .ar16x10{
-    aspect-ratio: 16/19;
+    aspect-ratio: 16/10;
+}
+
+.ar3x4{
+    aspect-ratio: 3/4;
+}
+
+.ar9x16{
+    aspect-ratio: 9/16;
+}
+
+.ar10x16{
+    aspect-ratio: 10/16;
 }
 
 /* Effects */

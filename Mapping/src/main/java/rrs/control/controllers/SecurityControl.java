@@ -104,6 +104,9 @@ public class SecurityControl {
 		String message, title = "Đăng ký tài khoản";
 		if(!errors.hasErrors())
 			try {
+				if(dao.getByEmail(account.getEmail()) != null) {
+					throw new CustomException(account.getEmail()+" Đã được sử dụng, vui lòng chọn email khác");
+				}
 				Account a = dao.save(account);
 				if(a != null) {
 					message = "Đăng ký tài khoản "+a.getUsername()+" thành công";
@@ -112,9 +115,9 @@ public class SecurityControl {
 					return "/pages/security/loginForm"; // load login page
 				} 
 				message = "Đăng ký tài khoản thất bại!";
-				model.addAttribute("message", HTMLUtil.alert(BGR.WARN, title, message, 3000));
+				model.addAttribute("message", HTMLUtil.alert(BGR.DANGER, title, message, 5000));
 			} catch (IllegalArgumentException | CustomException e) {
-				model.addAttribute("message", HTMLUtil.alert(BGR.DANGER, title, e.getMessage(), 5000));
+				model.addAttribute("message", HTMLUtil.alert(BGR.WARN, title, e.getMessage(), 3000));
 			}
 		return pageURI(); // callback to re-register input data
 	}
@@ -122,10 +125,11 @@ public class SecurityControl {
 
 	// ___________________________________________________________ FORGOT - PASSWORD
 	@ResponseBody @RequestMapping("/getCode")
-	public ResponseEntity<String> getCodeToMail(@RequestParam String address, HttpServletRequest req) {
+	public ResponseEntity<String> getCodeToMail(@RequestParam String address, HttpServletRequest req) throws CustomException {
 		String subject = "Yêu cầu mã xác thực tài khoản!";
 		String text = HTMLUtil.getCode("RRs gửi mã xác thực tài khoản", this.general = Random.UpperCase("RRs", 8), "requestresponseser@gmail.com");
 
+		if(dao.getByEmail(address)==null) throw new CustomException(address + " chưa được đăng ký thông tin, vui lòng kiểm tra lại!");
 		try {
 			System.out.println("Send mail code: "+this.general);
 			mail.sendMimeMessage(subject, text, null, null, this.email=address);
@@ -137,14 +141,15 @@ public class SecurityControl {
 	}
 	
 	@PostMapping("/getPassCode") 
-	public String getPassCode(Model model, @RequestParam(required = false) String code) {
+	public String getPassCode(Model model, @RequestParam(required = false) String code) throws CustomException {
 		if(code.equals(this.general)) {
 			Account a = dao.getByEmail(this.email);
+			if(a==null) throw new CustomException(this.email+" tài khoản không tồn tại!");
 			model.addAttribute("account", new Account(a.getUsername(), a.getPassword()));
 			return "/pages/security/change_password";
 		} else req.setAttribute("message", HTMLUtil.alert(BGR.LIGHT,
-			"Xác thực tài khoản","Xác thực thất bại, "+code+" không đúng!", 3000)
-			);
+				"Xác thực tài khoản","Xác thực thất bại, "+code+" không đúng!", 3000)
+				);
 		return "/pages/security/forgot_password";
 	}
 

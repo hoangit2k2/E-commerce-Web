@@ -13,7 +13,7 @@ CREATE TABLE ACCOUNTS (
     username varchar(20) primary key,
     password varchar(30),
     name nvarchar(50),
-    email varchar(50),
+    email varchar(50) unique,
     image nvarchar(255),
     regDate date
 );
@@ -23,7 +23,7 @@ IF EXISTS (SELECT name FROM sys.tables WHERE name = 'STAFFS')
 CREATE TABLE STAFFS (
     username varchar(20) primary key,
     password varchar(30),
-    email varchar(50),
+    email varchar(50) unique,
     role bit,
 	image nvarchar(255)
 );
@@ -78,16 +78,3 @@ CREATE TABLE APIs (
     id varchar(30) primary key,
     value nvarchar(255)
 );
-
-
-/* _________________________________________________________________________________________________ TRIGER */
-/* BEFORE DELETE CONTENT */
-IF EXISTS (SELECT name FROM sys.triggers WHERE name = 'LIKES_CONTENTS')
-    DROP TRIGGER LIKES_CONTENTS
-GO
-CREATE TRIGGER LIKES_CONTENTS
-	ON CONTENTS FOR DELETE -- Before delete like content
-AS BEGIN 
-	UPDATE LIKES SET content_id = NULL 
-	WHERE content_id = (Select o.id from deleted o)
-END 
