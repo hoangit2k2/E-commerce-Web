@@ -22,12 +22,12 @@ public interface SQLSupport {
 			return createSQL(this);
 		}
 
-		public void setColumns(String...columns) {
-			this.columns = columns;
+		public void setColumns(String...columns) throws CustomException {
+			if(checkComment((Object[]) columns)) this.columns = columns;
 		}
 
-		public void setOrderBy(String...orderBy) {
-			this.orderBy = orderBy;
+		public void setOrderBy(String...orderBy) throws CustomException {
+			if(checkComment((Object[]) orderBy)) this.orderBy = orderBy;
 		}
 
 		public void setQuantity(int quantity) {
@@ -78,5 +78,12 @@ public interface SQLSupport {
 		if(table.desc != null) str.append(table.desc ? " DESC" : " ASC");
 		return str.toString();
 	};
+	
+	private static boolean checkComment(Object...agrs) throws CustomException {
+		if(agrs != null) for(Object agr : agrs) if(agr.toString().lastIndexOf("--") > -1)
+			throw new CustomException("\n\nRRs-Thông báo 🥵 > Hệ thống phát hiện nghi vấn hack ⚠⚠⚠\n"
+				+ "Bạn đừng cố hack hệ thống của chúng tôi làm gì 😑\n\n");
+		return true;
+	}
 
 }

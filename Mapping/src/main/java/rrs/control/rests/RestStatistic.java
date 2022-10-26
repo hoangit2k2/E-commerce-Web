@@ -40,9 +40,9 @@ public class RestStatistic {
 			@RequestParam(required = false) String[] c,
 			@RequestParam(required = false) String[] o,
 			@RequestParam(required = false) Integer qty,
-			@RequestParam(required = false) Boolean asc
+			@RequestParam(required = false) Boolean desc
 	) throws JsonProcessingException, CustomException {
-		return ResponseEntity.ok(sql.execute(t, qty, c, o, asc));
+		return ResponseEntity.ok(sql.execute(t, qty, c, o, desc));
 	}
 	
 	@GetMapping({"/ac"}) public ResponseEntity<Object> proc_AC (
