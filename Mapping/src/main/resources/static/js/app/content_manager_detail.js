@@ -14,6 +14,13 @@ const toast = new bootstrap.Toast(liveToast);
     {id, views, active, viewImgs, [...categories.id]}
 */
 
+moment.locale('vi');
+app.filter('dateRelative', function(){
+    return function (date, format) {
+        return `${moment(date).format(format)} (${moment(date).fromNow()})`;
+    }
+})
+
 app.filter('fil2Many', function() {
     return function (array, columns) {
         if(!array || !columns) return [];

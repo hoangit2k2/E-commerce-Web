@@ -11,12 +11,12 @@
             <!-- Display -->
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-xl-8">
+                    <div class="col-lg-8">
                         <h3 class="text-center border-bottom text-uppercase">Quản lý thông tin</h3>
                         <form class="border rounded p-1" id="entity">
                             <div id="fields">
                                 <div class="row">
-                                    <div class="col-4 border-end">
+                                    <div class="col-lg-4 border-end">
                                         <div class="d-flex flex-wrap h-100 align-items-end align-content-center">
                                             <input type="file" accept="image/png, image/jpeg" id="prepareImg" class="form-control" onchange="setImage(this,showImage)">
                                             <div class="o-fit-cover w-100">
@@ -25,15 +25,15 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-8">
+                                    <div class="col-lg-8">
                                         <div class="row align-items-center">
-                                            <div class="col-8">
+                                            <div class="col-lg-8">
                                                 <div class="mt-1" id="username">
                                                     <label for="username" class="form-label fw-bold">username</label>
                                                     <input type="text" class="form-control" ng-model="entity.username">
                                                 </div>
                                             </div>
-                                            <div class="col-4 text-nowrap">
+                                            <div class="col-lg-4 text-nowrap">
                                                 <label for="role" class="form-label fw-bold">admin's role</label>
                                                 <div class="mt-1 form-check form-switch" id="role">
                                                     <input type="checkbox" class="form-check-input" ng-model="entity.role">
@@ -77,13 +77,13 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-xl-4 border-start text-end d-flex flex-column">
+                    <div class="col-lg-4 border-start text-end d-flex flex-column">
                         <!-- CONTENT FILTERS -->
                         <h3 class="text-center border-bottom text-uppercase">Bộ lọc nội dung</h3>
                         <div class="mt-auto"></div>
                         <div class="mt-1 p-1 border text-start">
                             <div class="row mt-1">
-                                <div class="col-8">
+                                <div class="col-lg-8">
                                     <label for="fil" class="form-label fw-bold">Sắp xếp</label>
                                     <select class="form-select" ng-model="fil.orderBy" ng-init="fil.orderBy='username'">
                                         <option class="bg-danger text-center fw-bold">A-Z</option>
@@ -96,7 +96,7 @@
                                         <option class="text-start" value="-email">⬅Giảm email</option>
                                     </select>
                                 </div>
-                                <div class="col-4">
+                                <div class="col-lg-4">
                                     <label for="fil" class="form-label fw-bold">admin</label>
                                     <div class="form-check form-switch">
                                         <input class="{{fil.role==undefined ? 'bg-light' : fil.role ? 'bg-primary' : 'bg-danger'}} form-check-input" type="checkbox" role="switch" ng-model="fil.role">
@@ -132,7 +132,7 @@
                             </table>
                         </div>
                     </div>
-                    <div class="mt-1 border-top col-12 overflow-auto mh-100">
+                    <div class="mt-1 border-top col-lg-12 overflow-auto mh-100">
                         <div class="border-bottom p-1 d-flex justify-content-between align-items-center">
                             <h3 class="text-start text-uppercase">Dữ liệu hiển thị</h3>
                             

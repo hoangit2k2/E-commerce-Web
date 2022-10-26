@@ -11,12 +11,12 @@
             <!-- Display -->
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-xl-8">
+                    <div class="col-lg-8">
                         <h3 class="text-center border-bottom text-uppercase">Quản lý thông tin</h3>
                         <form class="border rounded p-1" id="entity">
                             <div id="fields">
                                 <div class="row">
-                                    <div class="col-4 border-end">
+                                    <div class="col-lg-4 border-end">
                                         <div class="d-flex flex-wrap h-100 align-items-end align-content-center">
                                             <input type="file" accept="image/png, image/jpeg" id="prepareImg" class="form-control" onchange="setImage(this,showImage)">
                                             <div class="o-fit-cover w-100">
@@ -25,7 +25,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-8">
+                                    <div class="col-lg-8">
                                         <div class="mt-1" id="username">
                                             <label for="username" class="form-label fw-bold">username</label>
                                             <input type="text" class="form-control" ng-model="entity.username">
@@ -78,7 +78,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-xl-4 border-start text-end d-flex flex-column">
+                    <div class="col-lg-4 border-start text-end d-flex flex-column">
                         <!-- LIKE CONTENT -->
                         <h3 class="text-center border-bottom text-uppercase">Nội dung đã thích</h3>
                         <div class="fs-4 fw-bold text-dark">
@@ -90,18 +90,18 @@
                                 <div class="carousel-inner">
                                     <div class="carousel-item {{i==0 ? 'active' : ''}}" ng-repeat="(i,c) in contents | fil2Many:{id:entity.likes}">
                                         <div class="row">
-                                            <div class="col-2">
+                                            <div class="col-lg-2">
                                                 <h1 class="text-danger">id:{{c.id}}</h1>
                                             </div>
-                                            <div class="col-10">
+                                            <div class="col-lg-10">
                                                 <h5 class="text-capitalize" ng-bind="c.subject"></h5>
                                             </div>
-                                            <div class="col-6 h-100">
+                                            <div class="col-lg-6 h-100">
                                                 <div class="w-100 overflow-auto fs-3">
                                                     {{c.content}}
                                                 </div>
                                             </div>
-                                            <div class="col-6">
+                                            <div class="col-lg-6">
                                                 <img ng-src="{{getImage(c.content_images[0], 'data/images/content')}}" class="fit-img o-fit-cover">
                                             </div>
                                         </div>
@@ -165,7 +165,7 @@
                             </table>
                         </div>
                     </div>
-                    <div class="mt-1 border-top col-12 overflow-auto" style="max-height: 80vh;">
+                    <div class="mt-1 border-top col-lg-12 overflow-auto" style="max-height: 80vh;">
                         <div class="border-bottom p-1 d-flex justify-content-between align-items-center">
                             <h3 class="text-start text-uppercase">Dữ liệu hiển thị</h3>
                             

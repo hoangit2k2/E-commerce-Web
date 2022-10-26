@@ -5,11 +5,10 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import rrs.model.entities.Category;
-import rrs.model.utils.SaveWithRandomId;
 import rrs.utils.Random;
 
 @Service
-public class CategoryService extends AbstractService<Category, String> implements SaveWithRandomId<Category> {
+public class CategoryService extends AbstractService<Category, String> {
 	
 	@Override
 	protected String getId(Category entity) {
@@ -17,7 +16,6 @@ public class CategoryService extends AbstractService<Category, String> implement
 	}
 
 	// create and update data of the entity
-	@Override
 	public <S extends Category> S save(S entity, Boolean isRandom) throws IllegalArgumentException {
 		if(isRandom) { // random until id isEmpty
 			Optional<Category> optional; do {

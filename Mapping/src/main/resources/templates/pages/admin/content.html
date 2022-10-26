@@ -11,12 +11,12 @@
             <!-- Display -->
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-xl-8">
+                    <div class="col-lg-8">
                         <h3 class="text-center border-bottom text-uppercase">Quản lý nội dung</h3>
                         <form class="border rounded p-1" id="entity" ng-model="entity">
                             <div id="fields">
                                 <div class="row">
-                                    <div class="col-4 border-end">
+                                    <div class="col-lg-4 border-end">
                                         <div class="d-flex flex-wrap align-content-between h-100">
                                             <input type="file" accept="image/png, image/jpeg" id="prepareImg" class="form-control" onchange="angular.element(this).scope().setImage(this)" multiple>
                                             <!-- has images -->
@@ -40,17 +40,17 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-8">
+                                    <div class="col-lg-8">
                                         <div class="row mt-1">
-                                            <div class="col-2" id="id">
+                                            <div class="col-lg-2" id="id">
                                                 <label for="id" class="form-label fw-bold text-nowrap">id <a id="random" href="" ng-click="random()">random</a></label>
                                                 <input type="number" max="{{fil.length}}" class="form-control text-primary text-center fw-bolder" ng-model="entity.id">
                                             </div>
-                                            <div class="col-4" id="views">
+                                            <div class="col-lg-4" id="views">
                                                 <label for="views" class="form-label fw-bold">views</label>
                                                 <input type="number" class="form-control" ng-model="entity.views">
                                             </div>
-                                            <div class="col-6" id="active">
+                                            <div class="col-lg-6" id="active">
                                                 <label for="active" class="form-check-label fw-bold">active</label>
                                                 <div class="d-flex align-items-center justify-content-between">                                                
                                                     <input type="checkbox" class="mt-2 rounded-3 display-6 form-check form-check-input" ng-model="entity.active">
@@ -78,7 +78,7 @@
                                 </div>
                             </div>
                         </form>
-                        <div class="mt-1 w-100 d-flex justify-content-between">
+                        <div class="mt-1 w-100 d-lg-flex justify-content-between">
                             <div class="btn-group p-1 border border-info bg-dark rounded-2">
                                 <button class="btn btn-outline-secondary" onclick="location.reload()">reload</button>
                                 <button class="btn btn-outline-primary" ng-click="get()">Get data</button>
@@ -108,7 +108,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-xl-4 border-start text-end d-flex flex-column">
+                    <div class="col-lg-4 border-start text-end d-flex flex-column">
                         <!-- CONTENT FILTERS -->
                         <h3 class="text-center border-bottom text-uppercase">Bộ lọc nội dung</h3>
                         <div class="text-black">
@@ -184,7 +184,7 @@
                             </table>
                         </div>
                     </div>
-                    <div class="mt-1 border-top col-12">
+                    <div class="mt-1 border-top col-lg-12">
                         <div class="border-bottom p-1 d-flex justify-content-between align-items-center">
                             <h3 class="text-start text-uppercase">Dữ liệu hiển thị</h3>
                             
