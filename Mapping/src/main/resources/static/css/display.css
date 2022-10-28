@@ -4,6 +4,11 @@
     width: 100%;
 }
 
+.fit-min {
+    min-width: 100% !important;
+    min-height: 100% !important;
+}
+
 .text-vr {
     writing-mode: vertical-lr;
     text-orientation: mixed;

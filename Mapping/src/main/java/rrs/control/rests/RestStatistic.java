@@ -44,17 +44,26 @@ public class RestStatistic {
 	) throws JsonProcessingException, CustomException {
 		return ResponseEntity.ok(sql.execute(t, qty, c, o, desc));
 	}
-	
-	@GetMapping({"/ac"}) public ResponseEntity<Object> proc_AC (
-			@RequestParam(required = false) PROC t,
+
+	// ACCOUNT STATISTICS
+	@GetMapping({"/as"}) public ResponseEntity<Object> proc_AS (
+			@RequestParam(required = false) S_ACCOUNT t,
 			@RequestParam(required = false) Integer qty,
 			@RequestParam(required = false) String st,
-			@RequestParam(required = false) String ed,
+			@RequestParam(required = false) String et,
 			@RequestParam(required = false) Boolean desc
 	) throws JsonProcessingException, CustomException {
-		if(st != null) st.replaceAll("%20", " ");
-		if(st != null) st.replaceAll("%20", " ");
-		return ResponseEntity.ok(sql.execute(t, qty, st, ed, desc));
+		return ResponseEntity.ok(sql.execute(t, qty, st, et, desc));
+	}
+
+	// CONTENT STATISTICS
+	@GetMapping({"/cs"}) public ResponseEntity<Object> proc_CS (
+			@RequestParam(required = false) S_CONTENT t,
+			@RequestParam(required = false) Integer a,
+			@RequestParam(required = false) String st,
+			@RequestParam(required = false) String et
+	) throws JsonProcessingException, CustomException {
+		return ResponseEntity.ok(sql.execute(t, a, st, et));
 	}
 
 	// @formatter:on

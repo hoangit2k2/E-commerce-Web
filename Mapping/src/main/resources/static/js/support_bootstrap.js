@@ -5,16 +5,13 @@ fade.setAttribute('class', "offcanvas-backdrop fade show");
 // _______________________________________________
 // Dropdown
 function drdActive(p) {
-	var element = p.getElementsByClassName("dropdown-menu")[0];
-	var cls = element.getAttribute("class");
-	setClass(element, cls);
+	setClass(p.getElementsByClassName("dropdown-menu")[0]);
 }
 
 // offcanvas 
 function canvasActive(id) {
 	var element = document.getElementById(id);
-	var cls = element.getAttribute("class");
-	setClass(element, cls);
+	setClass(element);
 	// Set style visibility = boolean ? hidden : visible;
 	if (cls.search("show") > -1) {
 		document.body.removeChild(fade)
@@ -27,9 +24,7 @@ function canvasActive(id) {
 
 // Accordion
 function acdActive(id) {
-	var element = document.getElementById(id);
-	var cls = element.getAttribute("class");
-	setClass(element, cls);
+	setClass(element, document.getElementById(id));
 }
 
 /**
@@ -38,18 +33,10 @@ function acdActive(id) {
 * @param clearClasses're any named of the class to inactive
 */
 function buttonActive(p, namedClasses) {
-	var all = document.querySelectorAll(namedClasses);
-	for (let key in all) {
-		if (Object.hasOwnProperty.call(all, key)) {
-			setClass(all[key], all[key] != p);
-		}
-	}
-
-	function setClass(param, leave) {
-		var txt = param.getAttribute("class");
-		if (leave) txt = txt.replace(" active", '');
-		else txt = txt.replace(" active", '') + " active";
-		param.setAttribute("class", txt);
+	for (let e of document.getElementsByName(namedClasses)) {
+		var txt = e.getAttribute("class");
+		e.setAttribute("class", e!=p ? txt.replace(" active", '') : 
+		txt.lastIndexOf(' active')>-1 ? txt : txt.concat(' active'));
 	}
 }
 

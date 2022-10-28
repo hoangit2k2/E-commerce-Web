@@ -22,7 +22,10 @@ public abstract class AbstractSQL {
 	protected Object execute(String sql, Object...params) throws CustomException {
 		if(sql == null) throw new CustomException("cannot execute query is null!");
 		else if (sql.isEmpty()) throw new CustomException("Cannot execute query is empty!");
-		if(params != null) for (int i = 0; i < params.length; i++) 
+
+		// READ ONLY
+		if(params != null && checkComment(sql, params))
+			for (int i = 0; i < params.length; i++) 
 			if(params[i] instanceof String)
 				if(params[i].toString().isEmpty()) params[i] = null; // set null if this parameter is empty
 				else params[i] = new StringBuilder("'").append(params[i]).append("'");
@@ -42,8 +45,15 @@ public abstract class AbstractSQL {
 				list.add(map);
 			}
 		});
-		return list.size()==1 ? list.get(0) : list;
+		return list;
 	};
+	
+	private static boolean checkComment(Object...agrs) throws CustomException {
+		if(agrs != null) for(Object agr : agrs) if(agr.toString().lastIndexOf("--") > -1)
+			throw new CustomException("\n\nRRs-Thông báo 🥵 > Hệ thống phát hiện nghi vấn hack ⚠⚠⚠\n"
+				+ "Bạn đừng cố hack hệ thống của chúng tôi làm gì 😑\n\n");
+		return true;
+	}
 	
 	// @formatter:on
 }

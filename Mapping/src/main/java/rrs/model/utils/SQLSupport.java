@@ -3,8 +3,11 @@ package rrs.model.utils;
 import rrs.utils.CustomException;
 
 public interface SQLSupport {
-	
-	public Object execute(PROC proc, Object...params) throws CustomException;
+
+	public static final String ACCOUNT_UP_CONTENT_RANGE = "SELECT * FROM VIEW_AC_RANGE";
+
+	public Object execute(S_ACCOUNT proc, Object...params) throws CustomException;
+	public Object execute(S_CONTENT proc, Object...params) throws CustomException;
 	public Object execute(TABLE table, String[]columns, String[] orderBy) throws CustomException;
 	public Object execute(TABLE table, Integer quantity, String[]columns, String[] orderBy, Boolean asc) throws CustomException;
 	
@@ -23,11 +26,11 @@ public interface SQLSupport {
 		}
 
 		public void setColumns(String...columns) throws CustomException {
-			if(checkComment((Object[]) columns)) this.columns = columns;
+			this.columns = columns;
 		}
 
 		public void setOrderBy(String...orderBy) throws CustomException {
-			if(checkComment((Object[]) orderBy)) this.orderBy = orderBy;
+			this.orderBy = orderBy;
 		}
 
 		public void setQuantity(int quantity) {
@@ -41,12 +44,31 @@ public interface SQLSupport {
 		
 	}
 
-	public enum PROC {
-		MIN_MAX("SELECT * FROM VIEW_AC_RANGE"),
-		STATISTIC("{CALL PROC_AC(%d, %s, %s, %s)}");
+	public enum S_ACCOUNT {
+		MIN_MAX(ACCOUNT_UP_CONTENT_RANGE),
+		STATISTIC("{CALL PROC_AS(%d, %s, %s, %s)}");
 
 		private String value;
-		PROC(String value) {
+		S_ACCOUNT(String value) {
+			this.value = value;
+		}
+		
+		@Override
+		public String toString() {
+			return value;
+		}
+	}
+	
+	public enum S_CONTENT {
+		MIN_MAX(ACCOUNT_UP_CONTENT_RANGE),
+		/**
+		 * Truyền vào giá trị (1 | 2 | 3, ngày bắt đầu, ngày kết thúc)<br/>
+		 * Chọn theo 1(YEAR) | 2(MONTH) | 3(DAY)
+		 */
+		STATISTIC("{CALL PROC_CS(%d, %s, %s)}"); // %d = 1 || 2 || 3
+		
+		private String value;
+		S_CONTENT(String value) {
 			this.value = value;
 		}
 		
@@ -79,11 +101,5 @@ public interface SQLSupport {
 		return str.toString();
 	};
 	
-	private static boolean checkComment(Object...agrs) throws CustomException {
-		if(agrs != null) for(Object agr : agrs) if(agr.toString().lastIndexOf("--") > -1)
-			throw new CustomException("\n\nRRs-Thông báo 🥵 > Hệ thống phát hiện nghi vấn hack ⚠⚠⚠\n"
-				+ "Bạn đừng cố hack hệ thống của chúng tôi làm gì 😑\n\n");
-		return true;
-	}
 
 }

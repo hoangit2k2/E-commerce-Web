@@ -14,9 +14,8 @@ function getLink(host, ...paths) {
  */
 function getIndex(column, value, array) {
     if(!value || !array) return -1;
-    
     if(column) {
-        for (let i = 0; i < array.length; i++) 
+        for (let i = 0; i < array.length; i++)
             if(array[i][column] == value) return i;
     } else {
         for (let i = 0; i < array.length; i++) 
@@ -49,10 +48,10 @@ function setImage(input, toSet) {
  * @param cls class
  * 
  */
-function setClass(e, cls) {
-	// e is element, cls is class's attribute
-	// replace content of the class
-	e.setAttribute("class",
-		cls.search("show") > -1 ? cls.replace(" show", "") : (cls + " show")
+function setClass(e, name) {
+	let cls = e.getAttribute('class').trim();
+	e.setAttribute("class", cls.search(name ? name : 'show') > -1 
+		? cls.replace(` ${name ? name : "show"}`, '')
+		: (cls + ` ${name ? name : "show"}`)
 	);
 }
