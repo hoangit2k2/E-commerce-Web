@@ -154,6 +154,7 @@ app.controller('control_CS', function ($http, $scope) {
 
 function chartSet(type, labels, options, ...datasets) {
     const chart = document.querySelector('#showChart');
+    if(!chart) return;
     while (chart.firstChild) chart.removeChild(chart.lastChild);
     chart.innerHTML = `<canvas class="border border-2"></canvas>`
 

@@ -29,7 +29,6 @@ CREATE VIEW VIEW_AS_RANGE AS
 	FROM CONTENTS INNER JOIN ACCOUNTS
 	ON account_id=username
 GO
-
 SELECT * FROM VIEW_AS_RANGE
 -- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ ACCOUNT STATISTICS
 /*
@@ -84,13 +83,14 @@ IF EXISTS (SELECT name FROM sys.procedures WHERE name = 'PROC_CS')
 GO
 -- @about = 1(YEAR) | 2(MONTH) | 3(DAY)
 CREATE PROC PROC_CS
-	@about TINYINT, @start date, @end date
+	@about TINYINT, @start datetime, @end datetime
 AS BEGIN
 	IF(@about IS NULL OR @about < 1 OR 3 < @about)
 		RAISERROR('Chỉ nhận giá trị đầu vào là 1 | 2 | 3', 20 , 1) with LOG
 	-- CHECK DATE AND SET LENGTH SUBSTRING DATE
 	IF @start IS NULL SET @start = (SELECT st FROM VIEW_AS_RANGE)
 	IF @end IS NULL SET @end = (SELECT et FROM VIEW_AS_RANGE)
+
 	DECLARE @CUT_AT TINYINT = 3*@about
 	-- SELECT QUERY
 	SELECT 
