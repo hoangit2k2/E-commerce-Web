@@ -20,7 +20,7 @@
                                         <div class="d-flex flex-wrap h-100 align-items-end align-content-center">
                                             <input type="file" accept="image/png, image/jpeg" id="prepareImg" class="form-control" onchange="setImage(this,showImage)">
                                             <div class="o-fit-cover w-100">
-                                                <img ng-src="{{getImage(entity.image ? entity.image : entity.role ? 'admin.png' : 'default.png')}}" onerror="this.src=getImage()" class="fit-img" id="showImage">
+                                                <img ng-src="{{getImage(entity.image ? entity.image : entity.role ? 'admin.png' : 'staff.png')}}" onerror="this.src=getImage()" class="fit-img" id="showImage">
                                                 <label class="w-100 mt-1 border-top text-center text-muted overflow-auto" ng-bind="entity.image ? entity.image : 'default image'"></label>
                                             </div>
                                         </div>
@@ -132,7 +132,7 @@
                             </table>
                         </div>
                     </div>
-                    <div class="mt-1 border-top col-lg-12 overflow-auto mh-100">
+                    <div class="mt-1 border-top col-lg-12 overflow-auto mh-100" style="max-height: 80vh;" ng-if="data.length > 0">
                         <div class="border-bottom p-1 d-flex justify-content-between align-items-center">
                             <h3 class="text-start text-uppercase">Dữ liệu hiển thị</h3>
                             
@@ -168,9 +168,7 @@
                                 <tbody>
                                     <tr ng-repeat="e in data | filter:keywords | filter:{role:fil.role} | orderBy:fil.orderBy | limitTo: fil.quantity:fil.page*fil.quantity" ng-dblClick="read(e)">
                                         <td class="text-end border-end">
-                                            <div style="max-width: 30vw; overflow-x: auto;">
-                                                <span ng-bind="e.image"></span>
-                                            </div>
+                                            <div class="overflow-hidden" style="max-width: 25vw; text-overflow: ellipsis;" ng-bind="e.image"></div>
                                         </td>
                                         <td class="text-center {{e.role ? 'text-primary' : 'text-secondary'}}" ng-bind="e.role ? 'is admin' : 'isn\'t admin'"></td>
                                         <td ng-bind="e.username"></td>
@@ -186,6 +184,10 @@
                             </table>
                         </div>
                     </div>
+                    <h3 class="text-center text-danger" ng-if="data.length < 1">
+                        <div id="message"></div>
+                		Chưa có dữ liệu hiển thị
+                	</h3>
                 </div>
             </div>
         </div>

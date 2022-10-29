@@ -1,19 +1,36 @@
 ﻿USE RRS_DB
 GO
 
-IF EXISTS (SELECT name FROM sys.views WHERE name = 'VIEW_AC_RANGE')
-	DROP VIEW VIEW_AC_RANGE
+/*
+	LIST CODE
+	____________________________________ VIEWS
+	1. VIEW_AS_RANGE: lấy khoảng thời gian đăng nội dung (ngày sớm nhất, ngày muộn nhất, số lượng dữ liệu)
+
+	____________________________________ PROCEDURES
+	1. PROC_AS: Thống kê tài khoản theo số lượng, thời gian, tăng giảm số lượng
+	2. PROC_CS: Thống kê nội dung theo thời gian
+*/
+
+
+IF EXISTS (SELECT name FROM sys.views WHERE name = 'VIEW_AS_RANGE')
+	DROP VIEW VIEW_AS_RANGE
 GO
-CREATE VIEW VIEW_AC_RANGE AS
+CREATE VIEW VIEW_AS_RANGE AS
 	SELECT 
-		MIN(regTime) as 'st', 
-		MAX(regTime) as 'et', 
-		COUNT(id) as 'length'
-	FROM CONTENTS INNER JOIN ACCOUNTS 
+		COUNT(id) as 'length',
+		CASE 
+			WHEN MIN(regTime) IS NULL THEN GETDATE() 
+			ELSE MIN(regTime)
+		END as 'st',
+		CASE 
+			WHEN MAX(regTime) IS NULL THEN GETDATE() 
+			ELSE MAX(regTime) 
+			END as 'et'
+	FROM CONTENTS INNER JOIN ACCOUNTS
 	ON account_id=username
 GO
 
-SELECT * FROM VIEW_AC_RANGE
+SELECT * FROM VIEW_AS_RANGE
 -- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ ACCOUNT STATISTICS
 /*
 	ACCOUNT LIKE UPLOAD CONTENTS
@@ -30,8 +47,8 @@ GO
 CREATE PROC PROC_AS
 	@top int, @start datetime, @end datetime, @desc bit 
 AS BEGIN 
-	IF @start IS NULL SET @start = (SELECT st FROM VIEW_AC_RANGE)
-	IF @end IS NULL SET @end = (SELECT et FROM VIEW_AC_RANGE)
+	IF @start IS NULL SET @start = (SELECT st FROM VIEW_AS_RANGE)
+	IF @end IS NULL SET @end = (SELECT et FROM VIEW_AS_RANGE)
 	
 	-- SELECT INTO TEMPORARY TABLE
 	SELECT a.name, a.username, COUNT(c.account_id) as quantity 
@@ -72,8 +89,8 @@ AS BEGIN
 	IF(@about IS NULL OR @about < 1 OR 3 < @about)
 		RAISERROR('Chỉ nhận giá trị đầu vào là 1 | 2 | 3', 20 , 1) with LOG
 	-- CHECK DATE AND SET LENGTH SUBSTRING DATE
-	IF @start IS NULL SET @start = (SELECT st FROM VIEW_AC_RANGE)
-	IF @end IS NULL SET @end = (SELECT et FROM VIEW_AC_RANGE)
+	IF @start IS NULL SET @start = (SELECT st FROM VIEW_AS_RANGE)
+	IF @end IS NULL SET @end = (SELECT et FROM VIEW_AS_RANGE)
 	DECLARE @CUT_AT TINYINT = 3*@about
 	-- SELECT QUERY
 	SELECT 
@@ -85,7 +102,7 @@ AS BEGIN
 	ORDER BY about asc
 END
 GO
-EXEC PROC_CS null, null, null
+EXEC PROC_CS 2, null, null
 /*
 	-- KIỂM TRA SỐ LƯỢNG THEO ...
 	SELECT CONVERT(varchar(10), regTime, 111) FROM CONTENTS 
@@ -96,3 +113,6 @@ EXEC PROC_CS null, null, null
 
 
 
+GO
+	USE MASTER
+GO

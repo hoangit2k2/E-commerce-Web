@@ -2,7 +2,8 @@
 const app = angular.module('app', []);
 const serverIO = "http://localhost:8080"; // protocol://host:port
 const path = "rest/contents"; // get all entities
-var defaultImg = "content.png"; // default image
+var defaultImg = "default.png"; // default image
+var message = document.getElementById('message')
 
 /*
     ____________________IDs
@@ -115,8 +116,8 @@ app.controller('control', function ($scope, $http) {
 
     $scope.put = function (entity) {
         if (!entity) return; // entity is null don't update
-        let i = getIndex('id', entity.id, $scope.data);
-
+        let i = getIndex('id', entity.id+'', $scope.data);
+		
         if (-1 < i) $http.put(getLink(serverIO, path), format(entity)).then(result => {
             if (result.status == 200) {
                 if (prepareImg.files.length > 0) $scope.pushFile(entity); // add image if input.files already;
@@ -126,8 +127,8 @@ app.controller('control', function ($scope, $http) {
             }
         }).catch(err => {
             console.error(err.data 
-                ? `error's ${err.data.message} cannot delete!` 
-                : 'delete error', err
+                ? `error's ${err.data.message} cannot update!` 
+                : 'update error', err
             );
             let mes = `Lỗi cập nhật dữ liệu ${err.data ? err.data.message: err.status}`
             refresh(`<span class="text-danger"><b>${mes.substring(mes.lastIndexOf('Unable'))}</b></span>`);
@@ -135,10 +136,10 @@ app.controller('control', function ($scope, $http) {
         }); else refresh(`<span class="text-danger"><b>${entity.id} does not exists!</b></span>`);
     }
 
-    $scope.delete = function (key) {
-        if (!key) return; // key undefined, definitely does not exist.
+    $scope.delete = function (key) {                
+        if (key < 0) return; // key undefined, definitely does not exist.
         let i = getIndex('id', key, $scope.data);
-        
+
         if(-1 < i) $http.delete(getLink(serverIO, path, key)).then(result => {
             if(result.status == 200) {
                 $scope.data.splice(i,1); // delete in array data at the client

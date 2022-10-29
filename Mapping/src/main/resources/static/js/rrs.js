@@ -13,6 +13,7 @@ function getLink(host, ...paths) {
  * @param array to get index
  */
 function getIndex(column, value, array) {
+	// # 0==false
     if(!value || !array) return -1;
     if(column) {
         for (let i = 0; i < array.length; i++)

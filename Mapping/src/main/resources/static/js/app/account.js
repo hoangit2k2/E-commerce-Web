@@ -4,6 +4,7 @@ const serverIO = "http://localhost:8080"; // protocol://host:port
 const path = "rest/accounts"; // get all entities
 const defaultMes = `<span class="text-muted">#double click the row to read</span>`;
 var defaultImg = "default.png"; // default image
+var message = document.getElementById('message')
 
 app.filter('fil2Many', function() {
     return function (array, columns) {

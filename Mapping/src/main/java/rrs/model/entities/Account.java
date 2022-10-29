@@ -35,10 +35,10 @@ public class Account {
 	private String email;
 	@Builder.ObtainVia
 	private String image = "default.png";
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	@Column(name = "regdate")
 	@Builder.ObtainVia
-	private Date regDate = new Date(new java.util.Date().getTime());
+	@Column(name = "regdate")
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private Date regDate = new Date(System.currentTimeMillis());
 
 	// Relationships
 	@JsonIgnore @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

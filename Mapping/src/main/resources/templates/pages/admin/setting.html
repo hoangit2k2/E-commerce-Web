@@ -34,12 +34,6 @@
                                     <i class="fa fa-thumbs-up"></i>&nbsp;likes
                                 </a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" data-bs-toggle="offcanvas" href="#offcanvasApi" role="button" 
-                                    aria-controls="offcanvasApi" ng-click="get('apis')">
-                                    <i class="fa-solid">json</i>&nbsp;Apis
-                                </a>
-                            </li>
                             <li class="nav-item" >
                                 <a class="nav-link" data-bs-toggle="offcanvas" href="#offcanvasFile" role="button"
                                     aria-controls="offcanvasFile" ng-click="get('dirmap/images', 'mapFile')">
@@ -202,86 +196,6 @@
                                 </tr>
                             </tbody>
                         </table>
-                    </div>
-                </div>
-            </div>
-
-            <!-- APIs -->
-            <div class="offcanvas offcanvas-bottom h-75" tabindex="-1" id="offcanvasApi" aria-labelledby="offcanvasApiLabel">
-                <div class="offcanvas-header">
-                    <h5 class="offcanvas-title" id="offcanvasApiLabel"><i class="fa-solid">json</i>&nbsp;API</h5>
-                    <div class="fs-5">
-                        <label class="fw-bold">Thống kê:</label>
-                        <span>tổng: <u>{{fil.$api.quantity=apis.length}}</u></span>
-                        <span>hiển thị: <u>{{fil.$api.length=(apis | filter:fil.$api.search).length}}</u></span>
-                    </div>
-                    <div class="d-flex">
-                        <div class="ms-1">
-                            <label class="fw-bold">tìm kiếm</label>
-                            <input type="text" class="form-control" placeholder="keywords" ng-model="fil.$api.search">
-                        </div>
-                        <div class="ms-1">
-                            <label class="fw-bold">Sắp xếp</label>
-                            <select class="form-select" ng-model="fil.$api.orderBy" ng-init="fil.$api.orderBy='id'">
-                                <option class="bg-danger text-center fw-bold">A-Z</option>
-                                <option class="text-end" value="id">Tăng id ➡</option>
-                                <option class="text-end" value="value">Tăng value ➡</option>
-                                <option class="bg-danger text-center fw-bold">Z-A</option>
-                                <option class="text-start" value="-id">⬅Giảm id</option>
-                                <option class="text-start" value="-value">⬅Giảm value</option>
-                            </select>
-                        </div>
-                    </div>
-                    
-                    <div class="d-flex align-items-center">
-                        <button type="button" class="me-3 btn btn-outline-warning btn-sm" onclick="new bootstrap.Toast(liveToast).show()">view message</button>
-                        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-                    </div>
-                </div>
-                <div class="offcanvas-body">
-                    <div class="row">
-                        <div class="col-lg-9 overflow-auto" style="max-height: 60vh;">
-                            <h3 class="w-100 text-center">Show data</h3>
-                            <table class="table table-hover">
-                                <thead class="text-center">
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>VALUE</th>
-                                        <th class="text-end">ACTIONS</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr class="text-center" ng-repeat="e in apis | filter:fil.$api.search | orderBy:fil.$api.orderBy" ng-dblclick="read(e, 'api')">
-                                        <td ng-bind="e.id"></td>
-                                        <td ng-bind="e.value"></td>
-                                        <td class="text-end">
-                                            <button class="btn btn-outline-danger" ng-click="delete(e.id, 'apis')">DELETE</button>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="col-lg-3 border-start">
-                            <h3 class="w-100 text-center">Form data</h3>
-                            <form id="api">
-                                <div class="mt-1">
-                                    <label class="fw-bold">id</label>
-                                    <input type="text" class="form-control" ng-model="api.id">
-                                </div>
-                                <div class="mt-1">
-                                    <label class="fw-bold">value</label>
-                                    <input type="text" class="form-control" ng-model="api.value">
-                                </div>
-                                <div class="mt-1 text-end">
-                                    <div class="btn-group p-1 mw-100 border border-info bg-dark rounded-2 overflow-auto">
-                                        <button class="btn btn-outline-success" ng-click="post(api, 'apis')">create</button>
-                                        <button class="btn btn-outline-warning" ng-click="put(api, 'apis')">update</button>
-                                        <button class="btn btn-outline-danger" ng-click="delete(api.id, 'apis')">delete</button>
-                                        <button type="reset" class="ms-3 btn btn-outline-light" ng-click="api=null">reset</button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
                     </div>
                 </div>
             </div>

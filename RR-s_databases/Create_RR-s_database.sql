@@ -25,7 +25,7 @@ CREATE TABLE STAFFS (
     password varchar(30),
     email varchar(50) unique,
     role bit,
-	image nvarchar(255)
+    image nvarchar(255)
 );
 
 IF EXISTS (SELECT name FROM sys.tables WHERE name = 'CONTENTS')
@@ -69,12 +69,10 @@ IF EXISTS (SELECT name FROM sys.tables WHERE name = 'LIKES')
 CREATE TABLE LIKES (
     account_id varchar(20) foreign key references ACCOUNTS(username) on delete cascade,
     content_id int foreign key references CONTENTS(id) on update cascade,
+	exeTime datetime default GETDATE(),
 	unique(account_id, content_id)
 );
 
-IF EXISTS (SELECT name FROM sys.tables WHERE name = 'APIs')
-    DROP TABLE APIs 
-CREATE TABLE APIs (
-    id varchar(30) primary key,
-    value nvarchar(255)
-);
+GO
+	USE MASTER
+GO

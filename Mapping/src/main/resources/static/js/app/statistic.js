@@ -24,7 +24,6 @@ app.controller('control_AS', function ($http, $scope) {
     // onload filter
     $http.get(getLink(serverIO,pathIO,'as?t=MIN_MAX')).then(r => {
         $scope.fil = r.data[0];
-        $scope.fil.qty = 15;
         $scope.fil.end = new Date($scope.fil.et);
         $scope.fil.start = new Date($scope.fil.st);
         $scope.chart_AS($scope.fil);
@@ -34,7 +33,7 @@ app.controller('control_AS', function ($http, $scope) {
     $scope.chart_AS = function(fil) {
         if(!fil) fil=$scope.fil;
 
-        let qty = fil.qty; // số lượng
+        let qty = fil.qty ? fil.qty : 15; // số lượng
         let st = moment(fil.start).format('Y-MM-DD hh:mm:ss'); // start date
         let et = moment(fil.end).format('Y-MM-DD hh:mm:ss'); // end date
         let desc = fil.desc; // order by quantity

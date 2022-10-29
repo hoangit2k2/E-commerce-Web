@@ -4,7 +4,7 @@ import rrs.utils.CustomException;
 
 public interface SQLSupport {
 
-	public static final String ACCOUNT_UP_CONTENT_RANGE = "SELECT * FROM VIEW_AC_RANGE";
+	public static final String ACCOUNT_UP_CONTENT_RANGE = "SELECT * FROM VIEW_AS_RANGE";
 
 	public Object execute(S_ACCOUNT proc, Object...params) throws CustomException;
 	public Object execute(S_CONTENT proc, Object...params) throws CustomException;

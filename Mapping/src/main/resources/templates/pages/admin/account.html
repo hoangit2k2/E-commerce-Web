@@ -159,13 +159,13 @@
                                     <td>số lượng</td>
                                     <td>
                                         <input type="number" style="max-width: 80px;" class="text-end bg-transparent rounded" ng-model="fil.quantity"
-                                        ng-init="fil.quantity=3" min="" max="{{fil.lenght}}">
+                                        ng-init="fil.quantity=5" min="" max="{{fil.lenght}}">
                                     </td>
                                 </tr>
                             </table>
                         </div>
                     </div>
-                    <div class="mt-1 border-top col-lg-12 overflow-auto" style="max-height: 80vh;">
+                    <div class="mt-1 border-top col-lg-12 overflow-auto" style="max-height: 80vh;" ng-if="data.length > 0">
                         <div class="border-bottom p-1 d-flex justify-content-between align-items-center">
                             <h3 class="text-start text-uppercase">Dữ liệu hiển thị</h3>
                             
@@ -201,7 +201,9 @@
                             </thead>
                             <tbody>
                                 <tr ng-repeat="e in data | filter:keywords | orderBy:fil.orderBy | limitTo: fil.quantity:fil.page*fil.quantity" ng-dblClick="read(e)">
-                                    <td ng-bind="e.image"></td>
+                                    <td>
+                                    	<div class="overflow-hidden" style="text-overflow: ellipsis; max-width: 25vw;" ng-bind="e.image"></div>
+                                    </td>
                                     <td ng-bind="e.username"></td>
                                     <td class="text-center" ng-bind="e.password"></td>
                                     <td ng-bind="e.name"></td>
@@ -219,6 +221,10 @@
                             </tbody>
                         </table>
                     </div>
+                	<h3 class="text-center text-danger" ng-if="data.length < 1">
+                        <div id="message"></div>
+                		Chưa có dữ liệu hiển thị
+                	</h3>
                 </div>
             </div>
         </div>

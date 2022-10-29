@@ -184,7 +184,7 @@
                             </table>
                         </div>
                     </div>
-                    <div class="mt-1 border-top col-lg-12">
+                    <div class="mt-1 border-top col-lg-12" style="max-height: 80vh;" ng-if="data.length > 0">
                         <div class="border-bottom p-1 d-flex justify-content-between align-items-center">
                             <h3 class="text-start text-uppercase">Dữ liệu hiển thị</h3>
                             
@@ -268,6 +268,10 @@
                             </table>
                         </div>
                     </div>
+                	<h3 class="text-center text-danger" ng-if="data.length < 1">
+                        <div id="message"></div>
+                		Chưa có dữ liệu hiển thị
+                	</h3>
                 </div>
             </div>
 
@@ -291,7 +295,7 @@
                     </div>
                     <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                 </div>
-                <div class="offcanvas-body text-white border-top">
+                <div class="offcanvas-body text-white border-top" style="min-height: 39%;">
                     <label class="fw-bolder text-warning text-uppercase">Phân loại nội dung: <u>{{entity.categories.length}}</u></label>
                     <div class="d-inline-flex flex-wrap align-items-center overflow-auto">
                         <div class="m-2 ps-2 pe-2 rounded-3 fw-bold" ng-repeat="e in categories" title="{{e.id}}">
@@ -302,7 +306,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="offcanvas-body text-white border-top">
+                <div class="offcanvas-body text-white border-top" style="min-height: 39%;">
                     <label class="fw-bolder text-warning text-uppercase">Tài khoản đã thích: <u>{{entity.account_likes.length}}</u></label>
                     <div class="d-inline-flex flex-wrap align-items-center overflow-auto">
                         <div class="m-2 ps-2 pe-2 rounded-3 fw-bold" ng-repeat="e in accounts" title="{{e.username}}">

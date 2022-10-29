@@ -3,7 +3,7 @@ const app = angular.module('app', []);
 const serverIO = "http://localhost:8080"; // protocol://host:port
 const path = "rest/staffs"; // get all entities
 const defaultMes = `<span class="text-muted">#double click the row to read</span>`;
-var defaultImg = "default.png"; // default image
+var message = document.getElementById('message')
 
 app.controller('control', function ($scope, $http) {
     message.innerHTML = defaultMes;
@@ -117,7 +117,7 @@ app.controller('control', function ($scope, $http) {
 
 function getImage(name) {
     if(name) return name.startsWith('http') ? name : getLink(serverIO, 'data/images/staff', name);
-    return getLink(serverIO, 'data/images/staff', 'default.png');
+    return getLink(serverIO, 'data/images/staff', 'staff.png');
 }
 
 function setImage(input, toSet){
