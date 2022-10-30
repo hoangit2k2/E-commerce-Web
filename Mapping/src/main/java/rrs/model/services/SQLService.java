@@ -26,6 +26,12 @@ public class SQLService extends AbstractSQL implements SQLSupport {
 	public Object execute(S_CONTENT proc, Object...params) throws CustomException {
 		return super.execute(proc.toString(), params);
 	}
+	
+	// CHẠY VỚI SQL CÓ SẴN TRONG enum S_CONTENT
+	@Override 
+	public Object execute(S_LIKE proc, Object...params) throws CustomException {
+		return super.execute(proc.toString(), params);
+	}
 
 	// TẠO CÂU TRUY VẤN VỚI CÁC BẢNG TRONG enum TABLE (1) -> Không lấy số lượng + không sắp xếp
 	@Override 

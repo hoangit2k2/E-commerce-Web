@@ -9,18 +9,22 @@ app.config(function ($routeProvider) {
         templateUrl : "./statisticAS.htm", controller: 'control_AS'
     }).when("/statisticCS", {
         templateUrl : "./statisticCS.htm", controller: 'control_CS'
+    }).when("/statisticLS", {
+        templateUrl : "./statisticLS.htm", controller: 'control_LS'
     }).otherwise({
         redirectTo: "/home"
     });
 });
 
 app.controller('control', function ($http, $scope) {
+
+    
     console.log('A');
 });
 
-// ACCOUNT UPLOAD CONTENT STATISTIC
+// THỐNG KÊ NỘI DUNG TẢI LÊN THEO TÀI KHOẢN
 app.controller('control_AS', function ($http, $scope) {
- 
+
     // onload filter
     $http.get(getLink(serverIO,pathIO,'as?t=MIN_MAX')).then(r => {
         $scope.fil = r.data[0];
@@ -45,34 +49,39 @@ app.controller('control_AS', function ($http, $scope) {
 
             var colors = [];
             var borders = [];
-            for (let i = 0; i < r.data.length; i++) {
-                let color = Math.random() * 360;
-                colors.push(`hsl(${color}, 80%, 50%, .25)`);
-                borders.push(`hsl(${color}, 80%, 50%, 1)`);
-            }
-
-            chartSet('bar', r.data.map(e=>e.name), {
+            var options = {
                 scales: {
                     y: {
                         beginAtZero: true
                     }
                 }
-            }, {
-                label: 'Nội dung đã tải',
-                data: r.data.map(x => x['quantity']),
-                backgroundColor: colors,
-                borderColor: borders,
-                borderRadius: 3,
-                borderWidth: 1
-            })
+            };
+            var datasets = [
+                {
+                    label: 'Nội dung đã tải',
+                    data: r.data.map(x => x['quantity']),
+                    backgroundColor: colors,
+                    borderColor: borders,
+                    borderRadius: 3,
+                    borderWidth: 1
+                }
+            ];
+
+            for (let i = 0; i < r.data.length; i++) {
+                let color = Math.random() * 360;
+                colors.push(`hsl(${color}, 80%, 50%, .25)`);
+                borders.push(`hsl(${color}, 80%, 50%, 1)`);
+            }
+            
+            chartSet('bar', r.data.map(e=>e.name), options, ...datasets)
         }).catch(e => console.error(e))
     }
 
 });
 
-// ACCOUNT UPLOAD CONTENT STATISTIC
+// THỐNG KÊ NỘI DUNG TẢI LÊN THEO THỜI GIAN
 app.controller('control_CS', function ($http, $scope) {
- 
+
     // onload filter
     $http.get(getLink(serverIO,pathIO,'cs?t=MIN_MAX')).then(r => {
         $scope.fil = r.data[0];
@@ -92,15 +101,10 @@ app.controller('control_CS', function ($http, $scope) {
         $http.get(getLink(serverIO,pathIO,path)
         ).then(r => {
             if (!r.data) return;
-
+            // prepare data to config
             var colors = [];
             var borders = [];
-            for (let i = 0; i < r.data.length; i++) {
-                let color = Math.random() * 360;
-                colors.push(`hsl(${color}, 80%, 50%, .25)`);
-                borders.push(`hsl(${color}, 80%, 50%, 1)`);
-            }
-            chartSet('bar', r.data.map(e => e.about), {
+            var options = {
                 responsive: true,
                 plugins: {
                     title: {
@@ -128,25 +132,92 @@ app.controller('control_CS', function ($http, $scope) {
                         suggestedMax: Math.max(...r.data) + 1
                     }
                 }
-            }, {
-                label: 'Nội dung đã tải',
-                data: r.data.map(x => x['quantity']),
-                backgroundColor: colors,
-                borderColor: borders,
-                borderRadius: 3,
-                pointRadius: 5,
-                pointHoverRadius: 10,
-                cubicInterpolationMode: 'monotone',
-                borderWidth: 1
-            }, {
-                label: 'Dự kiến',
-                data: r.data.map(x => x['quantity']+.5),
-                backgroundColor: colors,
-                borderColor: '#0079ff39',
-                cubicInterpolationMode: 'monotone',
-                borderWidth: 3,
-                type: 'line'
-            })
+            };
+            var datasets = [
+                {
+                    label: 'Nội dung đã tải',
+                    data: r.data.map(x => x['quantity']),
+                    backgroundColor: colors,
+                    borderColor: borders,
+                    borderRadius: 3,
+                    pointRadius: 5,
+                    pointHoverRadius: 10,
+                    cubicInterpolationMode: 'monotone',
+                    borderWidth: 1
+                }, {
+                    label: 'Dự kiến',
+                    data: r.data.map(x => x['quantity']+.5),
+                    backgroundColor: colors,
+                    borderColor: '#0079ff39',
+                    cubicInterpolationMode: 'monotone',
+                    borderWidth: 3,
+                    type: 'line'
+                }
+            ];
+            for (let i = 0; i < r.data.length; i++) {
+                let color = Math.random() * 360;
+                colors.push(`hsl(${color}, 80%, 50%, .25)`);
+                borders.push(`hsl(${color}, 80%, 50%, 1)`);
+            }
+            
+            // show canvas
+            chartSet('bar', r.data.map(e => e.about), options, ...datasets)
+        }).catch(e => console.error(e))
+    }
+
+});
+
+// THỐNG KÊ LƯỢT THÍCH
+app.controller('control_LS', function ($http, $scope) {
+
+    // onload filter
+    $http.get(getLink(serverIO,pathIO,'ls?t=MIN_MAX')).then(r => {
+        $scope.fil = r.data[0];
+        $scope.fil.qty = 15;
+        $scope.fil.end = new Date($scope.fil.et);
+        $scope.fil.start = new Date($scope.fil.st);
+        $scope.chart_LS($scope.fil);
+    }).catch(e => console.error(e))
+
+    // show data with new chartJS
+    $scope.chart_LS = function(fil) {
+        if(!fil) fil=$scope.fil;
+
+        let qty = fil.qty ? fil.qty : fil.length; // số lượng
+        let st = moment(fil.start).format('Y-MM-DD hh:mm:ss'); // start date
+        let et = moment(fil.end).format('Y-MM-DD hh:mm:ss'); // end date
+        let path = `ls?t=STATISTIC&&qty=${qty}&st=${st}&et=${et}`;
+        
+        $http.get(getLink(serverIO,pathIO,path)
+        ).then(r => {
+            if (!r.data) return;
+
+            var colors = [];
+            var borders = [];
+            var options = {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            };
+            var datasets = [
+                {
+                    label: 'Tài khoản thích nội dung',
+                    data: r.data.map(x => x['quantity']),
+                    backgroundColor: colors,
+                    borderColor: borders,
+                    borderRadius: 3,
+                    borderWidth: 1
+                }
+            ];
+            for (let i = 0; i < r.data.length; i++) {
+                let color = Math.random() * 360;
+                colors.push(`hsl(${color}, 80%, 50%, .25)`);
+                borders.push(`hsl(${color}, 80%, 50%, 1)`);
+            }
+            
+            chartSet('bar', r.data.map(e => e.name), options, ...datasets)
         }).catch(e => console.error(e))
     }
 

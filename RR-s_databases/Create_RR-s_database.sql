@@ -1,4 +1,4 @@
-USE master
+USE MASTER
 GO
 IF EXISTS (SELECT name FROM sys.databases WHERE name = 'RRS_DB')
     DROP DATABASE RRS_DB
@@ -72,7 +72,4 @@ CREATE TABLE LIKES (
 	exeTime datetime default GETDATE(),
 	unique(account_id, content_id)
 );
-
-GO
-	USE MASTER
 GO

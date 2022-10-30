@@ -45,7 +45,7 @@ public class RestStatistic {
 		return ResponseEntity.ok(sql.execute(t, qty, c, o, desc));
 	}
 
-	// ACCOUNT STATISTICS
+	// THỐNG KÊ SỐ NỘI DUNG THEO TÀI KHOẢN
 	@GetMapping({"/as"}) public ResponseEntity<Object> proc_AS (
 			@RequestParam(required = false) S_ACCOUNT t,
 			@RequestParam(required = false) Integer qty,
@@ -56,7 +56,7 @@ public class RestStatistic {
 		return ResponseEntity.ok(sql.execute(t, qty, st, et, desc));
 	}
 
-	// CONTENT STATISTICS
+	// THỐNG KÊ SỐ NỘI DUNG THEO THỜI GIAN
 	@GetMapping({"/cs"}) public ResponseEntity<Object> proc_CS (
 			@RequestParam(required = false) S_CONTENT t,
 			@RequestParam(required = false) Integer a,
@@ -64,6 +64,16 @@ public class RestStatistic {
 			@RequestParam(required = false) String et
 	) throws JsonProcessingException, CustomException {
 		return ResponseEntity.ok(sql.execute(t, a, st, et));
+	}
+	
+	// THỐNG KÊ LƯỢT THÍCH THEO TÀI KHOẢN
+	@GetMapping({"/ls"}) public ResponseEntity<Object> proc_LS (
+			@RequestParam(required = false) S_LIKE t,
+			@RequestParam(required = false) Integer qty,
+			@RequestParam(required = false) String st,
+			@RequestParam(required = false) String et
+	) throws JsonProcessingException, CustomException {
+		return ResponseEntity.ok(sql.execute(t, qty, st, et));
 	}
 
 	// @formatter:on

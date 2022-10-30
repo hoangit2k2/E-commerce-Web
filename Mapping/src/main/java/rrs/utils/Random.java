@@ -1,5 +1,9 @@
 package rrs.utils;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.concurrent.ThreadLocalRandom;
+
 public class Random {
 
     private final static java.util.Random r = new java.util.Random();
@@ -108,4 +112,21 @@ public class Random {
             else if (i > 96 && i < 123) builder.append((char) i);
         } return builder.length() > length ? builder.substring(0, length) : builder.toString();
     }
+    
+    /**
+     * @param start thời gian bắt đầu
+     * @param end thời gian kết thúc
+     * @param pattern định dạng ngày tháng, EX: yyyy-MM-dd hh:mm:ss.SSS
+     * @return ngày tháng dạng String kiểu "pattern"
+     */
+    public static String randomDate(Date start, Date end, String pattern) {
+		if(start == null) start = new Date(0);
+		if(end == null) end = new Date();
+		
+		return new SimpleDateFormat(pattern).format(
+			ThreadLocalRandom.current().nextLong(
+				start.getTime(), end.getTime()
+			)
+		);
+	}
 }

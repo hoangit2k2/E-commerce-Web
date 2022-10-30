@@ -5,14 +5,15 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import rrs.model.entities.Like;
+import rrs.model.entities.LikeId;
 import rrs.model.repositories.LikeRepository;
 
 @Service
-public class LikeService extends AbstractService<Like, Like> {
+public class LikeService extends AbstractService<Like, LikeId> {
 
 	@Override
-	protected Like getId(Like entity) {
-		return entity;
+	protected LikeId getId(Like entity) {
+		return entity.getId();
 	}
 
 	// c content_id - <[account_id, content_id]>

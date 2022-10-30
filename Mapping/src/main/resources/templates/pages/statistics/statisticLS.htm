@@ -1,13 +1,10 @@
-<h3 class="text-center">THỐNG KÊ TÀI KHOẢN ĐĂNG TẢI NỘI DUNG</h3>
-<div class="row align-items-center">
-    <div class="col-lg-3 me-auto">
-        <label class="fw-bold" >Options</label>
-        <select class="form-control" ng-model="fil.a" ng-change="chart_CS(fil)">
-            <option value="1">Theo năm</option>
-            <option value="2">Theo tháng</option>
-            <option value="3">Theo ngày</option>
-        </select>
-    </div>
+<h3 class="text-center">THỐNG KÊ NỘI DUNG ĐƯỢC TẢI LÊN</h3>
+<div class="row align-items-center" ng-if="fil.length > 0">
+	<div class="col-lg-3 text-center me-auto">
+        <label class="fw-bold">Số lượng</label>
+		<input type="number" class="form-control text-center" min="0" max="{{fil.length}}" 
+            ng-model="fil.qty" ng-init="fil.qty=15" ng-change="chart_LS(fil)">
+	</div>
     <div class="col-lg-3 text-center">
         <label class="fw-bold">start-time</label>
         <input type="datetime-local" class="form-control" ng-model="fil.start">
@@ -23,3 +20,7 @@
         <div id="showChart" style="min-width: 960px;"></div>
     </div>
 </div>
+<h2 class="text-center text-warning" ng-if="0 >= fil.length">
+	<div id="showChart" style="display: none;"></div>
+	Chưa có dữ liệu để thống kê!
+</h2>

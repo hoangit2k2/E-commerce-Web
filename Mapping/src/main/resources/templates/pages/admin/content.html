@@ -155,9 +155,9 @@
                             <div class="mt-1">
                                 <label class="form-label fw-bold">Active:</label>
                                 <div class="form-check form-switch">
-                                  <input class="{{fil.active==undefined ? 'bg-light' : fil.active ? 'bg-primary' : 'bg-danger'}} form-check-input" type="checkbox" role="switch" ng-model="fil.active">
-                                  <label class="form-check-label">Is open</label>
-                                  <a href="" class="fw-bold" ng-click="fil.active=undefined">All</a>
+                                <input class="{{fil.active==undefined ? 'bg-light' : fil.active ? 'bg-primary' : 'bg-danger'}} form-check-input" type="checkbox" role="switch" ng-model="fil.active">
+                                <label class="form-check-label">Is open</label>
+                                <a href="" class="fw-bold" ng-click="fil.active=undefined">All</a>
                                 </div>
                             </div>
                         </div>
@@ -178,7 +178,7 @@
                                     <td>số lượng</td>
                                     <td>
                                         <input type="number" style="max-width: 80px;" class="text-end bg-transparent rounded" ng-model="fil.quantity"
-                                        ng-init="fil.quantity=3" min="" max="{{fil.length}}">
+                                        ng-init="fil.quantity=5" min="" max="{{fil.length}}">
                                     </td>
                                 </tr>
                             </table>
@@ -268,10 +268,10 @@
                             </table>
                         </div>
                     </div>
-                	<h3 class="text-center text-danger" ng-if="data.length < 1">
+                    <h3 class="text-center text-danger" ng-if="data.length < 1">
                         <div id="message"></div>
-                		Chưa có dữ liệu hiển thị
-                	</h3>
+                        Chưa có dữ liệu hiển thị
+                    </h3>
                 </div>
             </div>
 
@@ -295,10 +295,16 @@
                     </div>
                     <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                 </div>
-                <div class="offcanvas-body text-white border-top" style="min-height: 39%;">
+                <div class="offcanvas-title d-flex align-items-center">
                     <label class="fw-bolder text-warning text-uppercase">Phân loại nội dung: <u>{{entity.categories.length}}</u></label>
-                    <div class="d-inline-flex flex-wrap align-items-center overflow-auto">
-                        <div class="m-2 ps-2 pe-2 rounded-3 fw-bold" ng-repeat="e in categories" title="{{e.id}}">
+                    <h5 class="ms-auto">Tìm kiếm:</h5>
+                    <div class="ms-1 w-50">
+                        <input class="form-control" type="text" ng-model="fil.$category.search">
+                    </div>
+                </div>
+                <div class="offcanvas-body text-white border-top" style="min-height: 30%;">
+                    <div class="d-inline-flex flex-wrap align-items-center overflow-auto justify-content-between">
+                        <div class="m-2 rounded-3 fw-bold" ng-repeat="e in categories | filter:fil.$category.search" title="{{e.id}}">
                             <input type="checkbox" name="categories" class="btn-check" id="{{e.id}}" ng-checked="hasAny(e.id, entity.categories)">
                             <label class="btn btn-outline-primary text-nowrap" ng-click="setAny(e.id, entity.categories)">
                                 {{e.name+' ("'+e.id+'")'}}
@@ -306,10 +312,16 @@
                         </div>
                     </div>
                 </div>
-                <div class="offcanvas-body text-white border-top" style="min-height: 39%;">
+                <div class="offcanvas-title d-flex align-items-center">
                     <label class="fw-bolder text-warning text-uppercase">Tài khoản đã thích: <u>{{entity.account_likes.length}}</u></label>
-                    <div class="d-inline-flex flex-wrap align-items-center overflow-auto">
-                        <div class="m-2 ps-2 pe-2 rounded-3 fw-bold" ng-repeat="e in accounts" title="{{e.username}}">
+                    <h5 class="ms-auto">Tìm theo tên:</h5>
+                    <div class="ms-1 w-50">
+                        <input class="form-control" type="text" ng-model="fil.$like.search">
+                    </div>
+                </div>
+                <div class="offcanvas-body text-white border-top">
+                    <div class="d-inline-flex flex-wrap align-items-center overflow-auto justify-content-between">
+                        <div class="m-2 rounded-3 fw-bold" ng-repeat="e in accounts | filter:{name:fil.$like.search}" title="{{e.username}}">
                             <input type="checkbox" name="accountLikes" class="btn-check" id="{{e.username}}" ng-checked="hasAny(e.username, entity.account_likes)">
                             <label class="btn btn-outline-primary text-nowrap" ng-click="setAny(e.username, entity.account_likes)">
                                 {{e.name+' ("'+e.username+'")'}}
@@ -319,7 +331,7 @@
                 </div>
             </div>
         </div>
-
+	    
 		<!-- Javascript app -->
 		<script type="text/javascript" th:src="@{/js/app/content.js}"></script>
     </main>

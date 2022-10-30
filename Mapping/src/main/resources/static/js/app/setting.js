@@ -8,11 +8,16 @@ app.controller('control', function ($scope, $http) {
     $scope.read = function (data, entityName) {
         let id="";
         if(data) $scope[entityName] = angular.copy(data);
-        if(data.id) id = data.id;
-        else for(i in data) id += ` ${data[i]}`;
+        if(typeof data.id != 'object') id = data.id;
+        else for(i of Object.keys(data.id)) id += ` ${data.id[i]}`;
+        
         $scope.mes = {b:'bg-info', t:`Lấy dữ liệu ${id}`, c:`Đọc thông tin của: ${id}`}
         toast.show();
     }
+    
+    $scope.setTime = function(entity, column){
+		entity[column] = new Date(entity[column]);
+	}
     
     // _______________________________________________________________________ CRUD DATA
     $scope.get = function (get, toSet) {
@@ -108,17 +113,17 @@ app.controller('control', function ($scope, $http) {
         if (!key) return; // key undefined, definitely does not exist.
         let isObject = typeof key == "object";
         let i = getIndex(isObject ? null : 'id', key, $scope[arrName]);
-        let path = getLink(serverIO,'rest',arrName,isObject ? `id${objectPath(key)}`: key);
+        let path = getLink(serverIO,'rest',arrName,isObject ? `id?${objectPath(key.id)}`: key);
         let title =`Xóa dữ liệu ${arrName}`;
-
-        if (-1 < i) $http.delete(path).then(result => {
+        
+        if (-1 < i) $http.delete(path, isObject ? key.id : null).then(result => {
             if(result.status == 200) {
                 $scope[arrName].splice(i,1);
                 console.log(`${key} has been deleted.`);
-                $scope.mes = {b:'bg-primary', t:title, c:`Đã xóa dữ liệu có mã: ${key}`}
+                $scope.mes = {b:'bg-primary', t:title, c:`Đã xóa dữ liệu có mã: ${isObject ? JSON.stringify(key.id) : key}`}
             } else {
                 console.warn(`status is ${result.status} cannot delete!`);
-                $scope.mes = {b:'bg-warning', t:title, c:`Không thể xóa: ${key}`}
+                $scope.mes = {b:'bg-warning', t:title, c:`Không thể xóa: ${isObject ? JSON.stringify(key.id) : key}`}
             }
         }).catch(err => {
             console.error(err.data 
@@ -128,7 +133,7 @@ app.controller('control', function ($scope, $http) {
             $scope.mes = {b:'bg-danger', t:title, c:`Lỗi xóa dữ liệu ${err.data ? 
                 err.data.status == 500 ? `mã ${key} đang liên kết, hiện không thể xóa` : 
                 `Lỗi thực hiện: ${err.data.message}` : err.status}`}
-        }); else $scope.mes = {b:'bg-warning', t:title, c:`${key} không tồn tại, không thể xóa thông tin`}
+        }); else $scope.mes = {b:'bg-warning', t:title, c:`${isObject ? JSON.stringify(key.id) : key} không tồn tại, không thể xóa thông tin`}
         toast.show();
     };
 
@@ -228,7 +233,7 @@ function prepareFile(toShow, input) {
 }
 
 function objectPath(key) {
-    var path = "?";
+    var path = "";
     for(i of Object.keys(key)) path += `${i}=${key[i]}&`
-    return path.substring(0,path.lastIndexOf('&$'))
+    return path.substring(0,path.lastIndexOf('&'))
 }

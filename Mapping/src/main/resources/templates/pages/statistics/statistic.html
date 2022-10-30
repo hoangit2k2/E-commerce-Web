@@ -6,7 +6,7 @@
 </head>
 <body>
 <main ng-app="app" ng-controller="control">
-    <nav class="navbar navbar-expand-lg navbar-light">
+     <nav class="navbar navbar-expand-lg navbar-light">
         <div class="container-fluid">
             <a class="navbar-brand" href="#!home" onclick="buttonActive(this, 'btnActive')" name="btnActive">
                 <i class="fa-solid fa-chart-simple"></i>&nbsp;Biểu đồ
@@ -16,19 +16,41 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="nav nav-pills" >
-                    <li class="nav-item">
-                        <a class="nav-link" role="button" href="#statisticAS" onclick="buttonActive(this, 'btnActive')" name="btnActive">
-                            <i class="fa-solid fa-chart-simple"></i>&nbsp;Đăng tải nội dung
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <!-- Content statistic -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-th-large"></i>&nbsp;Thống kê nội dung
                         </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a class="dropdown-item" role="button" href="#statisticAS" onclick="buttonActive(this, 'btnActive')" name="btnActive">
+                                    theo tài khoản
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" role="button" href="#statisticCS" onclick="buttonActive(this, 'btnActive')" name="btnActive">
+                                    theo thời gian
+                                </a>
+                            </li>
+                        </ul>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" role="button" href="#statisticCS" onclick="buttonActive(this, 'btnActive')" name="btnActive">
-                            <i class="fa-solid fa-chart-simple"></i>&nbsp;Thống kê đăng tải
+
+                    <!-- Like statistic -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fa-regular fa-thumbs-up"></i>&nbsp;Thống kê lượt thích
                         </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a class="dropdown-item" role="button" href="#statisticLS" onclick="buttonActive(this, 'btnActive')" name="btnActive">
+                                    Theo tài khoản
+                                </a>
+                            </li>
+                        </ul>
                     </li>
                 </ul>
-                <button class="ms-auto btn btn-outline-secondary" onclick="location.reload()">reload</button>
+                <button class="ms-1 btn btn-outline-secondary" onclick="location.reload()">reload</button>
             </div>
         </div>
     </nav>

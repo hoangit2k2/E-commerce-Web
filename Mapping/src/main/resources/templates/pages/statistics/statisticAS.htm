@@ -11,7 +11,7 @@
             </label>
         </div>
         <input type="number" class="form-control text-center" min="0" max="{{fil.length}}" 
-            ng-model="fil.qty" ng-change="chart_AS(fil)">
+            ng-model="fil.qty" ng-init="fil.qty=15" ng-change="chart_AS(fil)">
     </div>
     <div class="col-lg-3 text-center">
         <label class="fw-bold">start-time</label>

@@ -1,5 +1,4 @@
 package rrs.control.rests;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -9,13 +8,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import rrs.model.entities.Like;
+import rrs.model.entities.LikeId;
 import rrs.model.services.LikeService;
 import rrs.utils.CustomException;
 
 @RestController
 @CrossOrigin("*")
 @RequestMapping("/rest/likes")
-public class RestLikeControl extends AbstractRESTful<Like, Like>{
+public class RestLikeControl extends AbstractRESTful<Like, LikeId>{
 	
 	// /likes/c?c=...(c is content_id)
 	@GetMapping("/c") // reading method to get data active or else get all
@@ -29,9 +29,9 @@ public class RestLikeControl extends AbstractRESTful<Like, Like>{
 			@RequestParam(required = false) String account_id,
 			@RequestParam(required = false) Long content_id
 	) throws IllegalArgumentException, CustomException {
-		return super.delete(new Like(account_id, content_id));
+		return super.delete(new LikeId(account_id, content_id));
 	}
-
+	
 	// /likes/content_id?content_id=...
 	@DeleteMapping("/content_id") // delete like by content_id
 	public ResponseEntity<Integer> deleteLikesByContentId(@RequestParam(required = false) Long content_id) {

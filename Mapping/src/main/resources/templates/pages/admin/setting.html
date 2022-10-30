@@ -176,8 +176,9 @@
                                     <th>ACTIONS</th>
                                 </tr>
                                 <tr>
-                                    <td><input type="text" class="form-control text-center" ng-model="like.account_id"></td>
-                                    <td><input type="number" class="form-control text-center" ng-model="like.content_id"></td>
+                                    <td><input type="text" class="form-control text-center" ng-model="like.id.account_id"></td>
+                                    <td><input type="number" class="form-control text-center" ng-model="like.id.content_id"></td>
+                                    <td><input type="date" class="form-control text-center" ng-model="like.exeTime"></td>
                                     <td class="text-end">
                                         <div class="btn-group p-1 mw-100 border border-info bg-dark rounded-2 overflow-auto">
                                             <button class="btn btn-outline-success" ng-click="post(like, 'likes')">create</button>
@@ -187,9 +188,10 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr class="text-center" ng-repeat="e in likes | filter:fil.$like.search | orderBy:fil.$like.orderBy" ng-dblclick="read(e, 'like')">
-                                    <td ng-bind="e.account_id"></td>
-                                    <td ng-bind="e.content_id"></td>
+                                <tr class="text-center" ng-repeat="e in likes | filter:fil.$like.search | orderBy:fil.$like.orderBy" ng-dblclick="read(e, 'like', setTime(e, 'exeTime'))">
+                                    <td ng-bind="e.id.account_id"></td>
+                                    <td ng-bind="e.id.content_id"></td>
+                                    <td ng-bind="e.exeTime | date: 'yyyy-MM-dd hh:mm:ss'"></td>
                                     <td class="text-end">
                                         <button class="btn btn-outline-danger" ng-click="delete(e, 'likes')">DELETE</button>
                                     </td>

@@ -4,10 +4,9 @@ import rrs.utils.CustomException;
 
 public interface SQLSupport {
 
-	public static final String ACCOUNT_UP_CONTENT_RANGE = "SELECT * FROM VIEW_AS_RANGE";
-
 	public Object execute(S_ACCOUNT proc, Object...params) throws CustomException;
 	public Object execute(S_CONTENT proc, Object...params) throws CustomException;
+	public Object execute(S_LIKE proc, Object...params) throws CustomException;
 	public Object execute(TABLE table, String[]columns, String[] orderBy) throws CustomException;
 	public Object execute(TABLE table, Integer quantity, String[]columns, String[] orderBy, Boolean asc) throws CustomException;
 	
@@ -45,7 +44,11 @@ public interface SQLSupport {
 	}
 
 	public enum S_ACCOUNT {
-		MIN_MAX(ACCOUNT_UP_CONTENT_RANGE),
+		MIN_MAX("SELECT * FROM VIEW_CS_RANGE"),
+		/**
+		 * Truyền vào giá trị (số lương, ngày bắt đầu, ngày kết thúc, sắp xếp)<br/>
+		 * EX: (10, '2020-12-15', '2022-12-15')
+		 */
 		STATISTIC("{CALL PROC_AS(%d, %s, %s, %s)}");
 
 		private String value;
@@ -60,15 +63,35 @@ public interface SQLSupport {
 	}
 	
 	public enum S_CONTENT {
-		MIN_MAX(ACCOUNT_UP_CONTENT_RANGE),
+		MIN_MAX("SELECT * FROM VIEW_CS_RANGE"),
 		/**
 		 * Truyền vào giá trị (1 | 2 | 3, ngày bắt đầu, ngày kết thúc)<br/>
 		 * Chọn theo 1(YEAR) | 2(MONTH) | 3(DAY)
+		 * EX: (2, '2020-12-15', '2022-12-15')
 		 */
 		STATISTIC("{CALL PROC_CS(%d, %s, %s)}"); // %d = 1 || 2 || 3
 		
 		private String value;
 		S_CONTENT(String value) {
+			this.value = value;
+		}
+		
+		@Override
+		public String toString() {
+			return value;
+		}
+	}
+	
+	public enum S_LIKE {
+		MIN_MAX("SELECT * FROM VIEW_LS_RANGE"),
+		/**
+		 * Truyền vào giá trị (số lượng, ngày bắt đầu, ngày kết thúc)<br/>
+		 * EX(15, '2020-12-15', '2022-12-15')
+		 */
+		STATISTIC("{CALL PROC_LS(%d, %s, %s)}");
+		
+		private String value;
+		S_LIKE(String value) {
 			this.value = value;
 		}
 		

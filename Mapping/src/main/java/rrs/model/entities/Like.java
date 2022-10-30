@@ -1,12 +1,10 @@
 package rrs.model.entities;
 
-import java.io.Serializable;
-import java.sql.Date;
+import java.util.Date;
 
 import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.IdClass;
 import javax.persistence.Table;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -21,20 +19,17 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "LIKES")
-@IdClass(Like.class)
-public class Like implements Serializable {
+public class Like {
 
-	private static final long serialVersionUID = -6077393952170790904L;
-	@Id private String account_id;
-	@Id private Long content_id;
+	@EmbeddedId private LikeId id;
 	@Builder.ObtainVia
 	@Column(name = "exetime")
 	@DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
-	private Date exeTime = new Date(System.currentTimeMillis());
+	private Date exeTime = new Date();
 	
-	public Like(String account_id, Long content_id) {
-		this.account_id = account_id;
-		this.content_id = content_id;
+	public Like(LikeId id) {
+		super();
+		this.id = id;
 	}
 	
 	

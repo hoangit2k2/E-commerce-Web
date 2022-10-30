@@ -9,8 +9,9 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import rrs.model.entities.Like;
+import rrs.model.entities.LikeId;
 
-public interface LikeRepository extends JpaRepository<Like, Like> {
+public interface LikeRepository extends JpaRepository<Like, LikeId> {
 
 	@Query(value = "SELECT * FROM LIKES WHERE content_id IS NULL", nativeQuery = true)
 	public List<Like> findLikesByContentId(); // get likes's content_id is null
