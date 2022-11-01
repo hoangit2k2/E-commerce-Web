@@ -2,13 +2,12 @@
 GO
 
 /*
-	LIST CODE
+	LIST CODE CONTENT STATISTIC
 	____________________________________ VIEWS
 	1. VIEW_CS_RANGE: lấy khoảng thời gian đăng nội dung (ngày sớm nhất, ngày muộn nhất, số lượng dữ liệu)
-	2. VIEW_LS_RANGE: 
 	____________________________________ PROCEDURES
-	1. PROC_AS: Thống kê tài khoản theo số lượng, thời gian, tăng giảm số lượng
-	2. PROC_CS: Thống kê nội dung theo thời gian
+	1. PROC_CBA: Nội dung được thích theo tài khoản
+	2. PROC_CBT: Nội dung được thích theo thời gian
 */
 
 -- +++++++++++++++++++++++++++++++++++ SIZE - MỐC THỜI GIAN ĐĂNG TẢI
@@ -31,6 +30,109 @@ CREATE VIEW VIEW_CS_RANGE AS
 GO
 SELECT * FROM VIEW_CS_RANGE
 
+
+
+
+
+-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++ NỘI DUNG ĐĂNG THEO TÀI KHOẢN
+/*
+	PROC_CBA: CONTENT UPLOAD BY ACCOUNT
+	
+	PROC_CBA [@top], [@start], [@end], [@desc]
+	@top: số lượng
+	@start: thời gian bắt đầu
+	@end: thời gian kết thúc
+	@desc: sắp xếp tăng giảm số bài account này đã đăng
+*/
+IF EXISTS (SELECT name FROM sys.procedures WHERE name = 'PROC_CBA')
+	DROP PROCEDURE PROC_CBA
+GO
+CREATE PROC PROC_CBA
+	@top int, @start datetime, @end datetime, @desc bit 
+AS BEGIN 
+	IF @start IS NULL SET @start = (SELECT st FROM VIEW_CS_RANGE)
+	IF @end IS NULL SET @end = (SELECT et FROM VIEW_CS_RANGE)
+	
+	-- SELECT INTO TEMPORARY TABLE
+	SELECT a.name, a.username, COUNT(c.account_id) as quantity 
+		INTO #TEMP
+	FROM ACCOUNTS a 
+		INNER JOIN CONTENTS c on a.username = c.account_id
+		WHERE c.regTime BETWEEN @start AND @end
+	GROUP BY a.name, a.username
+
+	-- SELECT DATA TO RETURN
+	IF @desc IS NULL SELECT TOP(ISNULL(@top, 100)) * FROM #TEMP
+	ELSE IF @desc=0 SELECT  TOP(ISNULL(@top, 100)) * FROM #TEMP o ORDER BY o.quantity
+	ELSE SELECT TOP(ISNULL(@top, 100)) * FROM #TEMP o ORDER BY o.quantity DESC
+END
+GO
+
+EXEC PROC_CBA 15, null, null, null
+
+
+
+
+
+-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++ NỘI DUNG ĐĂNG THEO THỜI GIAN
+/*
+	PROC_CBT: CONTENT UPLOAD BY TIME
+	
+	PROC_CBT [@top], [@start], [@end], [@desc]
+	@about: Chọn theo 1(YEAR) | 2(MONTH) | 3(DAY)
+	@start: thời gian bắt đầu
+	@end: thời gian kết thúc
+*/
+IF EXISTS (SELECT name FROM sys.procedures WHERE name = 'PROC_CBT')
+	DROP PROCEDURE PROC_CBT
+GO
+-- @about = 1(YEAR) | 2(MONTH) | 3(DAY)
+CREATE PROC PROC_CBT
+	@about TINYINT, @start datetime, @end datetime
+AS BEGIN
+	IF(@about IS NULL OR @about < 1 OR 3 < @about)
+		RAISERROR('Chỉ nhận giá trị đầu vào là 1 | 2 | 3', 20 , 1) with LOG
+	-- CHECK DATE AND SET LENGTH SUBSTRING DATE
+	IF @start IS NULL SET @start = (SELECT st FROM VIEW_CS_RANGE)
+	IF @end IS NULL SET @end = (SELECT et FROM VIEW_CS_RANGE)
+
+	DECLARE @CUT_AT TINYINT = 3*@about
+	-- SELECT QUERY
+	SELECT 
+		SUBSTRING(CONVERT(varchar(8), regTime, 2), 0 , @CUT_AT) as about,
+		COUNT(*) as 'quantity'
+	FROM CONTENTS
+	WHERE regTime BETWEEN @start AND @end
+	GROUP BY SUBSTRING(CONVERT(varchar(8), regTime, 2), 0 , @CUT_AT)
+	ORDER BY about asc
+END
+GO
+EXEC PROC_CBT 3, null, null
+/*
+	-- KIỂM TRA SỐ LƯỢNG THEO ...
+	SELECT CONVERT(varchar(10), regTime, 111) FROM CONTENTS 
+	WHERE CONVERT(varchar(10), regTime, 111) LIKE '2020%'
+*/
+
+
+
+
+
+------------------------------------------------------------------------------------------------
+
+
+
+
+
+/*
+	LIST CODE LIKE STATISTIC
+	____________________________________ VIEWS
+	1. VIEW_LS_RANGE: lấy khoảng thời gian thích nội dung (ngày sớm nhất, ngày muộn nhất, số lượng dữ liệu)
+	____________________________________ PROCEDURES
+	1. PROC_LBA: Thống kê lượt thích theo tài khoản
+	2. PROC_LBC: Thống kê lượt thích theo nội dung
+	3. PROC_LBT: Thống kê lượt thích theo thời gian
+*/
 -- ++++++++++++++++++++ SIZE - MỐC THỜI GIAN ĐÃ NỘI DUNG ĐƯỢC THÍCH
 IF EXISTS (SELECT name FROM sys.views WHERE name = 'VIEW_LS_RANGE')
 	DROP VIEW VIEW_LS_RANGE
@@ -51,94 +153,22 @@ GO
 SELECT * FROM VIEW_LS_RANGE
 
 
--- ++++++++++++++++++++++++++++++++++++++++++++++++++++++ TÀI KHOẢN ĐÃ ĐĂNG NỘI DUNG
+
+
+
+-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++ LIKE THEO TÀI KHOẢN
 /*
-	ACCOUNT LIKE UPLOAD CONTENTS
+	PROC_LBA: LIKE BY ACCOUNT
 	
-	PROC_AC [@top], [@start], [@end], [@desc]
-	@top: số lượng
-	@start: thời gian bắt đầu
-	@end: thời gian kết thúc
-	@desc: sắp xếp tăng giảm số bài account này đã đăng
-*/
-IF EXISTS (SELECT name FROM sys.procedures WHERE name = 'PROC_AS')
-	DROP PROCEDURE PROC_AS
-GO
-CREATE PROC PROC_AS
-	@top int, @start datetime, @end datetime, @desc bit 
-AS BEGIN 
-	IF @start IS NULL SET @start = (SELECT st FROM VIEW_CS_RANGE)
-	IF @end IS NULL SET @end = (SELECT et FROM VIEW_CS_RANGE)
-	
-	-- SELECT INTO TEMPORARY TABLE
-	SELECT a.name, a.username, COUNT(c.account_id) as quantity 
-		INTO #TEMP
-	FROM ACCOUNTS a 
-		INNER JOIN CONTENTS c on a.username = c.account_id
-		WHERE c.regTime BETWEEN @start AND @end
-	GROUP BY a.name, a.username
-
-	-- SELECT DATA TO RETURN
-	IF @desc IS NULL SELECT TOP(ISNULL(@top, 100)) * FROM #TEMP
-	ELSE IF @desc=0 SELECT  TOP(ISNULL(@top, 100)) * FROM #TEMP o ORDER BY o.quantity
-	ELSE SELECT TOP(ISNULL(@top, 100)) * FROM #TEMP o ORDER BY o.quantity DESC
-END
-GO
-EXEC PROC_AS 15, null, null, null
-
-
-
-
-
--- ++++++++++++++++++++++++++++++++++++++++++++++++++++++ LƯỢT TẢI LÊN NỘI DUNG THEO THỜI GIAN
-/*
-	CONTENT UPLOADED IN ABOUT TIME
-	
-	PROC_AC [@top], [@start], [@end], [@desc]
-	@about: Chọn theo 1(YEAR) | 2(MONTH) | 3(DAY)
+	PROC_LBA [@top], [@start], [@end]
+	@top: số lượng muốn lấy
 	@start: thời gian bắt đầu
 	@end: thời gian kết thúc
 */
-IF EXISTS (SELECT name FROM sys.procedures WHERE name = 'PROC_CS')
-	DROP PROCEDURE PROC_CS
+IF EXISTS (SELECT name FROM sys.procedures WHERE name = 'PROC_LBA')
+	DROP PROCEDURE PROC_LBA
 GO
--- @about = 1(YEAR) | 2(MONTH) | 3(DAY)
-CREATE PROC PROC_CS
-	@about TINYINT, @start datetime, @end datetime
-AS BEGIN
-	IF(@about IS NULL OR @about < 1 OR 3 < @about)
-		RAISERROR('Chỉ nhận giá trị đầu vào là 1 | 2 | 3', 20 , 1) with LOG
-	-- CHECK DATE AND SET LENGTH SUBSTRING DATE
-	IF @start IS NULL SET @start = (SELECT st FROM VIEW_CS_RANGE)
-	IF @end IS NULL SET @end = (SELECT et FROM VIEW_CS_RANGE)
-
-	DECLARE @CUT_AT TINYINT = 3*@about
-	-- SELECT QUERY
-	SELECT 
-		SUBSTRING(CONVERT(varchar(8), regTime, 2), 0 , @CUT_AT) as about,
-		COUNT(*) as 'quantity'
-	FROM CONTENTS
-	WHERE regTime BETWEEN @start AND @end
-	GROUP BY SUBSTRING(CONVERT(varchar(8), regTime, 2), 0 , @CUT_AT)
-	ORDER BY about asc
-END
-GO
-EXEC PROC_CS 2, null, null
-/*
-	-- KIỂM TRA SỐ LƯỢNG THEO ...
-	SELECT CONVERT(varchar(10), regTime, 111) FROM CONTENTS 
-	WHERE CONVERT(varchar(10), regTime, 111) LIKE '2022/01%'
-*/
-
-
-
-
-
--- ++++++++++++++++++++++++++++++++++++++++++++++++++++++ LƯỢT THÍCH NỘI DUNG THEO THỜI GIAN
-IF EXISTS (SELECT name FROM sys.procedures WHERE name = 'PROC_LS')
-	DROP PROCEDURE PROC_LS
-GO
-CREATE PROC PROC_LS
+CREATE PROC PROC_LBA
 	@top int, @start datetime, @end datetime
 AS BEGIN 
 	IF @start IS NULL SET @start = (SELECT st FROM VIEW_LS_RANGE)
@@ -151,7 +181,77 @@ AS BEGIN
 	GROUP BY account_id, name
 END
 GO
-EXEC PROC_LS 10, '2021-01-01 00:00:00.000', '2021-12-31 23:59:59.999'
+EXEC PROC_LBA 10, null, null
+
+
+
+
+
+-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++ LIKE THEO NỘI DUNG
+/*
+	PROC_LBC: LIKE BY CONTENT
+	
+	PROC_LBC [@top], [@start], [@end]
+	@top: số lượng muốn lấy
+	@start: thời gian bắt đầu
+	@end: thời gian kết thúc
+*/
+IF EXISTS (SELECT name FROM sys.procedures WHERE name = 'PROC_LBC')
+	DROP PROCEDURE PROC_LBC
+GO
+CREATE PROC PROC_LBC
+	@top int, @start datetime, @end datetime
+AS BEGIN 
+	IF @start IS NULL SET @start = (SELECT st FROM VIEW_LS_RANGE)
+	IF @end IS NULL SET @end = (SELECT et FROM VIEW_LS_RANGE)
+	IF @top IS NULL SET @top = (SELECT length FROM VIEW_LS_RANGE)
+	
+	SELECT TOP(@top) content_id, subject, COUNT(content_id) as 'quantity'
+	FROM LIKES INNER JOIN CONTENTS ON id = content_id
+	WHERE exeTime BETWEEN @start and @end
+	GROUP BY content_id, subject
+END
+GO
+EXEC PROC_LBC 10, null, null
+
+
+
+
+
+-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++ LIKE THEO THỜI GIAN
+/*
+	PROC_LBT: CONTENT UPLOAD BY TIME
+	
+	PROC_LBT [@top], [@start], [@end], [@desc]
+	@about: Chọn theo 1(YEAR) | 2(MONTH) | 3(DAY)
+	@start: thời gian bắt đầu
+	@end: thời gian kết thúc
+*/
+IF EXISTS (SELECT name FROM sys.procedures WHERE name = 'PROC_LBT')
+	DROP PROCEDURE PROC_LBT
+GO
+-- @about = 1(YEAR) | 2(MONTH) | 3(DAY)
+CREATE PROC PROC_LBT
+	@about TINYINT, @start datetime, @end datetime
+AS BEGIN
+	IF(@about IS NULL OR @about < 1 OR 3 < @about)
+		RAISERROR('Chỉ nhận giá trị đầu vào là 1 | 2 | 3', 20 , 1) with LOG
+	-- CHECK DATE AND SET LENGTH SUBSTRING DATE
+	IF @start IS NULL SET @start = (SELECT st FROM VIEW_LS_RANGE)
+	IF @end IS NULL SET @end = (SELECT et FROM VIEW_LS_RANGE)
+
+	DECLARE @CUT_AT TINYINT = 3*@about
+	-- SELECT QUERY
+	SELECT 
+		SUBSTRING(CONVERT(varchar(8), exeTime, 2), 0 , @CUT_AT) as about,
+		COUNT(*) as 'quantity'
+	FROM LIKES
+	WHERE exeTime BETWEEN @start AND @end
+	GROUP BY SUBSTRING(CONVERT(varchar(8), exeTime, 2), 0 , @CUT_AT)
+	ORDER BY about asc
+END
+GO
+EXEC PROC_LBT 2, '2020-1-1', '2020-12-31'
 
 
 

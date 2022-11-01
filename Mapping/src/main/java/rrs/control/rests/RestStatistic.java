@@ -1,5 +1,6 @@
 package rrs.control.rests;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -46,34 +47,19 @@ public class RestStatistic {
 	}
 
 	// THỐNG KÊ SỐ NỘI DUNG THEO TÀI KHOẢN
-	@GetMapping({"/as"}) public ResponseEntity<Object> proc_AS (
-			@RequestParam(required = false) S_ACCOUNT t,
-			@RequestParam(required = false) Integer qty,
-			@RequestParam(required = false) String st,
-			@RequestParam(required = false) String et,
-			@RequestParam(required = false) Boolean desc
-	) throws JsonProcessingException, CustomException {
-		return ResponseEntity.ok(sql.execute(t, qty, st, et, desc));
-	}
-
-	// THỐNG KÊ SỐ NỘI DUNG THEO THỜI GIAN
 	@GetMapping({"/cs"}) public ResponseEntity<Object> proc_CS (
 			@RequestParam(required = false) S_CONTENT t,
-			@RequestParam(required = false) Integer a,
-			@RequestParam(required = false) String st,
-			@RequestParam(required = false) String et
+			@RequestParam(required = false) Object...p
 	) throws JsonProcessingException, CustomException {
-		return ResponseEntity.ok(sql.execute(t, a, st, et));
+		return ResponseEntity.ok(sql.execute(t, p));
 	}
-	
+
 	// THỐNG KÊ LƯỢT THÍCH THEO TÀI KHOẢN
 	@GetMapping({"/ls"}) public ResponseEntity<Object> proc_LS (
-			@RequestParam(required = false) S_LIKE t,
-			@RequestParam(required = false) Integer qty,
-			@RequestParam(required = false) String st,
-			@RequestParam(required = false) String et
+			@RequestParam(required = false) S_LIKE t, 
+			@RequestParam(required = false) Object...p
 	) throws JsonProcessingException, CustomException {
-		return ResponseEntity.ok(sql.execute(t, qty, st, et));
+		return ResponseEntity.ok(sql.execute(t, p));
 	}
 
 	// @formatter:on

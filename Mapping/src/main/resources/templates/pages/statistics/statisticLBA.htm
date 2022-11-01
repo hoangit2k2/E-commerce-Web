@@ -1,9 +1,9 @@
-<h3 class="text-center">THỐNG KÊ NỘI DUNG ĐƯỢC TẢI LÊN</h3>
+<h3 class="text-center">THỐNG KÊ TÀI KHOẢN ĐÃ THÍCH NỘI DUNG</h3>
 <div class="row align-items-center" ng-if="fil.length > 0">
 	<div class="col-lg-3 text-center me-auto">
         <label class="fw-bold">Số lượng</label>
 		<input type="number" class="form-control text-center" min="0" max="{{fil.length}}" 
-            ng-model="fil.qty" ng-init="fil.qty=15" ng-change="chart_LS(fil)">
+            ng-model="fil.qty" ng-init="fil.qty=15" ng-change="chart(fil)">
 	</div>
     <div class="col-lg-3 text-center">
         <label class="fw-bold">start-time</label>
@@ -14,7 +14,7 @@
         <input type="datetime-local" class="form-control" ng-model="fil.end">
     </div>
     <div class="col-auto">
-        <button class="mt-4 btn btn-outline-success text-nowrap" ng-click="chart_LS(fil)">Thống kê</button>
+        <button class="mt-4 btn btn-outline-success text-nowrap" ng-click="chart(fil)">Thống kê</button>
     </div>
     <div class="mt-3 col-12 mt-lg-3 overflow-auto">
         <div id="showChart" style="min-width: 960px;"></div>

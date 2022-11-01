@@ -5,12 +5,16 @@ const pathIO = 'rest/statistic';
 app.config(function ($routeProvider) {
     $routeProvider.when("/home", {
         templateUrl : "./home.htm"
-    }).when("/statisticAS", {
-        templateUrl : "./statisticAS.htm", controller: 'control_AS'
-    }).when("/statisticCS", {
-        templateUrl : "./statisticCS.htm", controller: 'control_CS'
-    }).when("/statisticLS", {
-        templateUrl : "./statisticLS.htm", controller: 'control_LS'
+    }).when("/CBA", {
+        templateUrl : "./statisticCBA.htm", controller: 'control_CBA'
+    }).when("/CBT", {
+        templateUrl : "./statisticCBT.htm", controller: 'control_CBT'
+    }).when("/LBA", {
+        templateUrl : "./statisticLBA.htm", controller: 'control_LBA'
+    }).when("/LBC", {
+        templateUrl : "./statisticLBC.htm", controller: 'control_LBC'
+    }).when("/LBT", {
+        templateUrl : "./statisticLBT.htm", controller: 'control_LBT'
     }).otherwise({
         redirectTo: "/home"
     });
@@ -18,30 +22,29 @@ app.config(function ($routeProvider) {
 
 app.controller('control', function ($http, $scope) {
 
-    
     console.log('A');
 });
 
 // THỐNG KÊ NỘI DUNG TẢI LÊN THEO TÀI KHOẢN
-app.controller('control_AS', function ($http, $scope) {
+app.controller('control_CBA', function ($http, $scope) {
 
     // onload filter
-    $http.get(getLink(serverIO,pathIO,'as?t=MIN_MAX')).then(r => {
+    $http.get(getLink(serverIO,pathIO,'cs?t=MIN_MAX')).then(r => {
         $scope.fil = r.data[0];
         $scope.fil.end = new Date($scope.fil.et);
         $scope.fil.start = new Date($scope.fil.st);
-        $scope.chart_AS($scope.fil);
+        $scope.chart($scope.fil);
     }).catch(e => console.error(e))
 
     // show data with new chartJS
-    $scope.chart_AS = function(fil) {
+    $scope.chart = function(fil) {
         if(!fil) fil=$scope.fil;
 
         let qty = fil.qty ? fil.qty : 15; // số lượng
         let st = moment(fil.start).format('Y-MM-DD hh:mm:ss'); // start date
         let et = moment(fil.end).format('Y-MM-DD hh:mm:ss'); // end date
         let desc = fil.desc; // order by quantity
-        let path = `as?t=STATISTIC&qty=${qty}&st=${st}&et=${et+(desc!=undefined?`&desc=${desc}`:'')}`;
+        let path = `cs?t=CBA&p=${qty}&p=${st}&p=${et+(desc!=undefined?`&p=${desc}`:'')}`;
         
         $http.get(getLink(serverIO,pathIO,path)
         ).then(r => {
@@ -67,36 +70,30 @@ app.controller('control_AS', function ($http, $scope) {
                 }
             ];
 
-            for (let i = 0; i < r.data.length; i++) {
-                let color = Math.random() * 360;
-                colors.push(`hsl(${color}, 80%, 50%, .25)`);
-                borders.push(`hsl(${color}, 80%, 50%, 1)`);
-            }
-            
+            randomColor(r.data.length, colors, borders);
             chartSet('bar', r.data.map(e=>e.name), options, ...datasets)
         }).catch(e => console.error(e))
     }
-
 });
 
 // THỐNG KÊ NỘI DUNG TẢI LÊN THEO THỜI GIAN
-app.controller('control_CS', function ($http, $scope) {
+app.controller('control_CBT', function ($http, $scope) {
 
     // onload filter
     $http.get(getLink(serverIO,pathIO,'cs?t=MIN_MAX')).then(r => {
         $scope.fil = r.data[0];
         $scope.fil.end = new Date($scope.fil.et);
         $scope.fil.start = new Date($scope.fil.st);
-        $scope.chart_CS($scope.fil);
+        $scope.chart($scope.fil);
     }).catch(e => console.error(e))
 
     // show data with new chartJS
-    $scope.chart_CS = function(fil) {
+    $scope.chart = function(fil) {
         if(!fil) fil=$scope.fil;
 
         let st = moment(fil.start).format('Y-MM-DD hh:mm:ss'); // start date
         let et = moment(fil.end).format('Y-MM-DD hh:mm:ss'); // end date
-        let path = `cs?t=STATISTIC&a=${fil.a ? fil.a : 1}&st=${st}&et=${et}`;
+        let path = `cs?t=CBT&p=${fil.t ? fil.t : 1}&p=${st}&p=${et}`;
         
         $http.get(getLink(serverIO,pathIO,path)
         ).then(r => {
@@ -109,7 +106,7 @@ app.controller('control_CS', function ($http, $scope) {
                 plugins: {
                     title: {
                         display: true,
-                        text: 'Thống kê và dự kiến dữ liệu'
+                        text: 'Nội dung được tải'
                     },
                 },
                 interaction: {
@@ -154,21 +151,16 @@ app.controller('control_CS', function ($http, $scope) {
                     type: 'line'
                 }
             ];
-            for (let i = 0; i < r.data.length; i++) {
-                let color = Math.random() * 360;
-                colors.push(`hsl(${color}, 80%, 50%, .25)`);
-                borders.push(`hsl(${color}, 80%, 50%, 1)`);
-            }
             
-            // show canvas
+            randomColor(r.data.length, colors, borders);
             chartSet('bar', r.data.map(e => e.about), options, ...datasets)
         }).catch(e => console.error(e))
     }
 
 });
 
-// THỐNG KÊ LƯỢT THÍCH
-app.controller('control_LS', function ($http, $scope) {
+// THỐNG KÊ LƯỢT THÍCH THEO TÀI KHOẢN
+app.controller('control_LBA', function ($http, $scope) {
 
     // onload filter
     $http.get(getLink(serverIO,pathIO,'ls?t=MIN_MAX')).then(r => {
@@ -176,17 +168,17 @@ app.controller('control_LS', function ($http, $scope) {
         $scope.fil.qty = 15;
         $scope.fil.end = new Date($scope.fil.et);
         $scope.fil.start = new Date($scope.fil.st);
-        $scope.chart_LS($scope.fil);
+        $scope.chart($scope.fil);
     }).catch(e => console.error(e))
 
     // show data with new chartJS
-    $scope.chart_LS = function(fil) {
+    $scope.chart = function(fil) {
         if(!fil) fil=$scope.fil;
 
         let qty = fil.qty ? fil.qty : fil.length; // số lượng
         let st = moment(fil.start).format('Y-MM-DD hh:mm:ss'); // start date
         let et = moment(fil.end).format('Y-MM-DD hh:mm:ss'); // end date
-        let path = `ls?t=STATISTIC&&qty=${qty}&st=${st}&et=${et}`;
+        let path = `ls?t=LBA&p=${qty}&p=${st}&p=${et}`;
         
         $http.get(getLink(serverIO,pathIO,path)
         ).then(r => {
@@ -211,13 +203,111 @@ app.controller('control_LS', function ($http, $scope) {
                     borderWidth: 1
                 }
             ];
-            for (let i = 0; i < r.data.length; i++) {
-                let color = Math.random() * 360;
-                colors.push(`hsl(${color}, 80%, 50%, .25)`);
-                borders.push(`hsl(${color}, 80%, 50%, 1)`);
-            }
-            
+
+            randomColor(r.data.length, colors, borders);
             chartSet('bar', r.data.map(e => e.name), options, ...datasets)
+        }).catch(e => console.error(e))
+    }
+
+});
+
+// THỐNG KÊ LƯỢT THÍCH THEO TÀI KHOẢN
+app.controller('control_LBC', function ($http, $scope) {
+
+    // onload filter
+    $http.get(getLink(serverIO,pathIO,'ls?t=MIN_MAX')).then(r => {
+        $scope.fil = r.data[0];
+        $scope.fil.qty = 30;
+        $scope.fil.end = new Date($scope.fil.et);
+        $scope.fil.start = new Date($scope.fil.st);
+        $scope.chart($scope.fil);
+    }).catch(e => console.error(e))
+
+    // show data with new chartJS
+    $scope.chart = function(fil) {
+        if(!fil) fil=$scope.fil;
+
+        let qty = fil.qty ? fil.qty : fil.length; // số lượng
+        let st = moment(fil.start).format('Y-MM-DD hh:mm:ss'); // start date
+        let et = moment(fil.end).format('Y-MM-DD hh:mm:ss'); // end date
+        let path = `ls?t=LBC&p=${qty}&p=${st}&p=${et}`;
+        $http.get(getLink(serverIO,pathIO,path)).then(r => {
+            if (!r.data) return;
+
+            var colors = [];
+            var borders = [];
+            var options = {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            };
+            var datasets = [
+                {
+                    label: 'Nội dung được thích',
+                    data: r.data.map(x => x['quantity']),
+                    backgroundColor: colors,
+                    borderColor: borders,
+                    borderRadius: 3,
+                    borderWidth: 1
+                }
+            ];
+            
+            randomColor(r.data.length, colors, borders)
+            chartSet('bar', r.data.map(e => e.subject), options, ...datasets)
+        }).catch(e => console.error(e))
+    }
+
+});
+
+// THỐNG KÊ LƯỢT THÍCH THEO TÀI KHOẢN
+app.controller('control_LBT', function ($http, $scope) {
+
+    // onload filter
+    $http.get(getLink(serverIO,pathIO,'ls?t=MIN_MAX')).then(r => {
+        $scope.fil = r.data[0];
+        $scope.fil.t = 2;
+        $scope.fil.end = new Date($scope.fil.et);
+        $scope.fil.start = new Date($scope.fil.st);
+        $scope.chart($scope.fil);
+    }).catch(e => console.error(e))
+
+    // show data with new chartJS
+    $scope.chart = function(fil) {
+        if(!fil) fil=$scope.fil;
+
+        let qty = fil.qty ? fil.qty : fil.length; // số lượng
+        let st = moment(fil.start).format('Y-MM-DD hh:mm:ss'); // start date
+        let et = moment(fil.end).format('Y-MM-DD hh:mm:ss'); // end date
+        let path = `ls?t=LBT&p=${fil.t}&p=${st}&p=${et}`;
+        
+        $http.get(getLink(serverIO,pathIO,path)
+        ).then(r => {
+            if (!r.data) return;
+
+            var colors = [];
+            var borders = [];
+            var options = {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            };
+            var datasets = [
+                {
+                    label: 'Lượt thích theo thời gian',
+                    data: r.data.map(x => x['quantity']),
+                    backgroundColor: colors,
+                    borderColor: borders,
+                    borderRadius: 3,
+                    borderWidth: 1
+                }
+            ];
+            
+            randomColor(r.data.length, colors, borders)
+            chartSet('bar', r.data.map(e => e.about), options, ...datasets)
         }).catch(e => console.error(e))
     }
 
@@ -237,4 +327,10 @@ function chartSet(type, labels, options, ...datasets) {
         }, options: options
     });
 }
-
+function randomColor(size, colors, borders) {
+    if(colors, borders) for (let i = 0; i < size; i++) {
+        let color = Math.random() * 360;
+        colors.push(`hsl(${color}, 80%, 50%, .25)`);
+        borders.push(`hsl(${color}, 80%, 50%, 1)`);
+    }
+}
