@@ -1,0 +1,37 @@
+<div class="container-sm">
+    <div class="product-list" ng-controller = "contenshopFormController" >
+        <div class="row" >
+            <div >
+                <h1>
+                    Chào mừng bạn đến với shop của: {{username}}
+                </h1> 
+            </div>
+            <div class="col-2dot4" ng-repeat="e in content">
+                <a href="/index.html#!/{{e.id}}#datailcontent">
+                    <img src=http://localhost:8080/uploads/imagecontent/{{e.content_images[0]}} alt="">
+                </a>
+                <div class="link-subjec">
+                    <a href="">
+                        <div class="subject">{{e.namecontent}}</div>
+                    </a>
+                </div>
+                <div class="price">{{e.price|formatVND}}</div>
+                <div class="text">{{e.account.username}}</div>
+            </div>
+            <div class="detail">
+                <h1>
+                    <span style="font-size: 20px">Rao Vặt - Chợ Mua
+                        B&aacute;n, Rao Vặt Trực Tuyến H&agrave;ng Đầu Của Người Việt</span>
+                </h1>
+
+                <p>Rao Vặt ch&iacute;nh thức gia nhập thị trường Việt Nam
+                    v&agrave;o đầu năm 2012, với mục đ&iacute;ch tạo ra cho bạn một
+                    k&ecirc;nh rao vặt trung gian, kết nối người mua với người
+                    b&aacute;n lại với nhau bằng những giao dịch cực kỳ đơn giản,
+                    tiện lợi, nhanh ch&oacute;ng, an to&agrave;n, mang đến hiệu quả
+                    bất ngờ.</p>
+            </div>
+        </div>
+
+    </div>
+</div>

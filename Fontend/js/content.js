@@ -1,6 +1,9 @@
-const serverIO = "http://localhost:8080"; // protocol://host:port
-const path = "rest/contents"; // get all entities
-const directory = "data/images/account"; // folder to get images
+
+app.filter('formatVND', function () {
+    return function (value) {
+        return new Intl.NumberFormat().format(value) + ' VNĐ'
+    }
+})
 app.controller('controlconten', function($scope, $http, $routeParams) {
 	$scope.get = function(key) {
 		$http.get('http://localhost:8080/rest/contents').then(
@@ -11,9 +14,35 @@ app.controller('controlconten', function($scope, $http, $routeParams) {
 		).catch(error => {
 			console.error(error)
 		})
+
+		$http.get('http://localhost:8080/rest/categorys').then(
+			function (response){
+				$scope.category = response.data
+				console.log(response.data)
+			}
+			).catch(error => {
+			console.error(error)
+		})
 	}
 	$scope.get();
 })
+
+app.controller('contentFormController', function($scope, $rootScope, $location,
+	$routeParams, $http){
+		$scope.contentId = $routeParams.contentId;
+		$scope.content = {}
+		console.log($scope.contentId)
+		if($scope.contentId){
+			$http.get(`http://localhost:8080/rest/contents/${$scope.contentId}`)
+				.then(function(response){
+					$scope.content = response.data;
+					console.log(response.data);
+				}).catch(error => {
+					console.error(error)
+				})
+			
+		}
+	})
 
 app.controller('mypostcontroll', function($scope, $http){
 	$scope.form = [];
@@ -32,7 +61,7 @@ app.controller('mypostcontroll', function($scope, $http){
 					formData.append("files", $scope.image1);
 					formData.append("files", $scope.image2);
 					formData.append("files", $scope.image3);
-					formData.append("customerid", $scope.customerid);
+					formData.append("usernameid", $scope.user);
 					formData.append("categoryid", $scope.categoryid);
 					formData.append("namecontent", $scope.namecontent);
 					formData.append("subject", $scope.subject);
@@ -40,11 +69,8 @@ app.controller('mypostcontroll', function($scope, $http){
 					formData.append("email", $scope.email);
 					formData.append("phone", $scope.phone);
 					formData.append("address", $scope.address);
-
-
-
 				return formData;
-				return $scope.customerid;
+				return $scope.user;
 				return $scope.categoryid;
 				return $scope.namecontent;
 				return $scope.subject;

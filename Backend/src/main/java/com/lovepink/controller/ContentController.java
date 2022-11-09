@@ -26,8 +26,12 @@ import org.springframework.web.context.ServletContextAware;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.lovepink.entity.Content;
+import com.lovepink.exception.NotFoundException;
+import com.lovepink.model.request.createContenRequest;
 import com.lovepink.model.request.createUserRequest;
 import com.lovepink.service.ContentService;
+
+import net.bytebuddy.implementation.bytecode.Throw;
 @CrossOrigin("*")
 @RestController
 @RequestMapping("/rest/contents")
@@ -54,7 +58,6 @@ public class ContentController implements ServletContextAware {
 		Content result = contenService.findById(id);
 		return ResponseEntity.ok(result);
 	}
-	
 	@DeleteMapping("{id}")
 	public ResponseEntity<?> deleteContent(@PathVariable int id){
 		String result = contenService.deleteUser(id);
@@ -62,7 +65,7 @@ public class ContentController implements ServletContextAware {
 	}
 	
 	@PostMapping("")
-	public ResponseEntity<?> createContent(@RequestParam("files") MultipartFile[] files, @Valid @ModelAttribute createUserRequest req 
+	public ResponseEntity<?> createContent(@RequestParam("files") MultipartFile[] files, @Valid @ModelAttribute createContenRequest req 
 											){
 		try {
 			Set<String> setA = new HashSet<String>();
@@ -79,7 +82,7 @@ public class ContentController implements ServletContextAware {
 		}
 	}
 	@PutMapping("/{id}")
-	public ResponseEntity<?> updateContent(@RequestParam("files") MultipartFile[] files, @Valid @ModelAttribute createUserRequest req, @PathVariable int id){
+	public ResponseEntity<?> updateContent(@RequestParam("files") MultipartFile[] files, @Valid @ModelAttribute createContenRequest req, @PathVariable int id){
 		try {
 			Set<String> setA = new HashSet<String>();
 			for(MultipartFile file : files) {
@@ -94,8 +97,16 @@ public class ContentController implements ServletContextAware {
 		}
 		return null;
 	}
-	
-	
+	@GetMapping("/username/{username}")
+	public ResponseEntity<?> getContentByusername(@PathVariable String username){
+		List<Content> result = contenService.findContentId(username);
+		return  ResponseEntity.ok(result);
+	}
+	@GetMapping("/category/{categoryid}")
+		public ResponseEntity<?> getContentByCategoryId(@PathVariable int categoryid){
+			List<Content> result = contenService.findContentByCategory(categoryid);
+			return ResponseEntity.ok(result);
+		}
 	private String save(MultipartFile file) {
 		try {
 		String filename = file.getOriginalFilename();

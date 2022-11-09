@@ -1,206 +1,37 @@
-  <div class="container-sm">
-	<div ng-app="app" ng-controller="controlconten">
-		<div class="row">
-			<div id="demo" class="carousel slide" data-bs-ride="carousel">
-				<!-- Indicators/dots -->
-				<div class="carousel-indicators">
-					<button type="button" data-bs-target="#demo" data-bs-slide-to="0" class="active"></button>
-					<button type="button" data-bs-target="#demo" data-bs-slide-to="1"></button>
-					<button type="button" data-bs-target="#demo" data-bs-slide-to="2"></button>
-					<button type="button" data-bs-target="#demo" data-bs-slide-to="3"></button>
-				</div>
-				<!-- The slideshow/carousel -->
-				<div class="carousel-inner">
-					<div class="carousel-item active">
-						<img src="https://cdn.chotot.com/admincentre/yCX8feM36i2ULN_7Ypnea8GBoDk28bIelcXiRyRGRPo/preset:raw/plain/e99c27c504b7a386c3a7ca993e4cfdd1-2791449285793933357.jpg"
-							alt="Los Angeles" class="d-block" width="98%">
-					</div>
-					<div class="carousel-item">
-						<img src="https://cdn.chotot.com/admincentre/BDPGODJbYdCIgxVoqyTnynpidCT6GmuuGKn2gkRg7TE/preset:raw/plain/41cc632548c1ab241a49667e4d75490c-2791023376834617074.jpg"
-							alt="Chicago" class="d-block" width="98%">
-					</div>
-					<div class="carousel-item">
-						<img src="https://cdn.chotot.com/admincentre/NHATAiB9w_J2vloVYwa-8W7PGboeWu9wRfg2Ta37t6s/preset:raw/plain/99a2ac1f317825ebeb397fb43f15becb-2791609853881157459.jpg"
-							alt="New York" class="d-block" width="98%">
-					</div>
-					<div class="carousel-item">
-						<img src="https://cdn.chotot.com/admincentre/NNRr25MO80-3snHguw4wkqtus_j2EH9TR4g_vWf3KqA/preset:raw/plain/cf5e09e8321bb31a1adca2ef8575775c-2791275465137255826.jpg"
-							alt="New York" class="d-block" width="98%">
-					</div>
-				</div>
+<div class="container-sm">
+    <div class="product-list" ng-controller="categoryFormController">
+        <div class="row" >
+            <div >
+                <h1>
+                    Danh Mục: {{categorydetail.name}}
+                </h1> 
+            </div>
+            <div class="col-2dot4" ng-repeat="e in content">
+                <a href="/index.html#!/{{e.id}}#datailcontent">
+                    <img src=http://localhost:8080/uploads/imagecontent/{{e.content_images[0]}} alt="">
+                </a>
+                <div class="link-subjec">
+                    <a href="">
+                        <div class="subject">{{e.namecontent}}</div>
+                    </a>
+                </div>
+                <div class="price">{{e.price|formatVND}}</div>
+                <div class="text">{{e.account.username}}</div>
+            </div>
+            <div class="detail">
+                <h1>
+                    <span style="font-size: 20px">Rao Vặt - Chợ Mua
+                        B&aacute;n, Rao Vặt Trực Tuyến H&agrave;ng Đầu Của Người Việt</span>
+                </h1>
 
-				<!-- Left and right controls/icons -->
-				<button class="carousel-control-prev" type="button" data-bs-target="#demo" data-bs-slide="prev">
-					<span class="carousel-control-prev-icon"></span>
-				</button>
-				<button class="carousel-control-next" type="button" data-bs-target="#demo" data-bs-slide="next">
-					<span class="carousel-control-next-icon"></span>
-				</button>
-			</div>
-			<nav class="navbar navbar-expand-sm">
-				<ul class="navbar-nav">
-					<li class="nav-item"><a class="nav-link" href="#"> <img
-								src="https://lighthouse.chotot.com/_next/image?url=https%3A%2F%2Fcdn.chotot.com%2Fadmincentre%2Fi_50mrrrZGb7o3pwDmSYKR5S9Kv4I5euhgpQArY2ZP4%2Fpreset%3Araw%2Fplain%2Fde45c1ab93318388751a0881e006c2b5-2787965614231812566.jpg&w=256&q=95"
-								alt="" width="30%">
-							<p>Miễn phí vận chuyển</p>
-						</a></li>
-					<li class="nav-item"><a class="nav-link" href="#"> <img
-								src="https://lighthouse.chotot.com/_next/image?url=https%3A%2F%2Fcdn.chotot.com%2Fadmincentre%2FeE7dD23srAeGpSo5JNEi9H0o6_rcqywKTT0q_1Yt_MI%2Fpreset%3Araw%2Fplain%2F76c3ecd064ed2eec15d43a4f957d3403-2789129473825192725.jpg&w=256&q=95"
-								alt="">
-							<p>Đánh giá từ tôi</p>
-						</a></li>
-					<li class="nav-item"><a class="nav-link" href="#"> <img
-								src="https://lighthouse.chotot.com/_next/image?url=https%3A%2F%2Fcdn.chotot.com%2Fadmincentre%2FBJ2sRQGytbTbBoxCqR3juzBaObXNvsJz9Q9KC8O73gQ%2Fpreset%3Araw%2Fplain%2F930641d458c0e05889f865e35a0edefb-2763757223248164734.jpg&w=256&q=95"
-								alt="">
-							<p>Đăng tin cho tặng</p>
-						</a></li>
-					<li class="nav-item"><a class="nav-link" href="#"> <img
-								src="https://lighthouse.chotot.com/_next/image?url=https%3A%2F%2Fcdn.chotot.com%2Fadmincentre%2Fhadg4Gt-jHd-C-UPrd4u8HQO9AGEuh8MJ4w_f-d135U%2Fpreset%3Araw%2Fplain%2F2e8e3059413923e58db92c9ed6f650b9-2703896927645658245.jpg&w=256&q=95"
-								alt="">
-							<p>Định giá bán xe</p>
-						</a></li>
-					<li class="nav-item"><a class="nav-link" href="#"> <img
-								src="https://lighthouse.chotot.com/_next/image?url=https%3A%2F%2Fcdn.chotot.com%2Fadmincentre%2FvmzgXwahsyAR3yqOFOxlC4I54sBtGC8KeSqPhnVqo3M%2Fpreset%3Araw%2Fplain%2Fea30aa00d4c36d21a6d56fe745397327-2741458954087890671.jpg&w=256&q=95"
-								alt="">
-							<p>Nạp đồng tốt</p>
-						</a></li>
-					<li class="nav-item"><a class="nav-link" href="#"> <img
-								src="https://lighthouse.chotot.com/_next/image?url=https%3A%2F%2Fcdn.chotot.com%2Fadmincentre%2FTIuAGrBq3aKlyK_5A6rZF6W9TpYYcYrkCMX8qao5jYY%2Fpreset%3Araw%2Fplain%2F508bf25ad611db4034fa5dfde0fe8a73-2741458967710030990.jpg&w=256&q=95"
-								alt="">
-							<p>Rao Vặt ưu đãi</p>
-						</a></li>
-					<li class="nav-item"><a class="nav-link" href="#"> <img
-								src="https://lighthouse.chotot.com/_next/image?url=https%3A%2F%2Fcdn.chotot.com%2Fadmincentre%2FPeH_Zz-8hDT7yZ8F2Mm-BI4p7HWGasDhgq8I_7xdXyk%2Fpreset%3Araw%2Fplain%2Fe16cec7ca2ff9d7649268427ea9c1e4e-2741458979427623023.jpg&w=256&q=95"
-								alt="">
-							<p>Tin đăng ưu đãi</p>
-						</a></li>
-					<li class="nav-item"><a class="nav-link" href="#"> <img
-								src="https://lighthouse.chotot.com/_next/image?url=https%3A%2F%2Fcdn.chotot.com%2Fadmincentre%2FSDwFNRG5QRbMeZWWAa4zI7AL6eJdnzO8P6H_1DxTi4I%2Fpreset%3Araw%2Fplain%2Fc7ae341fb3dad555452cb23a8b903275-2741458990797599981.jpg&w=256&q=95"
-								alt="">
-							<p>Tìm kiếm đã lưu</p>
-						</a></li>
-				</ul>
-			</nav>
-			<div class="br"></div>
+                <p>Rao Vặt ch&iacute;nh thức gia nhập thị trường Việt Nam
+                    v&agrave;o đầu năm 2012, với mục đ&iacute;ch tạo ra cho bạn một
+                    k&ecirc;nh rao vặt trung gian, kết nối người mua với người
+                    b&aacute;n lại với nhau bằng những giao dịch cực kỳ đơn giản,
+                    tiện lợi, nhanh ch&oacute;ng, an to&agrave;n, mang đến hiệu quả
+                    bất ngờ.</p>
+            </div>
+        </div>
 
-			<div class="panel-category">
-				<nav class="navbar navbar-expand-sm">
-					<ul class="navbar-nav">
-						<li class="nav-item"><a class="nav-link" href="#"> <img
-									src="https://lighthouse.chotot.com/_next/image?url=https%3A%2F%2Fstatic.chotot.com%2Fstorage%2Fchapy-pro%2Fnewcats%2Fv8%2F1000.png&w=256&q=95">
-								<p>Bất động sản</p>
-							</a></li>
-						<li class="nav-item"><a class="nav-link" href="#"> <img
-									src="https://lighthouse.chotot.com/_next/image?url=https%3A%2F%2Fstatic.chotot.com%2Fstorage%2Fchapy-pro%2Fnewcats%2Fv8%2F2000.png&w=256&q=95"
-									alt="">
-								<p>Xe cộ</p>
-							</a></li>
-						<li class="nav-item"><a class="nav-link" href="#"> <img
-									src="https://lighthouse.chotot.com/_next/image?url=https%3A%2F%2Fstatic.chotot.com%2Fstorage%2Fchapy-pro%2Fnewcats%2Fv8%2F5000.png&w=256&q=95"
-									alt="">
-								<p>Đồ điện tử</p>
-							</a></li>
-						<li class="nav-item"><a class="nav-link" href="#"> <img
-									src="https://lighthouse.chotot.com/_next/image?url=https%3A%2F%2Fstatic.chotot.com%2Fstorage%2Fchapy-pro%2Fnewcats%2Fv8%2F14000.png&w=256&q=95"
-									alt="">
-								<p>Đồ gia dụng, nội thất, cây cảnh</p>
-							</a></li>
-						<li class="nav-item"><a class="nav-link" href="#"> <img
-									src="https://lighthouse.chotot.com/_next/image?url=https%3A%2F%2Fstatic.chotot.com%2Fstorage%2Fchapy-pro%2Fnewcats%2Fv8%2F4000.png&w=256&q=95"
-									alt="">
-								<p>Giải trí, Thể thao, Sở thích</p>
-							</a></li>
-						<li class="nav-item"><a class="nav-link" href="#"> <img
-									src="https://lighthouse.chotot.com/_next/image?url=https%3A%2F%2Fstatic.chotot.com%2Fstorage%2Fchapy-pro%2Fnewcats%2Fv8%2F11000.png&w=256&q=95"
-									alt="">
-								<p>Mẹ và bé</p>
-							</a></li>
-						<li class="nav-item"><a class="nav-link" href="#"> <img
-									src="https://lighthouse.chotot.com/_next/image?url=https%3A%2F%2Fstatic.chotot.com%2Fstorage%2Fchapy-pro%2Fnewcats%2Fv8%2F6000.png&w=256&q=95"
-									alt="">
-								<p>Dịch vụ, du lịch</p>
-							</a></li>
-
-					</ul>
-				</nav>
-				<nav class="navbar navbar-expand-sm">
-					<ul class="navbar-nav">
-						<li class="nav-item"><a class="nav-link" href="#"> <img
-									src="https://lighthouse.chotot.com/_next/image?url=https%3A%2F%2Fstatic.chotot.com%2Fstorage%2Fchapy-pro%2Fnewcats%2Fv8%2F13000.png&w=256&q=95">
-								<p>Việc làm</p>
-							</a></li>
-						<li class="nav-item"><a class="nav-link" href="#"> <img
-									src="https://lighthouse.chotot.com/_next/image?url=https%3A%2F%2Fstatic.chotot.com%2Fstorage%2Fchapy-pro%2Fnewcats%2Fv8%2F12000.png&w=256&q=95"
-									alt="">
-								<p>Thú cưng</p>
-							</a></li>
-						<li class="nav-item"><a class="nav-link" href="#"> <img
-									src="https://lighthouse.chotot.com/_next/image?url=https%3A%2F%2Fstatic.chotot.com%2Fstorage%2Fchapy-pro%2Fnewcats%2Fv8%2F7000.png&w=256&q=95"
-									alt="">
-								<p>Đồ ăn, thực phầm</p>
-							</a></li>
-						<li class="nav-item"><a class="nav-link" href="#"> <img
-									src="https://lighthouse.chotot.com/_next/image?url=https%3A%2F%2Fstatic.chotot.com%2Fstorage%2Fchapy-pro%2Fnewcats%2Fv8%2F9000.png&w=256&q=95"
-									alt="">
-								<p>Tủ lạnh</p>
-							</a></li>
-						<li class="nav-item"><a class="nav-link" href="#"> <img
-									src="https://lighthouse.chotot.com/_next/image?url=https%3A%2F%2Fstatic.chotot.com%2Fstorage%2Fchapy-pro%2Fnewcats%2Fv8%2F3000.png&w=256&q=95"
-									alt="">
-								<p>Thời trang, đồ dùng cá nhân</p>
-							</a></li>
-						<li class="nav-item"><a class="nav-link" href="#"> <img
-									src="https://lighthouse.chotot.com/_next/image?url=https%3A%2F%2Fstatic.chotot.com%2Fstorage%2Fchapy-pro%2Fnewcats%2Fv8%2F8000.png&w=256&q=95"
-									alt="">
-								<p>Đồ dùng văn phòng</p>
-							</a></li>
-						<li class="nav-item"><a class="nav-link" href="#"> <img
-									src="https://lighthouse.chotot.com/_next/image?url=https%3A%2F%2Fstatic.chotot.com%2Fstorage%2Fchapy-pro%2Fnewcats%2Fv8%2Fcho-tang-mien-phi.png&w=256&q=95"
-									alt="">
-								<p>Cho tặng miễn phí</p>
-							</a></li>
-
-					</ul>
-				</nav>
-			</div>
-			<div class="br"></div>
-			<h3>TIN ĐĂNG MỚI</h3>
-
-			<div class="product-list">
-				<div class="row">
-					<div class="col-2dot4" ng-repeat="e in data">
-						<a th:href="@{/content/{{e.id}}}"> 
-							<img src=http://localhost:8080/uploads/imagecontent/{{e.content_images[0]}} alt="">
-						</a>
-						<div class="link-subjec">
-							<a href="">
-								<div class="subject">{{e.namecontent}}</div>
-							</a>
-						</div>
-						<div class="price">{{e.price}} VNĐ</div>
-						<div class="text">{{e.account.username}}</div>
-					</div>
-				</div>
-				<!-- <div class="load">
-					Xem Thêm <i class="bi bi-arrow-down"></i>
-				</div> -->
-				<div class="detail">
-					<h1>
-						<span style="font-size: 20px">Rao Vặt - Chợ Mua
-							B&aacute;n, Rao Vặt Trực Tuyến H&agrave;ng Đầu Của Người Việt</span>
-					</h1>
-
-					<p>Rao Vặt ch&iacute;nh thức gia nhập thị trường Việt Nam
-						v&agrave;o đầu năm 2012, với mục đ&iacute;ch tạo ra cho bạn một
-						k&ecirc;nh rao vặt trung gian, kết nối người mua với người
-						b&aacute;n lại với nhau bằng những giao dịch cực kỳ đơn giản,
-						tiện lợi, nhanh ch&oacute;ng, an to&agrave;n, mang đến hiệu quả
-						bất ngờ.</p>
-				</div>
-			</div>
-
-		</div>
-	</div>
-
-
-		</div>
+    </div>
+</div>

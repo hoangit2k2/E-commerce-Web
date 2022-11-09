@@ -14,7 +14,6 @@ public class UploadConfiguration implements WebMvcConfigurer {
 			registry.addResourceHandler("/uploads/**").addResourceLocations("/uploads/");
 	}
 	@Bean
-	//stander
 	public MultipartResolver multipartresolver() {
 		return new StandardServletMultipartResolver();
 	}

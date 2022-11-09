@@ -5,24 +5,21 @@ app.controller('appController', function ($scope, $rootScope) {
 app.config(function ($routeProvider) {
     $routeProvider
         .when("/", {
-            templateUrl: "./html/list.html"
+            templateUrl: "./html/home.html"
         })
-        .when("/:productId", {
+        .when("/:contentId", {
             templateUrl: "./html/detail.html"
         })
         .when("/create/content", {
             templateUrl: "./html/createcontent.html"
         })
-        .when("/blog/blog", {
-            templateUrl: "./blog.html"
+        .when("/list/:categoryId", {
+            templateUrl: "./html/list.html"
         })
-        .when("/contact/contact", {
-            templateUrl: "./contact.html"
+        .when("/shop/:username", {
+            templateUrl: "./html/contenshop.html"
         })
-        .when("/about/about", {
-            templateUrl: "./about.html"
-        })
-        // .otherwise({
-        //     templateUrl: "./components/error/404.html"
-        // });
+        .otherwise({
+            templateUrl: "./components/error/404.html"
+        });
 });

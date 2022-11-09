@@ -1,17 +1,11 @@
 package com.lovepink.service.lmpl;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import com.lovepink.model.request.createUserRequest;
-import java.util.HashSet;
+
+import com.lovepink.model.request.createContenRequest;
 import java.util.List;
-import java.util.Set;
-
-import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.CrossOrigin;
 
 import com.lovepink.Dao.contentDao;
 import com.lovepink.entity.Content;
@@ -24,16 +18,19 @@ import com.lovepink.exception.NotFoundException;
 public class ContentServicelmpl implements ContentService {
 	@Autowired 
 	contentDao dao;
-
 	@Override
 	public List<Content> findAll() {
 		return dao.findAll();
 	}
-
 	@Override
 	public Content findById(Integer id) {
-		// TODO Auto-generated method stub
-		return dao.findById(id).get();
+		List<Content> contens = dao.findAll();
+		for(Content conten : contens) {
+			if(conten.getId() == id) {
+				return dao.findById(id).get();
+			}
+		}
+		throw new NotFoundException("Id Content không tồn tại");
 	}
 	@Override
 	public List<Content> searchContent(String keyword) {
@@ -59,20 +56,21 @@ public class ContentServicelmpl implements ContentService {
 		throw new NotFoundException("Id Content không tồn tại");
 	}
 	@Override
-	public Content createUser(createUserRequest req) {
+	public Content createUser(createContenRequest req) {
 		Content content = Content.toContent(req);
 		dao.save(content);
 		return content;
 	}
 	@Override
-	public Content updatecontent(createUserRequest req , int id) {
+	public Content updatecontent(createContenRequest req , int id) {
 		List<Content> contents = dao.findAll();
 		for(Content content : contents) {
 			if(content.getId() == id) {
 				content.setId(id);
-				content.setCustomerid(req.getCustomerid());
-				content.setCategoryid(req.getCustomerid());
+				content.setUsernameid(req.getUsernameid());
+				content.setCategoryid(req.getCategoryid());
 				content.setNamecontent(req.getNamecontent());
+//				content.setContent_images(req.getContent_images());
 				content.setSubject(req.getSubject());
 				content.setPrice(req.getPrice());
 				content.setEmail(req.getEmail());
@@ -84,6 +82,15 @@ public class ContentServicelmpl implements ContentService {
 		}
 		
 		throw new NotFoundException("ID Content Không tồn tại");
+	}
+	@Override
+	public List<Content> findContentId(String username){
+		return  dao.findByUsernameid(username);
+	}
+
+	@Override
+	public List<Content> findContentByCategory(int categoryid){
+		return  dao.findByCategoryid(categoryid);
 	}
 
 }

@@ -1,8 +1,4 @@
 package com.lovepink.entity;
-import java.io.File;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
@@ -15,13 +11,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Component;
-import org.springframework.web.multipart.MultipartFile;
 
-import com.lovepink.model.request.createUserRequest;
+import com.fasterxml.jackson.annotation.JsonIncludeProperties;
+import com.lovepink.model.request.createContenRequest;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -36,9 +33,10 @@ public class Content {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Id
 	private Integer id;
-	private Integer customerid;
+//	private String username;
 	private Integer categoryid;
 	@NotNull
+	private String usernameid;
 	private String namecontent;
 	private String subject;
 	private Integer price;
@@ -52,12 +50,17 @@ public class Content {
 	@ElementCollection
 	@Column(name = "image")
 	@JoinTable(name = "image", joinColumns = @JoinColumn(name = "contentid"))
-	//image
 	private Set<String> content_images;
+	
+//	@ManyToOne @JsonIncludeProperties({"username","name","email","image"})
+//	@JoinColumn(name = "usernameid")
+//	private User user;
 	static final Path CURRENT_FOLDER = Paths.get(System.getProperty("user.dir"));
-	public static Content toContent(createUserRequest req)  {
+
+	//tocontent upadte api
+	public static Content toContent(createContenRequest req)  {
 		Content content = new Content();
-		content.setCustomerid(req.getCustomerid());
+		content.setUsernameid(req.getUsernameid());
 		content.setCategoryid(req.getCategoryid());
 		content.setNamecontent(req.getNamecontent());
 		content.setSubject(req.getSubject());
@@ -67,21 +70,6 @@ public class Content {
 		content.setAddress(req.getAddress());
 		content.setDatetime(java.time.LocalDateTime.now());
 		content.setStatus(req.isStatus());		
-		
-		//update Image
-//		Path staticPath = Paths.get("static");
-//		Path imagePath = Paths.get("images");
-//		MultipartFile[] image =  (MultipartFile[]) req.getContent_images();
-//		if(!Files.exists(CURRENT_FOLDER.resolve(staticPath).resolve(imagePath))) {
-//			Files.createDirectories(CURRENT_FOLDER.resolve(staticPath).resolve(imagePath));
-//		}
-//		Path file = CURRENT_FOLDER.resolve(staticPath).resolve(imagePath).resolve(image.getOriginalFilename());
-//		try(OutputStream os = Files.newOutputStream(file)) {
-//			os.write(image.getBytes());
-//		} catch (Exception e) {
-//			System.out.println(e);
-//		}
-		
 		content.setContent_images(req.getContent_images());
 		return content;
 	}
