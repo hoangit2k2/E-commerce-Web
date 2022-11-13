@@ -11,17 +11,8 @@ import javax.servlet.ServletContext;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.ServletContextAware;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -34,7 +25,7 @@ import com.lovepink.service.ContentService;
 import net.bytebuddy.implementation.bytecode.Throw;
 @CrossOrigin("*")
 @RestController
-@RequestMapping("/rest/contents")
+//@RequestMapping("/rest/contents")
 public class ContentController implements ServletContextAware {
 	private ServletContext servletcontext;
 	@Autowired
@@ -46,11 +37,17 @@ public class ContentController implements ServletContextAware {
 		List<Content> result = contenService.searchContent(name);
 		return ResponseEntity.ok(result);
 		}
-	
-	@GetMapping("")
-	public ResponseEntity<?> getListConten(){
+	@PreAuthorize("hasRole('admin')")
+	@GetMapping("/rest/contents")
+//	@RequestMapping(value = "rest/contents", method = RequestMethod.GET)
+//	@RequestMapping(
+//			value = "/rest/contents",
+//			produces = "application/json",
+//			method = {RequestMethod.GET, RequestMethod.POST})
+	public String getListConten(){
 		List<Content> content = contenService.findAll();
-		return ResponseEntity.ok(content);
+//		return ResponseEntity.ok(content);
+		return  "hello";
 	}
 	
 	@GetMapping("{id}")
@@ -63,7 +60,7 @@ public class ContentController implements ServletContextAware {
 		String result = contenService.deleteUser(id);
 		return ResponseEntity.ok(result);	
 	}
-	
+
 	@PostMapping("")
 	public ResponseEntity<?> createContent(@RequestParam("files") MultipartFile[] files, @Valid @ModelAttribute createContenRequest req 
 											){

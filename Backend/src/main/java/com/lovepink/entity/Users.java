@@ -1,10 +1,6 @@
 package com.lovepink.entity;
 
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -16,13 +12,15 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
 @Data
 @Table
 @NoArgsConstructor
 @AllArgsConstructor
 @Component
 @Entity(name = "users")
-public class User {
+public class Users implements Serializable {
 	@Id
 	private String username;
 	private String password;
@@ -34,8 +32,8 @@ public class User {
 	private String role;
 //	@ElementCollection
 //	@Column(name = "")
-	public static User toUser(createUserRequest req) {
-		User user = new User();
+	public static Users toUser(createUserRequest req) {
+		Users user = new Users();
 		user.setUsername(req.getUsername());
 		user.setPassword(req.getPassword());
 		user.setName(req.getName());
@@ -44,6 +42,6 @@ public class User {
 		user.setEmail(req.getEmail());
 		user.setImage(req.getImage());
 		user.setRole(req.getRole());
-		return user;
+		return  user;
 	}
 }

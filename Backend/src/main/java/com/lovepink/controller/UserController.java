@@ -5,6 +5,7 @@ import java.util.List;
 import javax.servlet.ServletContext;
 import javax.validation.Valid;
 
+import com.lovepink.entity.Users;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -17,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.ServletContextAware;
 
-import com.lovepink.entity.User;
 import com.lovepink.model.request.createUserRequest;
 import com.lovepink.service.UserService;
 
@@ -31,17 +31,17 @@ public class UserController implements ServletContextAware{
 
 	@GetMapping("")
 	public ResponseEntity<?> getListUser(){
-		List<User> user = userService.findAll();
+		List<Users> user = userService.findAll();
 		return ResponseEntity.ok(user);
 	}
 	@GetMapping("{username}")
 	public ResponseEntity<?> getUserById(@PathVariable String username){
-		User result = userService.findById(username);
+		Users result = userService.findById(username);
 		return ResponseEntity.ok(result);
 	}
 	@PostMapping("")
 	public ResponseEntity<?> createUser(@Valid @ModelAttribute createUserRequest req){
-		User result = userService.createuser(req);
+		Users result = userService.createuser(req);
 		return ResponseEntity.ok(result);
 	}
 	@DeleteMapping("{username}")

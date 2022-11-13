@@ -1,0 +1,16 @@
+{
+	"folders": [
+		{
+			"path": "C:/Eclipse/Lab7_Token/src/main/resources/static/authorize"
+		},
+		{
+			"path": "Fontend"
+		},
+		{
+			"path": "../Dowloads/template-clothesShop-main/template-clothesShop-main"
+		}
+	],
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "Fontend"
+	}
+}
