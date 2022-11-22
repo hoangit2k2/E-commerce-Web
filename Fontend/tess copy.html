@@ -1,177 +1,340 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>Auction Sale Anything</title>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular.min.js"></script>
 
-<link href='//fonts.googleapis.com/css?family=Roboto+Condensed:400,300,300italic,400italic,700,700italic' rel='stylesheet' type='text/css'>
-<link href='//fonts.googleapis.com/css?family=Lovers+Quarrel' rel='stylesheet' type='text/css'>
-<link href='//fonts.googleapis.com/css?family=Offside' rel='stylesheet' type='text/css'>
-<!-- web-fonts -->  
-<!-- start-smooth-scrolling -->
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-route.js"></script>
-	<!-- //smooth-scrolling-of-move-up -->
+	<title>Document</title>
+	<style>
+		.box{
+		 position: absolute;
+		 top: 53%;
+		 left: 50%;
+		 transform: translate(-50%, -50%);
+		 width: 26rem;
+		 max-height: 35rem;
+		 padding-left: 20px;
+		 padding-right: 20px;
+		 padding-bottom: 30px;
+		 box-sizing: border-box;
+		 background: rgb(62, 59, 59);
+		 border-radius: 0.625rem;
+		}
+		.box h1{
+		 padding-top: 30px;
+		 padding-bottom: 20px;
+		 text-align: center;
+		 font-size: 40px;
+		 background: -webkit-gradient(#fdf497);
+		 /* .webkit-background-clip: text; */
+		 /* .webkit-text- */
+		}
+		.textfield{
+		 display: inline-block;
+		 height: 80px;
+		 position: relative;
+		}
+		.textfield .textfield-input{
+		 background: transparent;
+		 color: aliceblue;
+		 border: 0;
+		 border-bottom: 1px solid #9e9e9e;
+		 width: 265px;
+		 font-size: 18px;
+		 position: relative;
+		 left: 3%;
+		 z-index: 1;
+	   }
+	   
+	   .textfield .textfield-input:focus{
+		 outline: none;
+	   }
+	   
+	   .textfield label{
+		 color: antiquewhite;
+		 font-family: 'Roboto' sans-serif;
+		 font-size: 18px;
+		 left: 18%;
+		 position: absolute;
+		 top: 4%;
+		 transition: top .3s ease-in-out 0s;
+	   }
+	   .textfield .textfield-input:focus + label{
+		 color: rgb(0, 187, 255);
+		 top: -38%
+	   }
+	   .textfield .textfield-input + label + .indicator{
+		 border-bottom: 2px solid rgb(0, 187, 255);
+		 height: 0;
+		 position: absolute;
+		 top: 28%;
+		 left: 18%;
+		 transition: width .1s ease-in 0s;
+		 width: 0;
+		 z-index: 2;
+	   }
+		 .textfield .textfield-input:focus + label + .indicator{
+		   width: 85%;
+		 }
+		 .textfield .textfield-input:focus + label{
+		   top: -30%
+		 }
+		 .icon{
+		   color: aliceblue;
+		   min-width: 22px;
+		   text-align: center;
+		   font-size: 22px;
+		 }
+		 .error{
+		   padding-left: 35px;
+		   color: red;
+		   animation:  fadeIn 0.5s linear forwards;
+		   font-weight: bold;
+		 }
+		 @keyframes fadeIn {
+		   0%{
+			 opacity: 0;
+		   }
+		   100%{
+			 opacity: 1;
+		   }
+		 }
+		 .account{
+		   color: white;
+		   text-align: center;
+		 }
+		 .account a {
+		   color: blue;
+		   cursor: pointer;
+		   font-weight: bold;
+		 }
+		 .logindiv{
+		   text-align: center;
+		   padding-top: 20px;
+		   padding-bottom: 35px;
+		 }
+		 .loginbtn{
+		   position: absolute;
+		   text-align: center;
+		   margin: auto;
+		   transform: translate(-50%, -50%);
+		   color: blue;
+		   padding: 15px 50px;
+		   font-size: 16px;
+		   letter-spacing: 2px;
+		   text-transform: uppercase;
+		   box-shadow: 0px 20px 50px #9e9e9e;
+		   overflow: hidden;
+		   background: #9e9e9e;
+		   border: none;
+		   cursor: pointer;
+		   outline: none;
+		   font-weight: bold;
+		 }
+		 lspan:nth-child(1){
+		   position: absolute;
+		   top: 0;
+		   left: 0;
+		   width: 100%;
+		   height: 4px;
+		   background: linear-gradient(to right,#9e9e9e, #3944ab);
+		   animation: animate1 2s linear infinite;
+		   animation-delay: 1s;
+		 }
+		 @keyframes animate1 {
+		   0%{
+			 transform: rotateX(-100%);
+		   }
+		   100%{
+			 transform: translateX(100%);
+		   }
+		 }
+		 lspan:nth-child(2){
+		   position: absolute;
+		   top: 0;
+		   left: 0;
+		   width: 4px;
+		   height: 100%;
+		   background: linear-gradient(to top,#9e9e9e, #3944ab);
+		   animation: animate2 2s linear infinite;
+		   animation-delay: 1s;
+		 }
+		 @keyframes animate2 {
+		   0%{
+			 transform: rotateY(-100%);
+		   }
+		   100%{
+			 transform: translateY(100%);
+		   }
+		 }
+	   
+		 lspan:nth-child(3){
+		   position: absolute;
+		   top: 0;
+		   left: 0;
+		   width: 100%;
+		   height: 4px;
+		   background: linear-gradient(to left,#9e9e9e, #3944ab);
+		   animation: animate3 2s linear infinite;
+		   animation-delay: 1s;
+		 }
+		 @keyframes animate3 {
+		   0%{
+			 transform: rotateX(-100%);
+		   }
+		   100%{
+			 transform: translateX(100%);
+		   }
+		 }
+	   
+		 lspan:nth-child(4){
+		   position: absolute;
+		   top: 0;
+		   right: 0;
+		   width: 4px;
+		   height: 100%;
+		   background: linear-gradient(to bottom,#9e9e9e, #3944ab);
+		   animation: animate3 2s linear infinite;
+		   animation-delay: 1s;
+		 }
+		 @keyframes animate3 {
+		   0%{
+			 transform: rotateY(-100%);
+		   }
+		   100%{
+			 transform: translateY(100%);
+		   }
+		 }
+	   </style>
 </head>
-<body ng-app="app" ng-controller="mypostcontroll">
-	<!-- header -->   
-    <!-- post ad-->
-    <div class="submit-ad main-grid-border">
-		<div class="container">
-        <br>
-        <br>
-			<h3 class="w3ls-title w3ls-title1">Post Your Ad</h3>  
-			<div class="post-ad-form">
-				<form name="form" ng-submit="insert()">
-					<label>Select Category <span>*</span></label>
-					<select class="" ng-required="true" ng-model="category">
-					  <option disabled selected value>Select Category</option>
-					  <option>Mobiles</option>
-					  <option>Electronics</option>
-					  <option>Cars</option>
-					  <option>Bikes</option>
-					  <option>Furniture</option>
-					</select>
-					<div class="clearfix"></div>
-					<label>Ad Title <span>*</span></label>
-					<input type="text" ng-model="title" ng-required="true" class="phone" placeholder="">
-					<div class="clearfix"></div>
-                    <label>Price <span>*</span></label>
-						<input type="number" ng-required="true" class="numb" ng-model="price" placeholder="">
-					<label>Ad Description <span>*</span></label>
-					<textarea class="mess" ng-required="true" ng-model="description" placeholder="Write few lines about your product"></textarea>
-					<div class="clearfix"></div>
-				<div class="upload-ad-photos">
-				<label>Photos for your ad :</label>	
-					<div class="photos-upload-view">
-						<div class="row container-fluid">
-							<div class="col-lg-4">
-								<input type="file"  ng-model="files" accept="image/*" onchange="angular.element(this).scope().uploadedFile(this)" ng-required="true" class="btn btn-info"/></div>
-							<div class="col-lg-4" >
-								<input type="file" accept="image/*"  ng-model="image2" onchange="angular.element(this).scope().uploadedFile2(this)" ng-required="true" class="btn btn-info" /></div>
-                            <div class="col-lg-4">
-                            	<input type="file"  accept="image/*"  ng-model="image3" onchange="angular.element(this).scope().uploadedFile3(this)"  ng-required="true" class="btn btn-info"/></div>
-                            
-						
-						</div>
-                        <div class="row">
-                        <div class="col-lg-4"><img id="output"  style="width:200px; height:150px" class="img-responsive"/></div>
-                         <div class="col-lg-4"><img id="output1" style="width:200px; height:150px" class="img-responsive"/></div>
-                          <div class="col-lg-4"><img id="output2" style="width:200px; height:150px" class="img-responsive"/></div>
-                        </div>
-					<div class="clearfix"></div>
-				</div>
-					<div class="personal-details">
-					
-						<div class="clearfix"></div>
-						
-					<input type="submit" value="Post">					
-					<div class="clearfix"></div>
-					</form>
-					</div>
-			</div>
-		</div>	
-	</div>
-    <script>
-    
-  var app = angular.module('app',[]);
-    app.controller('mypostcontroll', function($scope, $http) {
-    	
-    	$scope.form=[];
-    	$scope.files=[];
-		$scope.insert=function(){
-			$scope.image1=$scope.files[0];
-			$scope.image2=$scope.files2[0];
-			$scope.image3=$scope.files3[0];
-			
-			
-			$http({
-				method:'POST',
-				url:"http://localhost:8080/rest/uploadfile",
-				processData:false,
-				transformRequest:function(data){
-					var formData=new FormData();
-					formData.append("files", $scope.image1);
-					formData.append("files", $scope.image2);
-					formData.append("files", $scope.image3);
-					formData.append("description", $scope.description);
-					formData.append("title", $scope.title);
-					formData.append("price", $scope.price);
-					formData.append("category", $scope.category);
+
+	   <body ng-app="app"><div ng-controller = "accountCtrl">
+		   <div class="box">
+			 <form name = "signupform" novalidate autocomplete="off">
+			   <h1 ng-show = "showlogin">Login</h1>
+			   <h1 ng-show = "showsignup">Sign Up</h1>
+			   <div class="textfield">
+				 <input type="text" class="textfield-input" name="username" ng-model = "username" required>
+				 <label for="">Username</label>
+				 <div class="indicator"></div>
+				 <div>
+				   <span ng-show = "signupform.$submitted || signupform.username.$dirty">
+					 <span class="error" ng-show = "signupform.username.$error.required">
+					   Username Required
+					 </span>
+				   </span>
+				   <br>
+				 </div>
+			   </div>
+			   <div class="textfield">
+				 <input type="password" class="textfield-input" name="password" ng-model = "password" required>
+				 <label for="">Password</label>
+				 <div class="indicator"></div>
+				 <div>
+				   <span ng-show = "signupform.$submitted || signupform.password.$dirty">
+					 <span class="error" ng-show = "signupform.password.$error.required">
+					   password Required
+					 </span>
+				   </span>
+				   <br>
+				 </div>
+			   </div>
+			   <div class="textfield">
+				 <input type="password" class="textfield-input" name="cpassword" ng-model = "cpassword" required>
+				 <label for="">Confirm Password</label>
+				 <div class="indicator"></div>
+				 <div>
+				   <span ng-show = "signupform.cpassword.$dirty && (!signupform.cpassword.$error.required)">
+					 <span class="error" ng-show = "password != cpassword">
+					   Your Passwort must match
+					 </span>
+				   </span>
+				   <span ng-show = "signupform.$submitted || signupform.cpassword.$dirty">
+					 <span class= "error" ng-show = "signupform.cpassword.$error.required">
+					   password Requdired
+					 </span>
+				   </span> </div>
+				 </div><br>
+				 <div class="logindiv">
+					 <button type="submit" name="submit" class="loginbtn" ng-click = "login()">
+					   <span class="lspan"></span>
+					   <span class="lspan"></span>
+					   <span class="lspan"></span>
+					   <span class="lspan"></span>
+					   {{btnName}}
+					 </button>
+				   </div>
+				   <p class="account" ng-show="showlogin" >New User ?<span><a ng-click = "signuppage()">Create an Account</a>  </span> </p>
+	   
+				   <p class="account" ng-show="showsignup" >Alrealy have an Account <span></span><a ng-click = "loginpage()">Login</a> </span></p>
+		  
+			 </form>
+		   </div>
+	   </div>
+	   
+		 
+	   </body>
+	   <script>
+		const app = angular.module('app', []);
+
+  app.controller("accountCtrl", function($scope, $http, $window){
+    $scope.btnName = "Login";
+    $scope.showsignup = false;
+    $scope.showlogin = true;
+    $scope.signuppage = function(){
+        $scope.showsignup = $scope.showsignup ? false : true
+        $scope.showlogin = false;
+        $scope.btnName = "sign up";
+        $scope.signupform.$setPristine();
+        $scope.username = null;
+        $scope.password = null;
+    }
+    $scope.loginpage = function(){
+        $scope.showlogin = $scope.showlogin ? false : true
+        $scope.showsignup = false;
+        $scope.btnName = "Login";
+        $scope.signupform.$setPristine();
+        $scope.username = null;
+        $scope.password = null;
+        $scope.cpassword = null;
+    }
+    $scope.login = function(){
+        console.log($scope.username)
+        console.log($scope.password)
+        if($scope.btnName == "sign up"){
+            if($scope.username != null && $scope.password != null && $scope.cpassword != null){
+                $scope.postf();
+            }
+        }
+        else if ($scope.btnName == "Login"){
+            if($scope.username != null && $scope.password != null){
+                $scope.postf();
+            }
+        }
+    }
+    $scope.postf = function(){
+        $http.post(
+            "wwwww", {
+                'username' : $scope.username,
+                'password' : $scope.password,
+                'btnName' : $scope.btnName
+            }
+        ).senccess(function(data){
+            alert(data);
+            if(data == "username already exists. User the different Username"){
+            return;
+        }
+        $window.location.reload();
+        if(data == "login Successful"){
+            location = ""
+        }
+    })
+}
 
 
-			      return formData;
-			      return $scope.category;
-			      return $scope.title;
-			      return $scope.price;
-			      return $scope.description;  
-			  },  
-			  data : $scope.form,
-			  headers: {
-			         'Content-Type': undefined
-			  }
-		   }).then(function(response){
-				var data = response.data;
-		        alert('Thêm Thành Công');
-		        
-		   });
-		   
-			};
-			$scope.uploadedFile=function(element)
-			{
-				$scope.currentFile = element.files[0];
-		    var reader = new FileReader();
+})
 
-		    reader.onload = function(event) {
-		    	var output = document.getElementById('output');
-    			output.src = URL.createObjectURL(element.files[0]);
-	
-		      $scope.image_source = event.target.result
-		      $scope.$apply(function($scope) {
-		        $scope.files = element.files;
-		      });
-		    }
-                    reader.readAsDataURL(element.files[0]);
-		  }
-
-
-		  $scope.uploadedFile2=function(element)
-			{
-				$scope.currentFile2 = element.files[0];
-		    var reader = new FileReader();
-
-		    reader.onload = function(event) {
-		    	var output1 = document.getElementById('output1');
-    			output1.src = URL.createObjectURL(element.files[0]);
-		      $scope.image_source = event.target.result
-		      $scope.$apply(function($scope) {
-		        $scope.files2 = element.files;
-		      });
-		    }
-                    reader.readAsDataURL(element.files[0]);
-		  }
-
-
-		  $scope.uploadedFile3=function(element)
-			{
-				$scope.currentFile3 = element.files[0];
-		    var reader = new FileReader();
-
-		    reader.onload = function(event) {
-		    	var output2 = document.getElementById('output2');
-    			output2.src = URL.createObjectURL(element.files[0]);
-		      $scope.image_source = event.target.result
-		      $scope.$apply(function($scope) {
-		        $scope.files3 = element.files;
-		      });
-		    }
-                    reader.readAsDataURL(element.files[0]);
-		  }
-		
-	});
-</script>
-    <!-- //post ad-->
-	
-	
-</body>
+	   </script>
 </html>

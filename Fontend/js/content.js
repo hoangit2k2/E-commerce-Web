@@ -27,21 +27,61 @@ app.controller('controlconten', function($scope, $http, $routeParams) {
 	$scope.get();
 })
 
-app.controller('contentFormController', function($scope, $rootScope, $location,
-	$routeParams, $http){
+app.controller('contentFormController', function($scope,$window,$routeParams, $http){
 		$scope.contentId = $routeParams.contentId;
+		$scope.email = $routeParams.email;
 		$scope.content = {}
-		console.log($scope.contentId)
 		if($scope.contentId){
+
 			$http.get(`http://localhost:8080/rest/contents/${$scope.contentId}`)
 				.then(function(response){
 					$scope.content = response.data;
-					console.log(response.data);
+					// console.log(response.data);
 				}).catch(error => {
 					console.error(error)
 				})
-			
 		}
+		$scope.love = function(){
+            try {
+				$http.get(`http://localhost:8080/rest/contents/${$scope.contentId}`)
+				.then(function(response){
+					$scope.content = response.data;
+					var x = $scope.content.conten_likes.length
+					var y = true
+				for (let i = 0; i < x; i++) {
+					if($scope.content.conten_likes[i] = info.name){
+						y = false
+					}
+				}
+					if(y == false){
+						alert('Nội dung đã có trong danh sách yêu thích')
+					}
+					else{
+						$http({
+							url: `http://localhost:8080/rest/likes`,
+							method: 'POST',
+							data: {
+								'usernameid': info.username,
+								'contentid': $scope.contentId
+							}
+						}).then(function(response){
+							var data = response.data
+							console.log(data)
+							alert('Thêm vào danh sách yêu thích thành công')
+							$window.location.reload();
+						})
+					}
+				}).catch(error => {
+					alert('Bạn cần đăng nhập')
+					$window.location.reload();
+					location = "index.html"
+				})
+				// console.log(data)
+            } catch (error) {
+                alert('Thêm vào yêu thích thất bại')
+            }
+
+        }
 	})
 
 app.controller('mypostcontroll', function($scope, $http){
@@ -137,102 +177,3 @@ app.controller('mypostcontroll', function($scope, $http){
 		reader.readAsDataURL(element.files[0]);
 	}
 })
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	// $scope.uploadFiles = function() {
-	// 	var request = {
-	// 		method: 'POST',
-	// 		url: 'http://localhost:8080/rest/uploadfile',
-	// 		data: formdata,
-	// 		headers: {
-	// 			'Content-Type': undefined
-	// 		}}
-
-
-	// $scope.Submit = function(){
-	// 	var uploadUrl  = 'http://localhost:8080/rest/uploadfile';
-	// 	console.log($scope.customer)
-	// 	multipartForm.post(uploadUrl, data);
-	// }
-
-// }])
-
-
-
-
-
-// app.controller('fupController', function($scope, $http){
-// 	var formdata = new FormData();
-// 	$scope.getTheFiles = function($files){
-// 		angular.forEach($files, function(value, key){
-// 			formdata.append(key, value);
-// 		});
-// 	};
-// 	// console.log()
-
-// 	$scope.uploadFiles = function() {
-// 		var request = {
-// 			method: 'POST',
-// 			url: 'http://localhost:8080/rest/uploadfile',
-// 			data: formdata,
-// 			headers: {
-// 				'Content-Type': undefined
-// 			}
-// 		};
-// 	//send The FIles.
-// 	$http(request).success(function (d) {
-// 		alert(d);
-// 	})
-// 	.error(function(){
-
-// 	});
-// 	}
-// });
-
-
-
-
-
-
-
-	// $scope.getImage = function (name, director) {
-	// 	return getImage(name, director ? `data/images/${director}` : 'data/images/content')
-	// };
-	
-// function getImage(name, director) {
-	//  return `http://localhost:8080/data/images/content/${name[0]}`
-// }
-
-// app.controller('contentFormController',function($scope, $rootScope, $http, $routeParams) {
-// 	console.log('ok')
-// 	$scope.id = $routeParams.id;
-// 	console.log($scope.id)
-// 	$scope.content = {}
-// 	if($scope.id){
-// 		try {
-// 		$http.get(getLink(serverIO,path,$scope.id))
-// 		.then(function(response){
-// 			$scope.content = response.data;
-// 			console.log('data: ' + $scope.id)
-// 		})
-// 	} catch (error) {
-// 			console.log(error)
-// 	}
-// 	}
-// })	

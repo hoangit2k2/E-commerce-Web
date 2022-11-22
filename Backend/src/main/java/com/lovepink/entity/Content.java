@@ -51,13 +51,12 @@ public class Content {
 	@Column(name = "image")
 	@JoinTable(name = "image", joinColumns = @JoinColumn(name = "contentid"))
 	private Set<String> content_images;
-	
-//	@ManyToOne @JsonIncludeProperties({"username","name","email","image"})
-//	@JoinColumn(name = "usernameid")
-//	private User user;
-	static final Path CURRENT_FOLDER = Paths.get(System.getProperty("user.dir"));
 
-	//tocontent upadte api
+	@ElementCollection
+	@Column(name = "usernameid")
+	@JoinTable(name = "likes", joinColumns = @JoinColumn(name = "contentid"))
+	private Set<String> conten_likes;
+	static final Path CURRENT_FOLDER = Paths.get(System.getProperty("user.dir"));
 	public static Content toContent(createContenRequest req)  {
 		Content content = new Content();
 		content.setUsernameid(req.getUsernameid());

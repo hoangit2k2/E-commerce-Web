@@ -222,3 +222,6 @@ div.imagedetail img{
     height: 500px;
     object-fit: contain;
 }
+div.dropdown{
+    left: 30px;
+}

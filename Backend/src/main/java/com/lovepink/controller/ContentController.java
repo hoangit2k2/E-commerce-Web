@@ -37,31 +37,25 @@ public class ContentController implements ServletContextAware {
 		List<Content> result = contenService.searchContent(name);
 		return ResponseEntity.ok(result);
 		}
-	@PreAuthorize("hasRole('admin')")
+//	@PreAuthorize("hasRole('admin')")
 	@GetMapping("/rest/contents")
-//	@RequestMapping(value = "rest/contents", method = RequestMethod.GET)
-//	@RequestMapping(
-//			value = "/rest/contents",
-//			produces = "application/json",
-//			method = {RequestMethod.GET, RequestMethod.POST})
-	public String getListConten(){
+	public ResponseEntity<?> getListConten(){
 		List<Content> content = contenService.findAll();
-//		return ResponseEntity.ok(content);
-		return  "hello";
+		return  ResponseEntity.ok(content);
 	}
 	
-	@GetMapping("{id}")
+	@GetMapping("/rest/contents/{id}")
 	public ResponseEntity<?> getContenById(@PathVariable int id){
 		Content result = contenService.findById(id);
 		return ResponseEntity.ok(result);
 	}
-	@DeleteMapping("{id}")
+	@DeleteMapping("/rest/contents/{id}")
 	public ResponseEntity<?> deleteContent(@PathVariable int id){
 		String result = contenService.deleteUser(id);
 		return ResponseEntity.ok(result);	
 	}
-
-	@PostMapping("")
+	@PreAuthorize("hasRole('cust')")
+	@PostMapping("/rest/contents")
 	public ResponseEntity<?> createContent(@RequestParam("files") MultipartFile[] files, @Valid @ModelAttribute createContenRequest req 
 											){
 		try {
@@ -78,7 +72,7 @@ public class ContentController implements ServletContextAware {
 			return null;
 		}
 	}
-	@PutMapping("/{id}")
+	@PutMapping("/rest/contents/{id}")
 	public ResponseEntity<?> updateContent(@RequestParam("files") MultipartFile[] files, @Valid @ModelAttribute createContenRequest req, @PathVariable int id){
 		try {
 			Set<String> setA = new HashSet<String>();
@@ -94,12 +88,12 @@ public class ContentController implements ServletContextAware {
 		}
 		return null;
 	}
-	@GetMapping("/username/{username}")
+	@GetMapping("/rest/contents/username/{username}")
 	public ResponseEntity<?> getContentByusername(@PathVariable String username){
 		List<Content> result = contenService.findContentId(username);
 		return  ResponseEntity.ok(result);
 	}
-	@GetMapping("/category/{categoryid}")
+	@GetMapping("/rest/contents/category/{categoryid}")
 		public ResponseEntity<?> getContentByCategoryId(@PathVariable int categoryid){
 			List<Content> result = contenService.findContentByCategory(categoryid);
 			return ResponseEntity.ok(result);

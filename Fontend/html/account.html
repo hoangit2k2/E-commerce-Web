@@ -1,0 +1,162 @@
+  <div class="row">
+    <div class="col-6">
+      <img src="https://freelancervietnam.vn/wp-content/uploads/2019/04/03.-Chotot-1.png"  style="width:780px; height: 500px;" alt="">
+    </div>
+    <div class="col-6">
+      <div class="box" ng-controller = "accountCtrl">
+        <form name = "signupform" novalidate autocomplete="off">
+          <h1 ng-show = "showlogin">Login</h1>
+          <h1 ng-show = "showsignup">Sign Up</h1>
+          <div class="textfield">
+            <input type="text" class="textfield-input" name="username" ng-model = "username" required  placeholder="Username"> 
+            <div class="indicator"></div>
+            <div>
+              <span ng-show = "signupform.$submitted || signupform.username.$dirty">
+                <span class="error" ng-show = "signupform.username.$error.required">
+                  Username_Requdired
+                </span>
+              </span>
+              <br>
+            </div>
+          </div>
+          <br>
+          <div class="textfield">
+            <input type="password" class="textfield-input" name="password" ng-model = "password" required  placeholder="Password">
+            <div class="indicator"></div>
+            <div>
+              <span ng-show = "signupform.$submitted || signupform.password.$dirty">
+                <span class="error" ng-show = "signupform.password.$error.required">
+                  Password_Requdired
+                </span>
+              </span><br>
+            </div>
+          </div>
+          <br>
+          <div class="textfield">
+            <input type="password" class="textfield-input" name="cpassword" ng-model = "cpassword"  ng-hide = "cpassword1" required  placeholder="Password Config">
+            <div class="indicator"></div>
+            <div>
+              <span ng-show = "signupform.cpassword.$dirty && (!signupform.cpassword.$error.required)">
+                <span  ng-hide = "cpassword1" class="error" ng-show = "password != cpassword">
+                  Your_Passwort_must_match
+                </span>
+              </span>
+              <span ng-show = "signupform.$submitted || signupform.cpassword.$dirty" >
+                <span ng-hide = "cpassword1" class= "error" ng-show = "signupform.cpassword.$error.required">
+                  password_Requdired
+                </span>
+              </span> 
+            </div>
+            </div>
+            <br>
+            <div class="logindiv">
+                <button type="submit" name="submit" class="loginbtn" ng-click = "login()">
+                  <span class="lspan"></span>
+                  <span class="lspan"></span>
+                  <span class="lspan"></span>
+                  <span class="lspan"></span>
+                  {{btnName}}
+                </button>
+              </div>
+              <p class="account" ng-show="showsignup" >Alrealy have an Account <span></span><a ng-click = "loginpage()">Login</a> </span></p>
+              <p class="account" ng-show="showlogin" >New User ?<span><a ng-click = "signuppage()">Create an Account</a>  </span> </p>   
+    </form>
+  </div>
+
+    </div>
+
+  
+  </div>
+  
+</div>
+<style>
+ .box{
+  background-color: #d4e4e4;
+  height: 500px;
+ }
+ .box h1{
+  padding-top: 10px;
+  padding-bottom: 20px;
+  text-align: center;
+  font-size: 70px;
+  background: -webkit-gradient(#156cab);
+
+ }
+ .textfield{
+  display: inline-block;
+  height: 80px;
+  position: relative;
+ }
+ .textfield .textfield-input{
+  background: transparent;
+  color: rgb(0, 0, 0);
+  border: 0;
+  border-bottom: 1px solid #fcfcfc;
+  width: 265px;
+  font-size: 18px;
+  position: relative;
+  left: 3%;
+  z-index: 1;
+  left: 70%;
+}
+
+.textfield .textfield-input:focus{
+  outline: none;
+
+}
+
+
+  .icon{
+    color: aliceblue;
+    min-width: 22px;
+    text-align: center;
+    font-size: 22px;
+  }
+  .error{
+    color: rgb(250, 7, 7);
+    animation:  fadeIn 0.5s linear forwards;
+    padding-left: 70%;
+  }
+  @keyframes fadeIn {
+    0%{
+      opacity: 0;
+    }
+    100%{
+      opacity: 1;
+    }
+  }
+  .account{
+    color: white;
+    text-align: center;
+  }
+  .account a {
+    color: rgb(247, 247, 253);
+    cursor: pointer;
+    font-weight: bold;
+  }
+  .logindiv{
+    text-align: center;
+    padding-top: 20px;
+    padding-bottom: 35px;
+  }
+  .loginbtn{
+    border-radius: 5px;
+    position: absolute;
+    text-align: center;
+    margin: auto;
+    transform: translate(-50%, -50%);
+    color: blue;
+    padding: 15px 50px;
+    font-size: 16px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    box-shadow: 0px 20px 50px #9e9e9e;
+    overflow: hidden;
+    background: #9e9e9e;
+    border: none;
+    cursor: pointer;
+    outline: none;
+    font-weight: bold;
+  }
+ 
+</style>

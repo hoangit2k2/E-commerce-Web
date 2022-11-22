@@ -40,6 +40,7 @@ public class UserServicelmpl implements UserService {
 	}
 	@Override
 	public Users createuser(createUserRequest req) {
+//			System.out.println(req.getUsername());
 			Users user = Users.toUser(req);
 			dao.save(user);
 			return user;

@@ -1,170 +1,178 @@
+<body>
+  <div class="container-sm">
+    <div id="datailcontent">
+      <div class="row" ng-controller="contentFormController">
+        <div class="col-7">
+          <div id="demo" class="carousel slide" data-bs-ride="carousel">
+            <!-- Indicators/dots -->
+            <div class="carousel-indicators">
+              <button type="button" data-bs-target="#demo" data-bs-slide-to="0" class="active"></button>
+              <button type="button" data-bs-target="#demo" data-bs-slide-to="1"></button>
+              <button type="button" data-bs-target="#demo" data-bs-slide-to="2"></button>
+              <button type="button" data-bs-target="#demo" data-bs-slide-to="3"></button>
+            </div>
+            <!-- The slideshow/carousel -->
+            <div class="carousel-inner">
+              <div class="carousel-item active">
+                <div class="imagedetail">
+                  <img src=http://localhost:8080/uploads/imagecontent/{{content.content_images[0]}} alt="Los Angeles"
+                    class="d-block">
+                </div>
+              </div>
+              <div class="carousel-item">
+                <div class="imagedetail">
+                  <img src=http://localhost:8080/uploads/imagecontent/{{content.content_images[1]}} alt="Los Angeles"
+                    class="d-block">
+                </div>
+              </div>
+              <div class="carousel-item">
+                <div class="imagedetail">
+                  <img src=http://localhost:8080/uploads/imagecontent/{{content.content_images[2]}} alt="Los Angeles"
+                    class="d-block">
+                </div>
+              </div>
 
+            </div>
+            <!-- Left and right controls/icons -->
+            <button class="carousel-control-prev" type="button" data-bs-target="#demo" data-bs-slide="prev">
+              <span class="carousel-control-prev-icon"></span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#demo" data-bs-slide="next">
+              <span class="carousel-control-next-icon"></span>
+            </button>
+          </div>
+          <h3>{{content.namecontent}}</h3>
+          <h4 class="price">{{content.price|formatVND}}</h4>
+          <div class="row">
+            <div class="col-10">
+              <div class="datail-product">
+                {{content.subject}}
+                <br>
+                🌐Vận Chuyển :
+                ✅GIAO HÀNG NỘI THÀNH miễn phí
+                ✅GIAO HÀNG QUA COD TOÀN QUỐC
+                ✅HỖ TRỢ TRẢ GÓP QUA THẺ TÍN DỤNG & HD SAIGON
+                ⚠️ Bảo hành :
+                - Cài đặt phần mềm miễn phí
+                - Bao test 7 ngày - Bảo hành: 6 tháng
+                --------
+                • 🔜🔜 Thông tin chi tiết xin vui lòng liên hệ:
+                • MacVN - Chuyên MacBook - iMac - iPad
+              </div>
+            </div>
+          </div>
+          <h4>Thông Tin Chi Tiết</h4>
+          <div class="row">
+            <div class="col-6">
+              <div class="infomation-detail">
+                <i class="bi bi-bookmark-star"></i> Hãng :
+                <br>
+                <i class="bi bi-calendar-check"></i> Ngày sản Xuất
+                <br>
+                <i class="bi bi-clipboard-data"></i> Tình trạng
+                <br>
+              </div>
 
-<body >
-  <div class="container-sm" >
-    <div id="datailcontent" >
-    <div class="row" ng-controller = "contentFormController">
-      <div class="col-7">
-        <div id="demo" class="carousel slide" data-bs-ride="carousel">
-          <!-- Indicators/dots -->
-          <div class="carousel-indicators">
-            <button type="button" data-bs-target="#demo" data-bs-slide-to="0" class="active"></button>
-            <button type="button" data-bs-target="#demo" data-bs-slide-to="1"></button>
-            <button type="button" data-bs-target="#demo" data-bs-slide-to="2"></button>
-            <button type="button" data-bs-target="#demo" data-bs-slide-to="3"></button>
-          </div>
-          <!-- The slideshow/carousel -->
-          <div class="carousel-inner" >
-            <div class="carousel-item active">
-              <div class="imagedetail">
-              <img src=http://localhost:8080/uploads/imagecontent/{{content.content_images[0]}}   alt="Los Angeles" class="d-block">
             </div>
-            </div>
-            <div class="carousel-item">
-              <div class="imagedetail">
-              <img src=http://localhost:8080/uploads/imagecontent/{{content.content_images[1]}} alt="Los Angeles" class="d-block">
-            </div>
-          </div>
-            <div class="carousel-item">
-              <div class="imagedetail">
-              <img src=http://localhost:8080/uploads/imagecontent/{{content.content_images[2]}} alt="Los Angeles" class="d-block">
-            </div>
-          </div>
+            <div class="col-6">
+              <div class="infomation-detail">
 
+                <i class="bi bi-flag"></i> Xuất Xứ
+                <br>
+                <i class="bi bi-bookmarks"></i> Ngày Rao
+                <br>
+                <i class="bi bi-cassette"></i>Thông số
+                <br>
+              </div>
+
+            </div>
           </div>
-          <!-- Left and right controls/icons -->
-          <button class="carousel-control-prev" type="button" data-bs-target="#demo" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon"></span>
-          </button>
-          <button class="carousel-control-next" type="button" data-bs-target="#demo" data-bs-slide="next">
-            <span class="carousel-control-next-icon"></span>
-          </button>
+          <h4>Khu vực</h4>
+          <i class="bi bi-geo-alt"></i>
+          <p>{{content.address}}</p>
+          <h4>Ngày đăng</h4>
+          <i class="bi bi-geo-alt"></i>
+          <p>{{content.datetime}}</p>
         </div>
-        <h3>{{content.namecontent}}</h3>
-        <h4 class="price">{{content.price|formatVND}}</h4>
-        <div class="row">
-          <div class="col-10">
-            <div class="datail-product">
-              {{content.subject}}
-              <br>
-              🌐Vận Chuyển :
-              ✅GIAO HÀNG NỘI THÀNH miễn phí
-              ✅GIAO HÀNG QUA COD TOÀN QUỐC
-              ✅HỖ TRỢ TRẢ GÓP QUA THẺ TÍN DỤNG & HD SAIGON
-              ⚠️ Bảo hành :
-              - Cài đặt phần mềm miễn phí
-              - Bao test 7 ngày - Bảo hành: 6 tháng
-              --------
-              • 🔜🔜 Thông tin chi tiết xin vui lòng liên hệ:
-              • MacVN - Chuyên MacBook - iMac - iPad
+        <div class="col-5">
+          <div class="row">
+            <div class="col-2">
+              <div class="image_account">
+                <img src="/images/product-15.jpg" alt="">
+              </div>
             </div>
+            <div class="col-5">
+              <h3>{{content.usernameid}}</h3>
+              <div class="row">
+                <div class="col-1"></div><i class="bi bi-circle-fill">Trạng thái</i>
+              </div>
+            </div>
+            <div class="col-5">
+              <div class="view-shop">
+                <a href="/index.html#!/shop/{{content.usernameid}}">
+                  <button type="button" class="btn btn-outline-success">Xem mặt hàng</button>
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-4">
+              <h5>Lượt Thích</h5>
+              <h5><i class="bi bi-shop-window"
+                  style="margin-left: 32px; color: rgb(12, 159, 110);">{{content.conten_likes.length}}</i></h5>
+
+            </div>
+            <div class="col-4">
+              <h5>Đánh Giá</h5>
+              <i class="fa-sharp fa-solid fa-heart"  style="margin-left: 32px;font-size: 35px; color: rgb(231, 69, 66);cursor: pointer;" 
+              ng-click = "love()"
+              ></i>
+              </h5>
+            </div>
+            <div class="col-4">
+              <h5>Phản hồi chat</h5>
+              <h5 style="margin-left: 32px;">88%</h5>
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="infomation">
+              <h5>
+                <i class="bi bi-clipboard2-check-fill">Là Đối Tác Rao Vặt</i>
+              </h5>
+              <h6>
+                <p>Cam kết hàng đúng mô tả, bảo hành ít nhất 3 tháng,</p>
+                <p>hỗ trợ đổi trả.Tìm hiểu thêm</p>
+              </h6>
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <button type="button" class="btn btn-outline-success">
+              <h4>
+                <i class="bi bi-telephone"></i>
+                {{content.phone}}
+              </h4>
+            </button>
+          </div>
+          <br>
+          <div class="row">
+            <button type="button" class="btn btn-success">
+              <h4>
+                <a href="mailto: {{content.email}}? subject = tôi cần mua sản phẩm {{content.name}}">
+                  <i class="bi bi-chat" style="text-align:left ;">Liên Hệ Người Bán</i>
+                </a>
+              </h4>
+            </button>
+
           </div>
         </div>
-        <h4>Thông Tin Chi Tiết</h4>
-        <div class="row">
-          <div class="col-6">
-            <div class="infomation-detail">
-              <i class="bi bi-bookmark-star"></i> Hãng :
-              <br>
-              <i class="bi bi-calendar-check"></i> Ngày sản Xuất
-              <br>
-              <i class="bi bi-clipboard-data"></i> Tình trạng
-              <br>
-            </div>
+        <h3>Những Sản Phẩm khác của shop</h3>
 
-          </div>
-          <div class="col-6">
-            <div class="infomation-detail">
+        <hr>
 
-              <i class="bi bi-flag"></i> Xuất Xứ
-              <br>
-              <i class="bi bi-bookmarks"></i> Ngày Rao
-              <br>
-              <i class="bi bi-cassette"></i>Thông số
-              <br>
-            </div>
 
-          </div>
-        </div>
-        <h4>Khu vực</h4>
-        <i class="bi bi-geo-alt"></i><p>{{content.address}}</p>
-        <h4>Ngày đăng</h4>
-        <i class="bi bi-geo-alt"></i><p>{{content.datetime}}</p>
       </div>
-      <div class="col-5">
-        <div class="row">
-          <div class="col-2">
-            <div class="image_account">
-            <img src="/images/product-15.jpg" alt="">
-            </div>
-          </div>
-          <div class="col-5">
-            <h3>{{content.usernameid}}</h3>
-            <div class="row">
-              <div class="col-1"></div><i class="bi bi-circle-fill">Trạng thái</i>
-            </div>
-          </div>
-          <div class="col-5">
-            <div class="view-shop">
-              <a href="/index.html#!/shop/{{content.usernameid}}">
-              <button type="button" class="btn btn-outline-success">Xem mặt hàng</button>
-            </a>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-4">
-            <h5>Cửa Hàng</h5>
-            <h5><i class="bi bi-shop-window" style="margin-left: 32px; color: rgb(12, 159, 110);"></i></h5>
-          </div>
-          <div class="col-4">
-            <h5>Đánh Giá</h5>
-            <h5><i class="bi bi-bar-chart" style="margin-left: 32px;color: rgb(12, 159, 110);"></i></h5>
-          </div>
-          <div class="col-4">
-            <h5>Phản hồi chat</h5>
-            <h5 style="margin-left: 32px;">88%</h5>
-          </div>
-        </div>
-        <br>
-        <div class="row">
-          <div class="infomation">
-            <h5>
-              <i class="bi bi-clipboard2-check-fill">Là Đối Tác Rao Vặt</i>
-            </h5>
-            <h6>
-              <p>Cam kết hàng đúng mô tả, bảo hành ít nhất 3 tháng,</p>
-              <p>hỗ trợ đổi trả.Tìm hiểu thêm</p>
-            </h6>
-          </div>
-        </div>
-        <br>
-        <div class="row">
-          <button type="button" class="btn btn-outline-success">
-            <h4>
-              <i class="bi bi-telephone"></i>
-              {{content.phone}}
-            </h4>
-          </button>
-        </div>
-        <br>
-        <div class="row">
-          <button type="button" class="btn btn-success">
-            <h4>
-              <a href= "mailto: {{content.email}}? subject = tôi cần mua sản phẩm {{content.name}}">
-              <i class="bi bi-chat" style="text-align:left ;">Liên Hệ Người Bán</i>
-            </a>
-            </h4>
-          </button>
-
-        </div>
-      </div>
-      <h3>Những Sản Phẩm khác của shop</h3>
- 
-      <hr>
-     
-    
+    </div>
   </div>
-  </div>
-</div>
 </body>

@@ -34,4 +34,5 @@ app.controller('categoryFormController', function($scope, $rootScope, $location,
                 console.log(error)
             }) 
         }
+
     })
