@@ -26,6 +26,42 @@
 	        </div>
 	        <div class="mt-lg-5"></div>
 	    </div>
+	    <!-- Meme logout \(￣︶￣*\)) -->
+		<div class="meme">
+		    <audio src="http://localhost:8080/data/ThuyKieu_ThuyVan.mp3" id="audio" preload="auto"></audio>
+		    <img style="z-index: -1; position: fixed; top: 0; left: 0; display: none;" class="fit-img o-fit-cover"
+		        src="https://media.tenor.com/m8xcPj0sDqoAAAAC/kha-banh-mua-quat.gif" id="banhMuaQuat">
+		    <div class="btn-group position-fixed bottom-0 end-0">
+		        <button class="btn btn-outline-secondary"
+		            onclick="audio.play(); banhMuaQuat.style.display = banhMuaQuat.style.display=='none' ? 'block' : 'none'">background</button>
+		    </div>
+		
+		    <style>
+		        .meme .o-fit-cover {
+		            animation: meme infinite .25s;
+		        }
+		
+		        @keyframes meme {
+		            from {
+		                opacity: 1;
+		                object-fit: contain;
+		                background: linear-gradient(0deg, #f0ff24, #227bff);
+		            }
+		
+		            50% {
+		                opacity: .5;
+		                object-fit: cover;
+		                background: linear-gradient(120deg, #ff3434, #ff19ba);
+		            }
+		
+		            to {
+		                opacity: 1;
+		                object-fit: contain;
+		                background: linear-gradient(240deg, #34ff19, #ff507c);
+		            }
+		        }
+		    </style>
+		</div>
 	</main>
 </body>
 </html>

@@ -11,7 +11,7 @@ public class AccountService extends AbstractService<Account, String> {
 	protected String getId(Account entity) {
 		return entity.getUsername();
 	}
-	
+
 	public Account getByEmail(String email) {
 		return ((AccountRepository) super.rep).getByEmail(email);
 	}

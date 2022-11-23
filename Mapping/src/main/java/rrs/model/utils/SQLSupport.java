@@ -59,7 +59,7 @@ public interface SQLSupport {
 	
 	public enum TABLE {
 		
-		ACCOUNTS, APIs, CATEGORIES, CONTENT_IMAGES, CONTENT_TYPES, CONTENTS, LIKES, STAFFS;
+		ACCOUNTS, CATEGORIES, CONTENT_IMAGES, CONTENT_TYPES, CONTENTS, LIKES, STAFFS;
 		
 		private String[] columns;
 		private String[] orderBy;
