@@ -27,11 +27,11 @@ app.controller("accountCtrl", function($scope, $http, $window){
         $scope.cpassword1 = true;
     }
     $scope.login = function(){
-        console.log($scope.username)
-        console.log($scope.password)
+        // console.log($scope.username)
+        // console.log($scope.password)
         if($scope.btnName == "sign up"){
             if($scope.username != null && $scope.password != null && $scope.cpassword != null){
-                $scope.postf();
+                $scope.resgister();
             }
         }
         else if ($scope.btnName == "Login"){
@@ -44,15 +44,38 @@ app.controller("accountCtrl", function($scope, $http, $window){
         var url = `http://localhost:8080/rest/users/${$scope.username}`;
         $http.get(url).then(resp => {
             $scope.db = resp.data;
-            sessionStorage.setItem('info', angular.toJson(resp.data))
-            alert('Đăng nhập thành công')
-            $window.location.reload();
-            location = "index.html"
+            if(resp.data.password == $scope.password){
+                sessionStorage.setItem('info', angular.toJson(resp.data))
+                alert('Đăng nhập thành công')
+                $window.location.reload();
+                location = "index.html"
+            }
+            else{
+                alert('Mật Khẩu Sai')
+            }
+         
 
         }).catch(error =>{
-            alert('Đăng Nhập thất bại')
+            alert('Tên Đăng Nhập Không tồn tại')
         })
-    //     $http.post(
+}
+    $scope.resgister = function(){
+        $http({
+            method: "POST",
+            url: "http://localhost:8080/rest/users",
+            data: ({
+                'username': $scope.username,
+                'password': $scope.password
+            }),
+            // headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        }).then(function(response){
+            var data = response.data
+            alert('Thêm thành công')
+        })
+    }
+})
+
+  //     $http.post(s
     //         "wwwww", {
     //             'username' : $scope.username,
     //             'password' : $scope.password,
@@ -68,12 +91,3 @@ app.controller("accountCtrl", function($scope, $http, $window){
     //         location = ""
     //     }
     // })
-}
-})
-
-
-
-
-// $scope.logout() = function(){
-//     sessionStorage.removeItem('info')
-// }

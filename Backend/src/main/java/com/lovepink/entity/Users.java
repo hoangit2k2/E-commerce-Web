@@ -31,7 +31,7 @@ import java.util.List;
 @Entity(name = "users")
 public class Users implements Serializable {
 	@Id
-	@Column(name="username")
+	@Column(length = 100)
 	private String username;
 	private String password;
 	private String name;
@@ -59,7 +59,7 @@ public class Users implements Serializable {
 		user.setPhone(req.getPhone());
 		user.setEmail(req.getEmail());
 		user.setImage(req.getImage());
-		user.setRole(req.getRole());
+		user.setRole("cust");
 		return  user;
 	}
 }

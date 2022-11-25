@@ -30,6 +30,11 @@ app.controller('appController', function ($scope, $rootScope,$window) {
         location = "index.html"
     }
     $scope.checklogin = function(){
+        if($scope.name == null || $scope.address == null || $scope.email == null || $scope.phone ==null){
+            alert('Bạn cần bổ sung thông tin cá nhân')
+            $window.location.reload();
+            location = "#html/account.html"
+        }
         if(info == null){
             alert('Bạn Cần đăng nhập')
              $window.location.reload();
