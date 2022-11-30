@@ -15,8 +15,8 @@ CREATE TABLE ACCOUNTS (
     password varchar(50) not null,
     email varchar(80),
     name nvarchar(60),
-	flatform nvarchar(20) default 'SYSTEM'
-	unique(email, flatform)
+    flatform nvarchar(20) default 'SYSTEM',
+    unique(email, flatform)
 );
 
 IF EXISTS (SELECT name FROM sys.tables WHERE name = 'ROLES') DROP TABLE ROLES
