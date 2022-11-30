@@ -1,6 +1,5 @@
 package rrs.model.entities;
 
-import java.util.Set;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
@@ -17,16 +16,17 @@ public class AuthPattern {
 	private String id;
 	private String name;
 	private String email;
-	private Set<String> roles;
+	private String flatform;
 	
 	public AuthPattern(OAuth2AuthenticationToken token) {
 		OAuth2User auth = token.getPrincipal();
-		this.id = auth.getAttribute("id");
-		this.name = auth.getAttribute("name");
-		this.email = auth.getAttribute("email");
+		id = auth.getName();
+		name = auth.getAttribute("name");
+		email = auth.getAttribute("email");
+		flatform = token.getAuthorizedClientRegistrationId().toUpperCase();
 	}
 
 	public Account toAccount() {
-		return new Account(this.id, Random.NumUppLow("RRS", 9), this.email, this.name, "BUYER");
+		return new Account(id,Random.NumUppLow("RRS", 9),email,name,flatform,"BUYER");
 	}
 }

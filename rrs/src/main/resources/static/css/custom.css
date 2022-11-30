@@ -1,3 +1,17 @@
+.card-price {
+	padding: 0 1rem;
+	bottom: .25rem;
+	font-size: 1.25rem;
+	position: absolute;
+	width: calc(100% - .5rem);
+	text-shadow: 0 0 5px #000000;
+	border-radius: 1rem 0 0 0;
+    --bs-bg-opacity: .25;
+    --bs-text-opacity: 1;
+    color: rgba(var(--bs-warning-rgb),var(--bs-text-opacity))!important;
+    background-color: rgba(var(--bs-info-rgb),var(--bs-bg-opacity))!important;
+}
+
 /* ++++++++++++++++++++++++++++++++++++++++++++++++++ SCROLL */
 
 .scroll-x1::-webkit-scrollbar {

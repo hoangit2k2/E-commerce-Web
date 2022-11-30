@@ -11,10 +11,12 @@ GO
 IF EXISTS (SELECT name FROM sys.tables WHERE name = 'ACCOUNTS') DROP TABLE ACCOUNTS
 GO
 CREATE TABLE ACCOUNTS (
-    username varchar(20) primary key,
-    password varchar(30) not null,
-    email varchar(60),
-    name nvarchar(50)
+    username varchar(30) primary key,
+    password varchar(50) not null,
+    email varchar(80),
+    name nvarchar(60),
+	flatform nvarchar(20) default 'SYSTEM'
+	unique(email, flatform)
 );
 
 IF EXISTS (SELECT name FROM sys.tables WHERE name = 'ROLES') DROP TABLE ROLES
@@ -27,7 +29,7 @@ CREATE TABLE ROLES (
 IF EXISTS (SELECT name FROM sys.tables WHERE name = 'AUTHORITIES') DROP TABLE AUTHORITIES
 GO
 CREATE TABLE AUTHORITIES (
-    account_id varchar(20) foreign key references ACCOUNTS(username)
+    account_id varchar(30) foreign key references ACCOUNTS(username)
         on update cascade on delete cascade not null,
     role_id varchar(10) foreign key references ROLES(id) not null,
     primary key (account_id, role_id)
@@ -49,7 +51,7 @@ CREATE TABLE PRODUCTS (
     name nvarchar(50),
     descript nvarchar(255),
     category_id char(8) foreign key references CATEGORIES(id) not null,
-    account_id varchar(20) foreign key references ACCOUNTS(username)
+    account_id varchar(30) foreign key references ACCOUNTS(username)
     on update cascade on delete cascade not null,
 );
 
@@ -65,7 +67,7 @@ CREATE TABLE PRODUCT_IMAGES (
 IF EXISTS (SELECT name FROM sys.tables WHERE name = 'COMMENTS') DROP TABLE COMMENTS
 GO
 CREATE TABLE COMMENTS (
-    account_id varchar(20) foreign key references ACCOUNTS(username)
+    account_id varchar(30) foreign key references ACCOUNTS(username)
     on update cascade on delete cascade not null,
     product_id int foreign key references PRODUCTS(id),
     regTime datetime default getDate(),
@@ -81,7 +83,7 @@ CREATE TABLE ORDERS (
     id int identity primary key,
 	address nvarchar(80),
     regTime datetime default getDate(),
-    account_id varchar(20) foreign key references ACCOUNTS(username)
+    account_id varchar(30) foreign key references ACCOUNTS(username)
     on update cascade on delete cascade not null,
 );
 
@@ -101,7 +103,7 @@ GO
 CREATE TABLE ORDER_STATUS (
     order_id int foreign key references ORDERS(id)
     on update cascade on delete cascade not null,
-    account_id varchar(20) foreign key references ACCOUNTS(username),
+    account_id varchar(30) foreign key references ACCOUNTS(username),
     status int default 0,
     descript nvarchar(150),
     primary key(order_id)

@@ -333,12 +333,12 @@
 							<div class="card-title m-0 fw-bold text-center overflow-auto scroll scroll-x1 text-nowrap">
 								{{e.name}}</div>
 							<div class="card-body p-1">
-								<span class="position-absolute fw-bold text-warning fs-5"
+								<span class="card-price"
 									style="text-shadow: 0 0 5px #ffffff;">{{e.cosPrice |
 									number}}</span> <span
 									class="position-absolute bg-warning bg-opacity-75 fs-5 badge"
-									style="right: .25rem;" ng-if="e.proPrice>0"> <i
-									class="fa-solid fa-tag"></i>&nbsp;{{e.proPrice}}%
+									style="right: .25rem;" ng-if="e.proPrice>0">
+									<i class="fa-solid fa-tag"></i>&nbsp;{{e.proPrice}}%
 								</span>
 								<!-- Show account and related products control bar -->
 								<div

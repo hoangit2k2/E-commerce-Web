@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
@@ -76,10 +77,10 @@ public class SecurityControl {
 		return this.BACK_HOME; // back home
 	}
 
-	@PostMapping("/loginFailed")
+	@RequestMapping("/loginFailed")
 	public String loginFailed() {
 		String title = "Đăng nhập tài khoản thất bại";
-		String message = "Tên đăng nhập hoặc mật khẩu không đúng!";
+		String message = "Kiểm tra thông tin đăng nhập!";
 		req.setAttribute("message", HTMLUtil.alert(BGR.WARN, title, message, 3000));
 
 		return "/pages/security/loginForm"; // return page

@@ -63,16 +63,17 @@ public class AuthConfig extends WebSecurityConfigurerAdapter {
 	 		.defaultSuccessUrl("/security/loginSuccess", false)
 			.failureForwardUrl("/security/loginFailed"); // login failed
 
+        http.oauth2Login() //Login with google account
+//        .loginPage("/security/loginForm")
+        .failureUrl("/security/loginFailed")
+        .defaultSuccessUrl("/security/auth2Success", false)
+        .authorizationEndpoint().baseUri("/security/loginAuth2");
+        
         http// logout
 			.logout()
 			.logoutUrl("/security/logout") // default [/logout]
 			.logoutSuccessUrl("/security/logoutSuccess");
         
-        http.oauth2Login() //Login with google account
-        .loginPage("/security/loginForm")
-        .defaultSuccessUrl("/security/auth2Success", false)
-        .failureUrl("/security/loginFailed")
-        .authorizationEndpoint().baseUri("/security/loginAuth2");
         
 	}
 	

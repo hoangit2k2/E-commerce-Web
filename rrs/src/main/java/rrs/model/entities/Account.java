@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder.ObtainVia;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -25,6 +26,8 @@ public class Account {
 	private String password;
 	private String email;
 	private String name;
+	@ObtainVia
+	private String flatform = "SYSTEM";
 	
 	@ElementCollection(fetch = FetchType.EAGER) @Column(name = "role_id") // phan quyen he thong
 	@CollectionTable(name = "AUTHORITIES", joinColumns = { @JoinColumn(name = "account_id") })
@@ -39,11 +42,12 @@ public class Account {
 		this.password = password;
 	}
 
-	public Account(String username, String password, String email, String name, String...roles) {
+	public Account(String username, String password, String email, String name, String flatform, String...roles) {
 		this.username = username;
 		this.password = password;
 		this.email = email;
 		this.name = name;
+		this.flatform = flatform;
 		for(String role : roles) try {this.roles.add(role);} catch (Exception e) {}
 	}
 	

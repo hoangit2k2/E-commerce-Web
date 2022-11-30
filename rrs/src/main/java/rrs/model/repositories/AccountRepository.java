@@ -15,5 +15,8 @@ public interface AccountRepository extends JpaRepository<Account, String> {
 
 	@Query("SELECT o FROM ACCOUNTS o WHERE o.email=:email")
 	Account getByEmail(String email);
+	
+	@Query("SELECT o FROM ACCOUNTS o WHERE o.email=:#{#account.email} AND o.flatform=:#{#account.flatform}")
+	Account getByUnique(Account account);
 
 }

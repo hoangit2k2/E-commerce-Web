@@ -1,18 +1,15 @@
 package rrs.model.services; 
 
 import java.util.List;
-import java.util.Optional;
-
 import javax.mail.Message.RecipientType;
 import javax.mail.MessagingException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import rrs.model.entities.Account;
 import rrs.model.repositories.AccountRepository;
 import rrs.model.utils.SendMail;
 import rrs.util.HTMLUtil;
+
 @Service
 public class AccountService extends AbstractService<Account, String> {
 	
@@ -40,16 +37,16 @@ public class AccountService extends AbstractService<Account, String> {
 	 * @return {@link Account} from database
 	 * @throws MessagingException 
 	 */
-	public Account createNotExist(Account account, boolean sendMail){
-		if(((AccountRepository) super.rep).getByEmail(account.getEmail()) != null) account.setEmail(null);
-		else if(sendMail) try {
-			String title = String.format("RRS liên kết tài khoản %s mới", account.getUsername());
-			String text = HTMLUtil.newAccount(title, account.getUsername(), account.getPassword(), null);
+	public Account createNotExist(Account account, boolean sendMail) {
+		Account o = ((AccountRepository) super.rep).getByUnique(account);
+		if(o == null) try {
+			String unique = account.getFlatform()+"("+account.getUsername()+")";
+			String title = "RRS liên kết tài khoản "+unique+" mới";
+			String text = HTMLUtil.newAccount(title, unique, account.getPassword(), null);
 			mail.sendMimeMessage(title, text, null, RecipientType.TO, account.getEmail());
+			return super.rep.save(account);
 		} catch (MessagingException e) {}
-		
-		Optional<Account> o = super.rep.findById(account.getUsername());
-		return o.isPresent() ? o.get() : super.rep.save(account);
+		return o;
 	}
 
 }
