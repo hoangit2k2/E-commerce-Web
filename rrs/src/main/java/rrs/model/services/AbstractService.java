@@ -15,7 +15,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import rrs.model.utils.InterDAO;
 
 public abstract class AbstractService<E, K> implements InterDAO<E, K> {
-	
+
 	@Autowired protected JpaRepository<E, K> rep;
 	@Autowired protected HttpServletRequest req;
 	protected abstract K getId(E entity);

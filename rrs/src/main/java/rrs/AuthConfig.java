@@ -18,6 +18,7 @@ public class AuthConfig extends WebSecurityConfigurerAdapter {
 		"/rrs/pages/rrs", "/rrs/pages/home", "/rrs/pages/product_detail"
 	};	
 	private final String[] FOR_ADMIN = {
+			"/rrs/pages/setting", // quản lý khác
 			"/rrs/pages/statistic_order", // Thống kê
 			"/rrs/pages/account_management", // Tài khoản
 			"/rrs/pages/progress_management", // Quy trình đặt hàng

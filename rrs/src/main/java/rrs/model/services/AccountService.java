@@ -39,7 +39,7 @@ public class AccountService extends AbstractService<Account, String> {
 	 */
 	public Account createNotExist(Account account, boolean sendMail) {
 		Account o = ((AccountRepository) super.rep).getByUnique(account);
-		if(o == null) try {
+		if(o == null && sendMail) try {
 			String unique = account.getFlatform()+"("+account.getUsername()+")";
 			String title = "RRS liên kết tài khoản "+unique+" mới";
 			String text = HTMLUtil.newAccount(title, unique, account.getPassword(), null);
@@ -48,5 +48,4 @@ public class AccountService extends AbstractService<Account, String> {
 		} catch (MessagingException e) {}
 		return o;
 	}
-
 }

@@ -56,11 +56,11 @@ public class SecurityControl {
 	// ___________________________________________________________ FOR AUTH2 CLIENT
 	@GetMapping("/auth2Success")
 	public String loginSuccess(OAuth2AuthenticationToken token, Model model) {
-		Account account = new AuthPattern(token).toAccount();
-		model.addAttribute("account", dao.createNotExist(account, true));
+		Account account = dao.createNotExist(new AuthPattern(token).toAccount(), true);
+		model.addAttribute("account", account);
 		return this.BACK_HOME;
 	}
-
+	
 	// ___________________________________________________________ LOGIN
 	@GetMapping("/loginForm")
 	public String loginForm() {
