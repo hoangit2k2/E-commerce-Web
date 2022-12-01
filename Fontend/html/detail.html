@@ -167,12 +167,60 @@
 
           </div>
         </div>
-        <h3>Những Sản Phẩm khác của shop</h3>
-
         <hr>
 
+          <h3>Những Sản Phẩm Cùng Loại</h3>
+          <div class="product-list" >
+            <div class="row" >
+                <div class="col-2dot4" ng-repeat="s in contentshop">
+                    <a href="/index.html#!/{{s.id}}#datailcontent">
+                        <img src=http://localhost:8080/uploads/imagecontent/{{s.content_images[0]}} alt="">
+                    </a>
+                    <div class="link-subjec">
+                        <a href="">
+                            <div class="subject">{{s.namecontent}}</div>
+                        </a>
+                    </div>
+                    <div class="price">{{s.price|formatVND}}</div>
+                    <div class="text">{{s.account.username}}</div>
+                </div>
+                <div class="detail">
+                    <h1>
+                        <span style="font-size: 20px">Rao Vặt - Chợ Mua
+                            B&aacute;n, Rao Vặt Trực Tuyến H&agrave;ng Đầu Của Người Việt</span>
+                    </h1>
+                </div>
+            </div>
+      
+        </div>
 
+        <h3>Những Sản Phẩm khác của shop</h3>
+        <div class="product-list" >
+          <div class="row" >
+              <div class="col-2dot4" ng-repeat="c in contentcategoryshop">
+                  <a href="/index.html#!/{{c.id}}#datailcontent">
+                      <img src=http://localhost:8080/uploads/imagecontent/{{c.content_images[0]}} alt="">
+                  </a>
+                  <div class="link-subjec">
+                      <a href="">
+                          <div class="subject">{{c.namecontent}}</div>
+                      </a>
+                  </div>
+                  <div class="price">{{c.price|formatVND}}</div>
+                  <div class="text">{{c.account.username}}</div>
+              </div>
+              <div class="detail">
+                  <h1>
+                      <span style="font-size: 20px">Rao Vặt - Chợ Mua
+                          B&aacute;n, Rao Vặt Trực Tuyến H&agrave;ng Đầu Của Người Việt</span>
+                  </h1>
+              </div>
+          </div>
+    
       </div>
+        </div>
     </div>
+    <br>
+  
   </div>
 </body>

@@ -70,7 +70,7 @@ public class ContentServicelmpl implements ContentService {
 				content.setUsernameid(req.getUsernameid());
 				content.setCategoryid(req.getCategoryid());
 				content.setNamecontent(req.getNamecontent());
-//				content.setContent_images(req.getContent_images());
+				content.setContent_images(req.getContent_images());
 				content.setSubject(req.getSubject());
 				content.setPrice(req.getPrice());
 				content.setEmail(req.getEmail());

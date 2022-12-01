@@ -1,11 +1,9 @@
 
-app.controller("accountCtrl", function($scope, $http, $window){
+app.controller("accountCtrl", function($scope, $http, $window, $routeParams, $location){
     $scope.islogin = false
     $scope.btnName = "Login";
     $scope.cpassword1 = true;
     $scope.showsignup = false;
-
-
     $scope.showlogin = true;
     $scope.signuppage = function(){
         $scope.showsignup = $scope.showsignup ? false : true
@@ -15,7 +13,6 @@ app.controller("accountCtrl", function($scope, $http, $window){
         $scope.username = null;
         $scope.password = null;
         $scope.cpassword1 = false;
-
     }
     $scope.loginpage = function(){
         $scope.showlogin = $scope.showlogin ? false : true
@@ -27,8 +24,6 @@ app.controller("accountCtrl", function($scope, $http, $window){
         $scope.cpassword1 = true;
     }
     $scope.login = function(){
-        // console.log($scope.username)
-        // console.log($scope.password)
         if($scope.btnName == "sign up"){
             if($scope.username != null && $scope.password != null && $scope.cpassword != null){
                 $scope.resgister();
@@ -47,8 +42,9 @@ app.controller("accountCtrl", function($scope, $http, $window){
             if(resp.data.password == $scope.password){
                 sessionStorage.setItem('info', angular.toJson(resp.data))
                 alert('Đăng nhập thành công')
-                $window.location.reload();
-                location = "index.html"
+                $window.location.reload()
+
+                $location.path('/')
             }
             else{
                 alert('Mật Khẩu Sai')
@@ -70,24 +66,73 @@ app.controller("accountCtrl", function($scope, $http, $window){
             // headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         }).then(function(response){
             var data = response.data
-            alert('Thêm thành công')
+            alert('Tạo tài khoản thành công')
+            $location.path('/')
+
         })
     }
-})
+    $scope.updateinfo = function(){
+        $scope.username = $routeParams.username
+        $http({
+            method: "PUT",
+            url: `http://localhost:8080/rest/users/${$scope.username}`,
+            data: ({
+                'name': $scope.info.name,
+                'address': $scope.info.address,
+                'phone': $scope.info.phone,
+                'email': $scope.info.email
+            }),
+            // headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        }).then(function(response){
+            var url = `http://localhost:8080/rest/users/${$scope.username}`;
+            $http.get(url).then(resp => {
+                $scope.db = resp.data;
+                    sessionStorage.setItem('info', angular.toJson(resp.data))
+                    $window.location.reload();
+            })
+            alert('Cập Nhật thông tin thành công')
+        })
+        .catch(function(err){
+            console.log(err)
+        })
+    }
+    //update password user
+    $scope.updatepassword = function(){
+        $scope.username = $routeParams.username
+        if($scope.password != info.password){
+            alert('Mật khẩu củ không chính xác !')
+            return
+        }
+        if($scope.newpassword != $scope.newpassword1){
+            alert('Mật khẩu không trùng nhau')
+            return
+        }
+        if($scope.newpassword == info){
+            alert('Mật khẩu mới trùng với mật khẩu củ')
+            return
+        }
+        else{
+        $http({
+            method: "PUT",
+            url: `http://localhost:8080/rest/users/${$scope.username}/password`,
+            data: ({
+                'password': $scope.newpassword
+            }),
+        }).then(function(response){
+            $http.defaults.headers.common.Authorization = ' ';
+            var url = `http://localhost:8080/rest/users/${$scope.username}`;
+            $http.get(url).then(resp => {
+                $scope.db = resp.data;
+                    sessionStorage.setItem('info', angular.toJson(resp.data))
+                    $window.location.reload();
+                    location = "index.html#!/"
+            })
+            alert('Cập nhật mật khẩu thành công')
+        })
+        // .catch(function(error){
 
-  //     $http.post(s
-    //         "wwwww", {
-    //             'username' : $scope.username,
-    //             'password' : $scope.password,
-    //             'btnName' : $scope.btnName
-    //         }
-    //     ).senccess(function(data){
-    //         alert(data);
-    //         if(data == "username already exists. User the different Username"){
-    //         return;
-    //     }
-    //     $window.location.reload();
-    //     if(data == "login Successful"){
-    //         location = ""
-    //     }
-    // })
+        // })
+    }
+    }
+
+})

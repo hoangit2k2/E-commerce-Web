@@ -6,6 +6,9 @@ import com.lovepink.service.LikesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.lovepink.Dao.likesDao;
+
+import java.util.List;
+
 @Service
 public class LikeServicelmpl implements LikesService {
 
@@ -16,5 +19,9 @@ public class LikeServicelmpl implements LikesService {
         Likes likes = Likes.toLikes(req);
         dao.save(likes);
         return likes;
+    }
+    @Override
+    public List<Likes> getContentByUsername(String usernameid){
+        return dao.findByUsernameid(usernameid);
     }
 }

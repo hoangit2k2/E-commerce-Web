@@ -1,0 +1,32 @@
+<div class="container-sm" ng-controller = "accountCtrl">
+    <div class="row">
+        <h1>
+        Thông tin cá nhân
+        </h1>
+        <div class="col-4">
+            <img src="https://png.pngtree.com/png-vector/20190803/ourlarge/pngtree-avatar-user-basic-abstract-circle-background-flat-color-icon-png-image_1647265.jpg" style="width:400px ;">
+        </div>
+        <div class="col-6">
+            <form >
+                <div class="mb-3 mt-3">
+                    <label for="" class="form-lable">Họ và Tên</label>
+                    <input  class="form-control" ng-model = "info.name" >
+                </div>
+                <div class="mb-3 mt-3">
+                    <label for="" class="form-lable">Email</label>
+                    <input type="email" class="form-control"  ng-model = "info.email">
+                </div>
+                <div class="mb-3 mt-3">
+                    <label for="" class="form-lable">Số điện thoại</label>
+                    <input type="text" class="form-control"  ng-model = "info.phone">
+                </div>
+                <div class="mb-3 mt-3">
+                    <label for="" class="form-lable">Địa chỉ</label>
+                    <input type="text" class="form-control" ng-model = "info.address">
+                </div>
+                <button class="btn btn-outline-success" ng-click = "updateinfo()">Cập Nhật thông tin </button>
+            </form>
+        </div>
+
+    </div>
+</div>

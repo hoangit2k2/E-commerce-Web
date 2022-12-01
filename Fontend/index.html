@@ -33,7 +33,7 @@
         <a class="nav-link" href="#"><i class="bi bi-house-door"></i> Trang chủ</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#"><i class="bi bi-box-seam"></i></i> Quản Lý Tin</a>
+        <a class="nav-link" href="/index.html#!/manager/contens/{{info.username}}"><i class="bi bi-box-seam"></i></i> Quản Lý Tin</a>
       </li>
       <li class="nav-item">
         <a class="nav-link"><i class="bi bi-bag"></i> Đơn Hàng</a>
@@ -66,7 +66,8 @@
         </a>
         <ul class="dropdown-menu">
           <li><a class="dropdown-item" href="" ng-hide="{{checktrue}}">Xin Chào {{info.name}}</a></li>
-          <li><a class="dropdown-item" href="" ng-hide="{{checktrue}}">Thông Tin Tài Khoản</a></li>
+          <li><a class="dropdown-item" href="/index.html#!/account/{{info.username}}" ng-hide="{{checktrue}}">Thông Tin Tài Khoản</a></li>
+          <li><a class="dropdown-item" href="/index.html#!/account/{{info.username}}/password" ng-hide="{{checktrue}}">Thay đổi mật khẩu</a></li>
           <li><a class="dropdown-item" href="" ng-click="logout()" ng-hide="{{checktrue}}">Đăng Xuất</a></li>
           <li><a class="dropdown-item" href="/index.html#!/login/account" ng-hide="{{checkfalse}}">Đăng Nhập & đăng
               ký</a></li>
@@ -79,8 +80,10 @@
     </ul>
 
     <div class="panel">
-      <a class="nav-link" ng-click="checklogin()" href="index.html#!/create/content">
-        <i class="bi bi-arrow-up-left-square" href=""> ĐĂNG TIN</i>
+      <a class="nav-link" ng-click="checklogin()" href=""
+     >
+      <!-- ng-href="index.html#!/create/content"> -->
+        <i class="bi bi-arrow-up-left-square" > ĐĂNG TIN</i>
       </a>
     </div>
   </nav>

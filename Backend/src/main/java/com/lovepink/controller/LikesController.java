@@ -4,12 +4,11 @@ import com.lovepink.entity.Likes;
 import com.lovepink.service.LikesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import com.lovepink.model.request.createLikesRequest;
+
+import java.util.List;
+
 @CrossOrigin("*")
 @RestController
 public class LikesController {
@@ -26,5 +25,17 @@ public class LikesController {
             System.out.println(e);
             return  null;
         }
+    }
+    @GetMapping("rest/likes/{username}")
+    public  ResponseEntity<?> getContentByUsername(@PathVariable String username){
+        try {
+            System.out.println("hello");
+            List<Likes> result = likesService.getContentByUsername(username);
+            return  ResponseEntity.ok(result);
+        }catch (Exception e){
+            System.out.println(e);
+            return null;
+        }
+
     }
 }

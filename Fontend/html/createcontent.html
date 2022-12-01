@@ -1,24 +1,26 @@
 <div ng-controller = "mypostcontroll">
   <form name="form" ng-submit="insert()">
     <div class="row">
-
+<center>
+  <h2>Thông tin sản phẩm</h2>
+</center>
 <div class="col-5">
     Ảnh sản phẩm
 <div class="row">
   <div class="col">
     <input type="file" ng-model = "files" accept="image/*" onchange="angular.element(this).scope().uploadedFile(this)" ng-required = "true" >
+    <div class="col-12"><img id="output" style="width:300px;height:250px;" class="img-responsive"></div>
+
   </div>
   <div class="col">
     <input type="file" ng-model = "image2" accept="image/*" onchange="angular.element(this).scope().uploadedFile2(this)" ng-required = "true" >
+    <div class="col-12"><img id="output1" style="width:300px;height:250px;" class="img-responsive"></div>
+ 
   </div>
   <div class="col">
     <input type="file" ng-model = "image3" accept="image/*" onchange="angular.element(this).scope().uploadedFile3(this)" ng-required = "true" >
+    <div class="col-12"><img id="output2" style="width:300px;height:250px;" class="img-responsive"></div>
   </div>
-</div>
-<div class="row">
-  <div class="col-12"><img id="output" style="width:300px;height:250px;" class="img-responsive"></div>
-  <div class="col-12"><img id="output1" style="width:300px;height:250px;" class="img-responsive"></div>
-  <div class="col-12"><img id="output2" style="width:300px;height:250px;" class="img-responsive"></div>
 </div>
 <br>
 </div>
@@ -26,15 +28,14 @@
 <div class="col-7">
    
 <div class="container mt-3">
-    <h2>Thông tin sản phẩm</h2>
-      <div class="mb-3 mt-3">
-        <label for="email">ID KHÁCH HÀNG:</label>
-        <input type="text" class="form-control"  placeholder="Nhập ID Khách Hàng" ng-model="user" ng-required="true">
-      </div>
       <div class="mb-3">
         <label for="pwd">lOẠI SẢN PHẨM</label>
-        <input type="text" class="form-control"  placeholder="Nhập Loại Sản Phẩm" ng-model="categoryid" ng-required="true">
-      </div>
+        <br>
+        <select name="repeatSelect" id="repeatSelect" ng-model="categoryid" placehoder = "Chọn loại sản phẩm">
+          <option ng-repeat="category in category" value="{{category.id}}">{{category.name}}</option>
+        </select>    
+        </div>
+   
       <div class="mb-3">
         <label for="pwd">NỘI DUNG RAO BÁN</label>
         <input type="text" class="form-control"  placeholder="Nhập Nội Dung Rao Bán" ng-model="namecontent" ng-required="true">
@@ -59,7 +60,7 @@
         <label for="pwd">ADDRESS</label>
         <input type="text" class="form-control"  placeholder="Nhập Address" ng-model="address" ng-required="true">
       </div>
-      <input type="submit" value="Post">					
+      <input type="submit" value="Tạo Nội Dung" class="btn btn-outline-success">					
   </div>
 
 </div>

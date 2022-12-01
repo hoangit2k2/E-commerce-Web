@@ -1,18 +1,15 @@
 const app = angular.module('app', ["ngRoute"]);
 var info = angular.fromJson(sessionStorage.getItem('info'))
-console.log(info)
-
-app.config(function($httpProvider){
-    // var auth = `Basic ${btoa("cus:123")}`
-    if(info == null){
-
+app.config(function ($httpProvider) {
+    if (info == null) {
     }
-    else{
-    var auth = `Basic ${btoa(`${info.username}:${info.password}`)}`
-    $httpProvider.defaults.headers.common['Authorization'] = auth
+    else {
+        var auth = `Basic ${btoa(`${info.username}:${info.password}`)}`
+        $httpProvider.defaults.headers.common['Authorization'] = auth
+        console.log(auth)
     }
 });
-app.controller('appController', function ($scope, $rootScope,$window) {
+app.controller('appController', function ($scope, $rootScope, $window, $location) {
     $rootScope.info = info;
     $rootScope.checktrue = true;
     $rootScope.checkfalse = false;
@@ -21,33 +18,35 @@ app.controller('appController', function ($scope, $rootScope,$window) {
         $rootScope.checkfalse = true;
 
     }
-    $scope.logout = function() {
+    $scope.logout = function () {
         sessionStorage.removeItem('info')
         $rootScope.checktrue = true;
         $rootScope.checkfalse = false;
         alert('Đăng Xuất Thành Công')
         $window.location.reload();
-        location = "index.html"
     }
-    $scope.checklogin = function(){
-        if($scope.name == null || $scope.address == null || $scope.email == null || $scope.phone ==null){
-            alert('Bạn cần bổ sung thông tin cá nhân')
-            $window.location.reload();
-            location = "#html/account.html"
-        }
-        if(info == null){
+    $scope.checklogin = function () {
+        if (info == null) {
             alert('Bạn Cần đăng nhập')
-             $window.location.reload();
-             location = "#html/account.html"
+            $window.location.reload();
+            $location.path("/login/account")
+        }
+            if (info.name == null || info.address == null || info.email == null || info.phone == null) {
+                alert('Bạn cần bổ sung thông tin cá nhân')
+                $location.path(`/account/${info.username}`)
             }
+        else{
+            $location.path("/create/content")
+
+        }
     }
-    
+
 });
 app.config(function ($routeProvider) {
     $routeProvider
         .when("/", {
             templateUrl: "./html/home.html",
-        })        
+        })
         .when("/:contentId", {
             templateUrl: "./html/detail.html"
         })
@@ -63,16 +62,23 @@ app.config(function ($routeProvider) {
         .when("/login/account", {
             templateUrl: "./html/account.html"
         })
+        .when("/account/:username", {
+            templateUrl: "./html/infomationcustomer.html"
+        })
+        .when("/account/:username/password/", {
+            templateUrl: "./html/changepassword.html"
+        })
+        .when("/manager/contens/:username", {
+            templateUrl: "./html/managerconten.html"
+        })
+        .when("/updatecontent/:contentid", {
+            templateUrl: "./html/changecontent.html"
+        })
+        .when("/list/content/like",{
+            templateUrl: "./html/listlike.html"
+        })
         .otherwise({
             templateUrl: "./components/error/404.html"
         });
 });
-// app.run(function($rootScope,$window){
-//     $rootScope.load = function(url) {
-//         $window.location.reload();
-//     location = "http://127.0.0.1:5500/index.html#!/login/account"
-//     }
-    
-// })
-
 

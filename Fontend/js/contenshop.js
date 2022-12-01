@@ -9,4 +9,5 @@ app.controller('contenshopFormController', function($scope, $rootScope, $locatio
                 console.log(error)
             } )
         }
+
     }) 

@@ -1,5 +1,6 @@
 package com.lovepink.model.request;
 
+import com.lovepink.entity.Content;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,5 +13,5 @@ import lombok.Setter;
 public class createLikesRequest {
     private int id;
     private String usernameid;
-    private  String contentid;
+    private Content content;
 }
