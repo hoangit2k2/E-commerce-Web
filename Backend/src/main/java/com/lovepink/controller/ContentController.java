@@ -76,17 +76,23 @@ public class ContentController implements ServletContextAware {
 	public ResponseEntity<?> updateContent(@RequestParam("files") MultipartFile[] files, @Valid @ModelAttribute createContenRequest req, @PathVariable int id){
 		try {
 			Set<String> setA = new HashSet<String>();
+
 			for(MultipartFile file : files) {
 				setA.add(file.getOriginalFilename());
 				save(file);
+				}
+			if(setA.toArray().length == 0){
+
 			}
-			req.setContent_images(setA);
+			else {
+				req.setContent_images(setA);
+			}
 			Content result = contenService.updatecontent(req, id);
 			return ResponseEntity.ok(result);
 		} catch (Exception e) {
-			// TODO: handle exception
+			System.out.println(e);
+			return null;
 		}
-		return null;
 	}
 	@GetMapping("/rest/contents/username/{username}")
 	public ResponseEntity<?> getContentByusername(@PathVariable String username){

@@ -1,6 +1,7 @@
 package com.lovepink.controller;
 
 import com.lovepink.entity.Likes;
+import com.lovepink.exception.NotFoundException;
 import com.lovepink.service.LikesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -36,6 +37,16 @@ public class LikesController {
             System.out.println(e);
             return null;
         }
-
+    }
+    @DeleteMapping("rest/likes/{id}")
+    public ResponseEntity<?> deletelikebyid(@PathVariable Integer id){
+        try {
+            System.out.println("hi");
+            String result = likesService.deletelike(id);
+            return ResponseEntity.ok(result);
+        }catch (Exception e){
+            System.out.println(e);
+            throw  new NotFoundException("Xóa Thất Bại");
+        }
     }
 }

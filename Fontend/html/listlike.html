@@ -9,7 +9,7 @@
                 </center>
             </div>
             <div class="col-2dot4" ng-repeat="e in content">
-                <a  href="/index.html#!/{{e.id}}">
+                <a  href="/index.html#!/{{e.content.id}}">
                     <img src=http://localhost:8080/uploads/imagecontent/{{e.content.content_images[0]}} alt="">
                 </a>
                 <div class="link-subjec">
@@ -19,6 +19,9 @@
                 </div>
                 <div class="price">{{e.content.price|formatVND}}</div>
                 <div class="text">{{e.content.usernameid}}</div>
+                <a href="">
+                <button class="btn btn-outline-succsess" ng-click = "dislike(e.id)">Bỏ Thích</button>
+            </a>
             </div>
             <div class="detail">
                 <h1>

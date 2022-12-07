@@ -164,8 +164,23 @@
                 </a>
               </h4>
             </button>
-
+            <h4>Bình Luận</h4>
+            <div class="input-group mb-3">
+            <input type="text" class="form-control" placeholder="Comment" ng-model = "commentcontent" ng-required = true>
+            <button class="btn btn-outline-success" type="submit" ng-click = "comment()">Bình Luận</button>
           </div>
+          <div class="row" ng-repeat = "c in commentdetail">
+            <div class="col-2">
+          <i class="fa-solid fa-circle-user" style="font-size: 55px ;">
+          </i>
+        </div>
+        <div class="col-9" >
+          <h6>{{c.usernameid}}</h6>
+          {{c.subject}}
+        </div>
+        <hr>
+        </div>
+        </div>
         </div>
         <hr>
 

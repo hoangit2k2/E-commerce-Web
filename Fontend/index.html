@@ -13,6 +13,7 @@
   <link rel="stylesheet" href="css/style.css">
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-route.js"></script>
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
   <script src="js/index.js"></script>
   <script src="js/content.js"></script>
   <script src="js/category.js"></script>
@@ -33,13 +34,16 @@
         <a class="nav-link" href="#"><i class="bi bi-house-door"></i> Trang chủ</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="/index.html#!/manager/contens/{{info.username}}"><i class="bi bi-box-seam"></i></i> Quản Lý Tin</a>
+        <a class="nav-link"  href="/index.html#!/manager/contens/">
+        Quản Lý Tin
+      </a>
       </li>
       <li class="nav-item">
         <a class="nav-link"><i class="bi bi-bag"></i> Đơn Hàng</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#"><i class="bi bi-chat-dots"></i> Nhắn Tin</a>
+        <a class="nav-link"  ng-href="/index.html#!/list/content/like" > Danh Sách Yêu Thích
+        </a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="#"><i class="bi bi-bell"></i></i> Thông Báo</a>
@@ -80,10 +84,15 @@
     </ul>
 
     <div class="panel">
-      <a class="nav-link" ng-click="checklogin()" href=""
-     >
-      <!-- ng-href="index.html#!/create/content"> -->
-        <i class="bi bi-arrow-up-left-square" > ĐĂNG TIN</i>
+      <a class="nav-link" ng-click="checkinfo()" style="cursor: pointer;"><i class="bi bi-arrow-up-left-square" > ĐĂNG TIN</i>
+      </a>
+    </div>
+    
+    <div class="panel">
+      <a class="nav-link" >
+        <i class="fa-solid fa-cart-shopping" data-notify="{{cart.length}}">
+          {{cart.length}}
+        </i>
       </a>
     </div>
   </nav>

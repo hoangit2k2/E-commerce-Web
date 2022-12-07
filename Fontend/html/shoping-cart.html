@@ -1,0 +1,63 @@
+<div class="row" ng-controller="cartController">
+    <div class="row">
+    <div class="col-8">
+    <table class="table">
+                <thead>
+                    <tr>
+                        <th>Chọn</th>
+                        <th>Ảnh</th>
+                        <th>Product</th>
+                        <th></th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Total</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in cart">
+                        <td>
+                            <center>
+                                <input type="checkbox" ng-change="updateCart()" ng-model="item.checked">
+                            </center>
+                        </td>
+                        <td>
+                            <img src="http://localhost:8080/uploads/imagecontent/{{item.content.content_images[0]}}" alt="" width="40px" height="40px" style="object-fit:cover; width: 40px;height: 40px;">
+                        </td>
+                        <td>{{item.content.subject}}</td>
+                        <td></td>
+                        <td>{{item.content.price  | formatVND}}</td>
+                        <td>
+                            <center>
+                                <input type="number" number-only="[1-9]" ng-change="updateCart"
+                                    ng-model="item.quantity" style="width: 40px; ;">
+                            </center>
+                        </td>
+                        <td>
+                            {{(item.content.price * (item.quantity ? item.quantity : 0))| formatVND }}
+                        </td>
+                        <td>
+                         
+                          
+                            <img src="https://cdn-icons-png.flaticon.com/512/9094/9094076.png" width="30px" ng-click = "deleteItem(item.content.id)" alt="">
+                        </td>
+
+                    </tr>
+                </tbody>
+          
+        
+    </table>
+</div>
+    <div class="col-4">
+        <label for="" >Địa Chỉ Giao</label>
+        <br>
+        <textarea name="" id="" cols="50" rows="5" ng-model = "order.address"></textarea>
+        <br>
+        <label for="">Ghi Chú</label>
+        <br>
+        <textarea name="" id="" cols="50" rows="4" ng-model = "order.note"></textarea>
+        <br>
+        <h5>Tổng Tiền: {{getTotal()|formatVND}}</h5>
+        <input type="button" ng-click = "order.purchase()" ng-model = "order.pay" true >
+    </div>
+</div></div>

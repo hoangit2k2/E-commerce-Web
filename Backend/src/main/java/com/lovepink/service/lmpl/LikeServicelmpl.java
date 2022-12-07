@@ -24,4 +24,10 @@ public class LikeServicelmpl implements LikesService {
     public List<Likes> getContentByUsername(String usernameid){
         return dao.findByUsernameid(usernameid);
     }
+    @Override
+    public String deletelike(Integer id){
+        dao.deleteById(id);
+        return "Delete like successfuly !";
+    }
+
 }

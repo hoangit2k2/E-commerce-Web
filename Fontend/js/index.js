@@ -1,5 +1,8 @@
 const app = angular.module('app', ["ngRoute"]);
-var info = angular.fromJson(sessionStorage.getItem('info'))
+var info = angular.fromJson(localStorage.getItem('info'))
+var cart = angular.fromJson(localStorage.getItem('cart'))
+console.log(cart)
+
 app.config(function ($httpProvider) {
     if (info == null) {
     }
@@ -19,26 +22,54 @@ app.controller('appController', function ($scope, $rootScope, $window, $location
 
     }
     $scope.logout = function () {
-        sessionStorage.removeItem('info')
+        localStorage.removeItem('info')
         $rootScope.checktrue = true;
         $rootScope.checkfalse = false;
         alert('Đăng Xuất Thành Công')
-        $window.location.reload();
+        swal({
+            title: "Thông Báo !",
+            text: "Đăng xuất thành công!",
+            icon: "success",
+            // buttons: true,
+            // dangerMode: true,
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+                    $window.location.reload()
+
+                }
+            })
+
+
+
+
+
     }
-    $scope.checklogin = function () {
+    $scope.checkinfo = function () {
         if (info == null) {
-            alert('Bạn Cần đăng nhập')
-            $window.location.reload();
-            $location.path("/login/account")
+            // $location.path("/login/account")
+            // alert('Bạn cần bổ sung thông tin cá nhân')
+            // location.href = "http://127.0.0.1:5500/index.html#!/login/account"
         }
-            if (info.name == null || info.address == null || info.email == null || info.phone == null) {
-                alert('Bạn cần bổ sung thông tin cá nhân')
-                $location.path(`/account/${info.username}`)
-            }
-        else{
-            $location.path("/create/content")
+         if (info.name == null || info.address == null || info.email == null || info.phone == null) {
+            swal({
+                title: "Thông Báo !",
+                text: "Bạn cần bổ sung thông tin cá nhân!",
+                icon: "warning",
+                // buttons: true,
+                // dangerMode: true,
+            })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        location.href = ("http://127.0.0.1:5500/index.html#!/account/hoa") 
+                    }
+                })
 
         }
+        else{
+            location.href = ("http://127.0.0.1:5500/index.html#!/create/content") 
+        }
+
     }
 
 });
@@ -68,17 +99,20 @@ app.config(function ($routeProvider) {
         .when("/account/:username/password/", {
             templateUrl: "./html/changepassword.html"
         })
-        .when("/manager/contens/:username", {
+        .when("/manager/contens", {
             templateUrl: "./html/managerconten.html"
         })
         .when("/updatecontent/:contentid", {
             templateUrl: "./html/changecontent.html"
         })
-        .when("/list/content/like",{
+        .when("/list/content/like", {
             templateUrl: "./html/listlike.html"
         })
+        .when("/shopping/cart", {
+            templateUrl: "./html/shoping-cart.html"
+        })
         .otherwise({
-            templateUrl: "./components/error/404.html"
+            templateUrl: "./html/account.html"
         });
 });
 

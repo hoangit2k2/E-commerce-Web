@@ -38,9 +38,9 @@ ul.navbar-nav li.nav-bar1 a.nav-link i{
     font-size: 30px;
 }
 nav.navbar.navbar-expand-sm div.panel{
-    width: 150px;
-    height: 30px;
-    background-color: #158a7a ;
+    /* width: 150px;
+    height: 30px; */
+    /* background-color: #158a7a ; */
     margin-left: 100px;
 }
 nav.navbar.navbar-expand-sm div.panel i{

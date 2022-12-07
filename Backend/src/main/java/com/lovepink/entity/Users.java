@@ -46,7 +46,6 @@ public class Users implements Serializable {
 //	@JsonIgnore
 //	@OneToMany(mappedBy = "usernameid")
 //	List<Content> content;
-
 //	@JsonIgnore
 //	@OneToMany(mappedBy = "role")
 //	List<Authority> authorities;

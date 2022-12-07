@@ -14,14 +14,14 @@
        
         </div>
         <div class="col">
-          <input type="file" ng-model = "image2" accept="image/*" onchange="angular.element(this).scope().uploadedFile2(this)" ng-required = "true" >
+          <input type="file" ng-model = "image2" accept="image/*" onchange="angular.element(this).scope().uploadedFile2(this)" >
     <div class="col-12"><img id="output1" style="width:300px;height:250px;" class="img-responsive"
       ng-src="http://localhost:8080/uploads/imagecontent/{{content.content_images[1]}}">
     </div>
       
         </div>
         <div class="col">
-          <input type="file" ng-model = "image3" accept="image/*" onchange="angular.element(this).scope().uploadedFile3(this)" ng-required = "true" >
+          <input type="file" ng-model = "image3" accept="image/*" onchange="angular.element(this).scope().uploadedFile3(this)">
     <div class="col-12"><img id="output2" style="width:300px;height:250px;" class="img-responsive"
       ng-src="http://localhost:8080/uploads/imagecontent/{{content.content_images[2]}}">
     </div>

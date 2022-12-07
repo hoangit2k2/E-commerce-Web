@@ -66,6 +66,8 @@ public class ContentServicelmpl implements ContentService {
 		List<Content> contents = dao.findAll();
 		for(Content content : contents) {
 			if(content.getId() == id) {
+				System.out.println(content);
+				System.out.println(req.getContent_images());
 				content.setId(id);
 				content.setUsernameid(req.getUsernameid());
 				content.setCategoryid(req.getCategoryid());
@@ -79,6 +81,7 @@ public class ContentServicelmpl implements ContentService {
 				content.setStatus(req.isStatus());
 				dao.save(content);
 			}
+
 		}
 		
 		throw new NotFoundException("ID Content Không tồn tại");
