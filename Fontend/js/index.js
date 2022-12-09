@@ -25,7 +25,6 @@ app.controller('appController', function ($scope, $rootScope, $window, $location
         localStorage.removeItem('info')
         $rootScope.checktrue = true;
         $rootScope.checkfalse = false;
-        alert('Đăng Xuất Thành Công')
         swal({
             title: "Thông Báo !",
             text: "Đăng xuất thành công!",
@@ -39,11 +38,6 @@ app.controller('appController', function ($scope, $rootScope, $window, $location
 
                 }
             })
-
-
-
-
-
     }
     $scope.checkinfo = function () {
         if (info == null) {
@@ -61,7 +55,7 @@ app.controller('appController', function ($scope, $rootScope, $window, $location
             })
                 .then((willDelete) => {
                     if (willDelete) {
-                        location.href = ("http://127.0.0.1:5500/index.html#!/account/hoa") 
+                        location.href = (`http://127.0.0.1:5500/index.html#!/account/${info.username}`) 
                     }
                 })
 
@@ -110,6 +104,12 @@ app.config(function ($routeProvider) {
         })
         .when("/shopping/cart", {
             templateUrl: "./html/shoping-cart.html"
+        })
+        .when("/order/list",{
+            templateUrl: "./html/listorder.html"
+        })
+        .when("/order/list/:id",{
+            templateUrl: "./html/listorderdetail.html"
         })
         .otherwise({
             templateUrl: "./html/account.html"

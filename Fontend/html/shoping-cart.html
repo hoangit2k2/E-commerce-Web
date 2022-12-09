@@ -58,6 +58,8 @@
         <textarea name="" id="" cols="50" rows="4" ng-model = "order.note"></textarea>
         <br>
         <h5>Tổng Tiền: {{getTotal()|formatVND}}</h5>
-        <input type="button" ng-click = "order.purchase()" ng-model = "order.pay" true >
+
+    <button ng-click = "order.pay()" ng-model = "order.pay" class="btn btn-outline-success">Thanh Toán</button>
+    <button ng-click = "order.nopay()" ng-model = "order.pay" class="btn btn-outline-success">Đặt Hàng</button>
     </div>
 </div></div>

@@ -1,0 +1,25 @@
+<div class="row" ng-controller = "detailController">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nội Dung</th>
+                <th></th>
+                <th>Giá</th>
+                <th>Số lượng</th>
+                <th>tổng tiền</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="table-success" ng-repeat = "d in details">
+                <td>
+                    <img src="http://localhost:8080/uploads/imagecontent/{{d.content.content_images[0]}}" alt="" width="40px" height="40px" style="object-fit:cover; width: 40px;height: 40px;">
+                </td>
+                <td>{{d.content.subject}}</td>
+                <td>{{d.content.price}}</td>
+                <td>{{d.quantity}}</td>
+                <td >{{d.content.price * d.quantity}}</td>
+
+            </tr>
+        </tbody>
+    </table>
+</div>

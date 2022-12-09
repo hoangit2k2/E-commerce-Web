@@ -109,7 +109,7 @@ app.controller("accountCtrl", function ($scope, $http, $window, $routeParams, $l
                 localStorage.setItem('info', angular.toJson(resp.data))
                 $window.location.reload();
             })
-            swal("Lỗi", "Cập nhật thông tin thành công !", "success");
+            swal("Thông báo", "Cập nhật thông tin thành công !", "success");
         })
             .catch(function (err) {
                 console.log(err)
@@ -128,9 +128,8 @@ app.controller("accountCtrl", function ($scope, $http, $window, $routeParams, $l
 
             return
         }
-        if ($scope.newpassword == info) {
+        if ($scope.newpassword == info.password) {
             swal("Lỗi", "Mật khẩu mới trùng mới mật khẩu củ!", "warning");
-
             return
         }
         else {
@@ -145,11 +144,12 @@ app.controller("accountCtrl", function ($scope, $http, $window, $routeParams, $l
                 var url = `http://localhost:8080/rest/users/${$scope.username}`;
                 $http.get(url).then(resp => {
                     $scope.db = resp.data;
-                    localStorage.setItem('info', angular.toJson(resp.data))
-                    $window.location.reload();
-                    location = "index.html#!/"
+                    localStorage.setItem('info', angular.toJson(resp.data))	
                 })
-                swal("Lỗi", "Cập nhật mật khẩu thành công!", "success");
+                swal("Thông báo", "Cập nhật mật khẩu thành công!", "success");
+                location.href = "http://127.0.0.1:5500/index.html#!/"
+                $window.location.reload();
+
             })
             // .catch(function(error){
 

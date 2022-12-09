@@ -7,6 +7,8 @@ import com.lovepink.model.request.createOrderDetailsRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class OrderDetailtServicelmpl implements OrderDetailService {
     @Autowired
@@ -16,5 +18,11 @@ public class OrderDetailtServicelmpl implements OrderDetailService {
         OrderDetails orderDetails = OrderDetails.toOrderDetail(req);
         dao.save(orderDetails);
         return  orderDetails;
+    }
+    public List<OrderDetails> findAll(){
+        return dao.findAll();
+    }
+    public  List<OrderDetails> findorderDetail(Integer id){
+        return dao.findByOrders_Id(id);
     }
 }

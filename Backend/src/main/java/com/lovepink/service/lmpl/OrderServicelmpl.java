@@ -42,4 +42,12 @@ public class OrderServicelmpl implements OrderService {
         detailDao.saveAll(details);
         return  orders;
     }
+    @Override
+    public List<Orders> findAll(){
+        return dao.findAll();
+    }
+    @Override
+    public  List<Orders> findByUsername(String username){
+        return  dao.findByUsernameid(username);
+    }
 }

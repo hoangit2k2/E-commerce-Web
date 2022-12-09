@@ -128,13 +128,13 @@ app.controller('contentFormController', function ($scope, $window, $routeParams,
 						})
 					}
 				}).catch(error => {
-					
+
 					location.href = "http://127.0.0.1:5500/index.html#!/login/account"
 
 				})
 			// console.log(data)
 		} catch (error) {
-			
+
 			swal("Lỗi", "Thêm Vào yêu thích thất bại !", "warning");
 		}
 
@@ -247,8 +247,8 @@ app.controller('mypostcontroll', function ($scope, $http, $routeParams, $window,
 				})
 					.then((willDelete) => {
 						if (willDelete) {
-							location.href = "http://127.0.0.1:5500/index.html#!/manager/contens"
-
+							// location.href = "http://127.0.0.1:5500/index.html#!/"
+							// $window.location.reload()
 						}
 					})
 			}
@@ -267,8 +267,8 @@ app.controller('mypostcontroll', function ($scope, $http, $routeParams, $window,
 					location.href = "http://127.0.0.1:5500/index.html#!/login/account"
 
 				}
-			})	
-		}
+			})
+	}
 	$scope.contentid = $routeParams.contentid
 	$http.get(`http://localhost:8080/rest/contents/${$scope.contentid}`)
 		.then(function (response) {
@@ -329,6 +329,7 @@ app.controller('mypostcontroll', function ($scope, $http, $routeParams, $window,
 				.then((willDelete) => {
 					if (willDelete) {
 						location.href = "http://127.0.0.1:5500/index.html#!/manager/contens"
+						$window.location.reload()
 
 					}
 				})
@@ -475,81 +476,112 @@ app.controller('managerlike', function ($scope, $http, $window) {
 
 	}
 })
-app.controller('cartController',function($scope, $rootScope,$window,
-	$rootScope, $http){
-		$rootScope.cart = JSON.parse(localStorage.getItem('cart')) || []
-		console.log($scope.address)
-		$scope.numberPattern = /^\d+$/
-		$scope.deleteItem = (id) => {
-			swal({
-				title: "Thông báo?",
-				text: "Bạn có muốn bỏ khỏi giỏ hàng",
-				icon: "warning",
-				buttons: true, 
-				dangerMode: true
-			}).then((willDelete)=>{
-				if(willDelete){
-					$rootScope.cart = $rootScope.cart.filter(item => item.content.id != id);
-					localStorage.setItem('cart', JSON.stringify($rootScope.cart));
-					$window.location.reload()
-				}else{
-					swal("ok")
+app.controller('cartController', function ($scope, $rootScope, $window,
+	$rootScope, $http) {
+	$rootScope.cart = JSON.parse(localStorage.getItem('cart')) || []
+	console.log($scope.address)
+	$scope.numberPattern = /^\d+$/
+	$scope.deleteItem = (id) => {
+		swal({
+			title: "Thông báo?",
+			text: "Bạn có muốn bỏ khỏi giỏ hàng",
+			icon: "warning",
+			buttons: true,
+			dangerMode: true
+		}).then((willDelete) => {
+			if (willDelete) {
+				$rootScope.cart = $rootScope.cart.filter(item => item.content.id != id);
+				localStorage.setItem('cart', JSON.stringify($rootScope.cart));
+				$window.location.reload()
+			} else {
+				swal("ok")
+			}
+		})
+	}
+	$scope.getTotal = () => {
+		let total = 0;
+		total = $rootScope.cart.reduce(
+			(previous, curent) => {
+				if (curent.checked == true) {
+					previous += curent.content.price * curent.quantity
 				}
-			})
-		}
-		$scope.getTotal = () => {
-			let total = 0;
-			total = $rootScope.cart.reduce(
-				(previous, curent) => {
-					if(curent.checked == true){
-						previous += curent.content.price * curent.quantity
-					}
-					return previous
-				},total
-			)
-			return total
-		}
-		$scope.updateCart = () => {
-			$rootScope.cart = $rootScope.cart.map(item => {
-				if(item.quantity > 10){
-					item.quantity = 10
-				}
-				if(item.quantity < 0){
-					item.quantity = 0
-				}
-				return item
-			})
-			localStorage.setItem('cart', JSON.stringify($rootScope.cart))
-		}
-		$scope.getSelectedItems = () => {
-			return $rootScope.cart.filter(item => item.checked == true);
-		}
+				return previous
+			}, total
+		)
+		return total
+	}
+	$scope.updateCart = () => {
+		$rootScope.cart = $rootScope.cart.map(item => {
+			if (item.quantity > 10) {
+				item.quantity = 10
+			}
+			if (item.quantity < 0) {
+				item.quantity = 0
+			}
+			return item
+		})
+		localStorage.setItem('cart', JSON.stringify($rootScope.cart))
+	}
+	$scope.getSelectedItems = () => {
+		return $rootScope.cart.filter(item => item.checked == true);
+	}
 
+	try {
 		$scope.order = {
 			datetime: new Date(),
 			address: "",
 			usernameid: info.username,
 			pay: "true",
 			note: "",
-			get orderDetails(){
+			get orderDetails() {
 				$scope.cartcheck = $rootScope.cart.filter(item => item.checked == true)
 				return $scope.cartcheck.map(item => {
-					return{
-						content: {id: item.content.id},
+					return {
+						content: { id: item.content.id },
 						price: item.content.price,
 						quantity: item.quantity
 					}
 				})
 			},
-			purchase(){
+			pay() {
 				var order = angular.copy(this);
 				console.log(order)
-				$http.post("http://localhost:8080/rest/order", order).then(
+				$http.post("http://localhost:8080/rest/order", order,order.pay="true").then(
 					resp => {
 						swal("Thông báo", "Đặt hàng thành công!", "success");
-					}).catch(error =>{
+						localStorage.removeItem('cart')
+						location.href = "http://localhost/vnpay_php/"
+
+
+					}).catch(error => {
+						swal("Thông báo", "Đặt hàng thất bại!", "warning");
+					})
+			},
+			nopay() {
+				var order = angular.copy(this);
+				console.log(order)
+				$http.post("http://localhost:8080/rest/order", order, order.pay = "false").then(
+					resp => {
+						swal("Thông báo", "Đặt hàng thành công!", "success");
+						localStorage.removeItem('cart')
+						location.href = "http://127.0.0.1:5500/index.html#!/order/list"
+
+		$window.location.reload()
+						
+
+
+					}).catch(error => {
 						swal("Thông báo", "Đặt hàng thất bại!", "warning");
 					})
 			}
 		}
-	})
+
+
+	} catch (error) {
+		location.href = "http://127.0.0.1:5500/index.html#!/login/account"
+		$window.location.reload()
+
+
+	}
+
+})

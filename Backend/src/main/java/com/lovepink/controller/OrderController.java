@@ -8,6 +8,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.lovepink.service.OrderService;
 import com.lovepink.model.request.createOrderRequest;
+
+import java.util.List;
+
 @CrossOrigin("*")
 @RestController
 public class OrderController {
@@ -24,6 +27,15 @@ public class OrderController {
 //            throw new NotFoundException("Tạo Thất Bại");
 //        }
 //    }
+    @GetMapping("/rest/order")
+    public  ResponseEntity<?> getOrder(){
+        try {
+            List<Orders> result = orderService.findAll();
+            return ResponseEntity.ok(result);
+        }catch (Exception e){
+            throw new NotFoundException("Tao That Bai");
+        }
+    }
     @PostMapping("/rest/order")
     public ResponseEntity<?> create(@RequestBody JsonNode orderData){
         try{
@@ -35,5 +47,15 @@ public class OrderController {
             throw new NotFoundException("Tao That Bai");
         }
 
+    }
+    @GetMapping("/rest/order/{username}")
+    public ResponseEntity<?> findByUsername(@PathVariable String username){
+        try {
+            List<Orders> result = orderService.findByUsername(username);
+            return ResponseEntity.ok(result);
+        }catch (Exception e){
+            throw new NotFoundException("tao That Bai");
+
+        }
     }
 }

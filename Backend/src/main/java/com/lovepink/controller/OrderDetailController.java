@@ -6,10 +6,9 @@ import com.lovepink.service.OrderDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import com.lovepink.model.request.createOrderDetailsRequest;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @CrossOrigin("*")
 @RestController
@@ -26,6 +25,23 @@ public class OrderDetailController {
             System.out.println(e);
             throw new NotFoundException("Tao That Bai");
         }
-
+    }
+    @GetMapping("/rest/orderdetail")
+    public ResponseEntity<?> findAll(){
+        try {
+            List<OrderDetails> result = orderDetailService.findAll();
+            return ResponseEntity.ok(result);
+        }catch (Exception e){
+            throw  new NotFoundException("Loi");
+        }
+    }
+    @GetMapping("/rest/orderdetail/{id}")
+    public ResponseEntity<?>  findOrderDetail(@PathVariable Integer id ){
+        try {
+            List<OrderDetails> result = orderDetailService.findorderDetail(id);
+            return ResponseEntity.ok(result);
+        }catch (Exception e){
+            throw new NotFoundException("Loi");
+        }
     }
 }

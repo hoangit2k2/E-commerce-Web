@@ -18,7 +18,6 @@ public class OrderDetails {
     @GeneratedValue(strategy =  GenerationType.IDENTITY)
     @Id
     int ID;
-//    int orderid;
     float price;
     int quantity;
     @ManyToOne
@@ -27,8 +26,6 @@ public class OrderDetails {
     @ManyToOne
     @JoinColumn(name = "orderid")
     Orders orders;
-    //    int contentid;
-
     public static OrderDetails toOrderDetail(createOrderDetailsRequest req){
         OrderDetails orderDetails = new OrderDetails();
 //        orderDetails.setOrderid(req.getOrderid());

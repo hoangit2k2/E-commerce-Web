@@ -19,7 +19,7 @@
   <script src="js/category.js"></script>
   <script src="js/contenshop.js"></script>
   <script src="js/account.js"></script>
-
+  <script src="js/cart.js"></script>
 </head>
 
 <body style="background-color:rgb(33, 183, 131) ;" ng-controller="appController" class="container-sm">
@@ -39,7 +39,7 @@
       </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link"><i class="bi bi-bag"></i> Đơn Hàng</a>
+        <a class="nav-link" href="/index.html#!/order/list"><i class="bi bi-bag"></i> Đơn Hàng</a>
       </li>
       <li class="nav-item">
         <a class="nav-link"  ng-href="/index.html#!/list/content/like" > Danh Sách Yêu Thích
@@ -89,7 +89,7 @@
     </div>
     
     <div class="panel">
-      <a class="nav-link" >
+      <a class="nav-link" href="http://127.0.0.1:5500/index.html#!/shopping/cart">
         <i class="fa-solid fa-cart-shopping" data-notify="{{cart.length}}">
           {{cart.length}}
         </i>
