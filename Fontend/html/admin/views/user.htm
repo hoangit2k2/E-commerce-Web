@@ -1,0 +1,92 @@
+<main ng-controller="userControl">
+  <h1 class="p-3 text-center font-effect-fire-animation">Quản lý thông tin tài khoản</h1>
+  <div class="container-fluid">
+
+    <!-- Show detail-->
+    <div class="d-flex flex-wrap align-items-center justify-content-center">
+      <div class="col-lg-3 position-relative">
+        <img class="fit-img o-fit-cover" ng-src="{{getImage(entity.image)}}" alt="{{entity.image}}" id="showImage">
+        <div class="p-1 bg-dark bg-opacity-25">{{entity.image}}</div>
+      </div>
+      <form class="form p-3 col-lg-9 border-start border-end border-info">
+        <h3 class="text-warning text-center" ng-if="entity.name">Thông tin "{{entity.name}}"</h3>
+        <div class="row align-items-end mt-1 bg-transparent">
+          <div class="col-lg-6">
+            <label class="form-label fw-bold">username</label>
+            <input class="form-control" ng-model="entity.username">
+          </div>
+          <div class="col-lg-6">
+            <label class="form-label fw-bold">password</label>
+            <input class="form-control" ng-model="entity.password" type="password">
+          </div>
+          <div class="col-lg-3">
+            <label class="form-label fw-bold">name</label>
+            <input class="form-control" ng-model="entity.name">
+          </div>
+          <div class="col-lg-4">
+            <label class="form-label fw-bold">phone</label>
+            <input class="form-control" ng-model="entity.phone">
+          </div>
+          <div class="col-lg-5">
+            <label class="form-label fw-bold">email</label>
+            <input class="form-control" ng-model="entity.email" type="email">
+          </div>
+          <div class="col-lg-8">
+            <label class="form-label fw-bold">address</label>
+            <input class="form-control" ng-model="entity.address">
+          </div>
+          <div class="col-lg-4">
+            <label class="form-label fw-bold">role</label>
+            <select class="form-control" ng-model="entity.role" ng-init="entity.role='cust'">
+              <option value="admin">Quản lý</option>
+              <option value="cust">Nhân viên</option>
+            </select>
+          </div>
+        </div>
+        <div class="mt-3 pt-3 border-top d-flex flex-wrap text-nowrap justify-content-end align-items-center">
+          <div class="col-lg-6 me-auto ">
+            <input type="file" name="files" accept="image/png, image/jpeg" class="button-89 w-100"
+              style="margin: 0 !important;" onchange="angular.element(this).scope().setImage(event)" id="prepareImg">
+          </div>
+          <button class="m-1 btn btn-primary" ng-click="post('users','username', 'imageUser')">Thêm</button>
+          <button class="m-1 btn btn-warning" ng-click="put('users','username','imageUser')">Sửa</button>
+          <button class="m-1 btn btn-danger" ng-click="delete(entity.username,'users','username','imageUser')">Xóa</button>
+          <button class="m-1 ms-lg-3 btn btn-secondary" ng-click="clear(entity)">làm mới</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Show data -->
+    <table class="table table-hover table-info table-striped" style="vertical-align: middle;">
+      <thead>
+        <tr>
+          <th>image</th>
+          <th>username</th>
+          <th>password</th>
+          <th>name</th>
+          <th>address</th>
+          <th>phone</th>
+          <th>email</th>
+          <th>role</th>
+          <th>control</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="(i,x) in data" ng-dblclick="read(x)">
+          <td>
+            <img style="width: 64px;" class="o-fit-cover" ng-src="{{getImage(x.image)}}" alt="{{x.image}}">
+          </td>
+          <td>{{x.username}}</td>
+          <td>{{x.password}}</td>
+          <td>{{x.name}}</td>
+          <td>{{x.address}}</td>
+          <td>{{x.phone}}</td>
+          <td>{{x.email}}</td>
+          <td>{{x.role}}</td>
+          <td><button class="btn btn-outline-danger" ng-click="delete(x.username,'users','username','imageUser')">delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</main>

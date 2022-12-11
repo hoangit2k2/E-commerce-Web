@@ -6,7 +6,7 @@ import com.lovepink.model.request.createOrderRequest;
 import java.util.List;
 
 
-public interface OrderService {
+public interface OrderService{
     Orders createOrder(createOrderRequest req);
     Orders create(JsonNode orderData);
     List<Orders> findAll();

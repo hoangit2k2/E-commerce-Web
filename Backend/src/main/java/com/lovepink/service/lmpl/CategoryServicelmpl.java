@@ -2,17 +2,13 @@ package com.lovepink.service.lmpl;
 
 import java.util.List;
 
-import org.hibernate.service.spi.InjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.lovepink.Dao.categoryDao;
 import com.lovepink.entity.Category;
-import com.lovepink.entity.Content;
 import com.lovepink.exception.NotFoundException;
 import com.lovepink.service.CategoryService;
-
-import net.bytebuddy.implementation.bytecode.Throw;
 
 import com.lovepink.model.request.createCategory;
 

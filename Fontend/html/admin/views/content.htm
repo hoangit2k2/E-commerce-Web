@@ -1,0 +1,145 @@
+<main ng-controller="contentControl">
+  <h1 class="p-3 text-center font-effect-fire-animation">Quản lý thông tin nội dung</h1>
+  <div class="container-fluid">
+    <!-- Show detail-->
+    <div class="d-flex flex-wrap align-items-center justify-content-center">
+      <div class="col-lg-3 position-relative">
+        <div class="d-flex flex-wrap align-content-between position-relative">
+          <div ng-if="entity.content_images.length > 0" class="m-auto mt-3 w-100">
+            <!-- carousel content_images -->
+            <div id="contentImage" class="carousel slide rounded-3 flex-fill" data-bs-ride="true">
+              <div class="carousel-inner">
+                <div class="carousel-item {{i==0 ? 'active' : ''}} ar4x3"
+                  ng-repeat="(i,image) in entity.content_images track by $index">
+                  <img ng-src="{{getImage(image)}}" class="fit-img rounded-3 o-fit-cover" alt="{{image}}">
+                  <div class="border text-center">
+                    <label class="w-100 text-muted text-nowrap overflow-hidden" style="text-overflow: ellipsis;">
+                      {{image || 'default image'}}
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- other -->
+            <div class="w-100 border text-nowrap overflow-auto" ng-if="entity.content_images.length > 1">
+              <button type="button" data-bs-target="#contentImage" data-bs-slide-to="{{i}}"
+                class="btn size-5 p-1 ar4x3 {{e.active}}"
+                ng-repeat="(i,image) in entity.content_images track by $index">
+                <img class="fit-img o-fit-cover" ng-src="{{getImage(image)}}" alt="{{image}}">
+              </button>
+            </div>
+          </div>
+          <!-- default image -->
+          <div class="w-100 ar16x10 mt-3" ng-if="1 > entity.content_images.length || !entity.content_images.length">
+            <img class="fit-img" style="object-fit: cover;" ng-src="{{getImage(undefined)}}" alt="default image"
+              title="Nội dung này chưa có ảnh">
+            <div class="border text-center">
+              <label class="w-100 text-muted text-nowrap overflow-hidden"
+                style="text-overflow: ellipsis;">default.png</label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <form class="form p-3 col-lg-9 border-start border-end border-info">
+        <h3 class="text-warning text-center" ng-if="entity.namecontent">Thông tin "{{entity.namecontent}}"</h3>
+        <div class="row mt-1 bg-transparent">
+          <div class="col-8 row">
+            <h3 class="text-center">Thông tin nội dung</h3>
+            <div class="col-lg-4">
+              <label class="form-label fw-bold">Mã sản phẩm</label>
+              <input class="form-control" ng-model="entity.id" type="number" >
+            </div>
+            <div class="col-lg-6">
+              <label class="form-label fw-bold">categories</label>
+              <select class="form-control bg-primary bg-opacity-25" ng-model="entity.categoryid" convert-to-number>
+                <option value="{{c.id}}" ng-repeat="c in cates" ng-bind="c.name"></option>
+              </select>
+            </div>
+            <div class="col-lg-2 text-center">
+              <label class="form-label fw-bold">{{entity.status==undefined?'Trạng thái':entity.status?'mở':'đóng'}}</label>
+              <input class="form-check m-auto" style="width: 2.45rem; height: 2.45rem;" ng-model="entity.status" type="checkbox">
+            </div>
+            <div class="col-lg-8">
+              <label class="form-label fw-bold">Tên nội dung</label>
+              <input class="form-control" ng-model="entity.namecontent">
+            </div>
+            <div class="col-lg-4">
+              <label class="form-label fw-bold">Giá({{entity.price ? (entity.price|number) : 'nếu có'}})</label>
+              <input class="form-control" ng-model="entity.price" type="number">
+            </div>
+            <div class="col-12">
+              <label class="form-label fw-bold">Mô tả</label>
+              <textarea class="form-control" ng-model="entity.subject" rows="3"></textarea>
+            </div>
+            <div class="col-12">
+              <label class="form-label fw-bold">Ngày đăng tải</label>
+              <span class="form-control" ng-bind="entity.datetime | dateRelative: 'LLLL'"></span>
+            </div>
+          </div>
+          <div class="col-4">
+            <h3 class="text-center">Thông tin người đăng</h3>
+            <div class="mt-1">
+              <label class="form-label fw-bold">Tên tài khoản</label>
+              <input class="form-control" ng-model="entity.usernameid">
+            </div>
+            <div class="mt-1">
+              <label class="form-label fw-bold">Email liên hệ</label>
+              <input class="form-control" ng-model="entity.email" type="email">
+            </div>
+            <div class="mt-1">
+              <label class="form-label fw-bold">Số điện thoại</label>
+              <input class="form-control" ng-model="entity.phone" type="tel">
+            </div>
+            <div class="mt-1">
+              <label class="form-label fw-bold">Địa chỉ</label>
+              <input class="form-control" ng-model="entity.address" type="text">
+            </div>
+          </div>
+        </div>
+        <div class="mt-3 pt-3 border-top d-flex flex-wrap text-nowrap justify-content-end align-items-center">
+          <div class="col-lg-6 me-auto ">
+            <input type="file" name="files" accept="image/png, image/jpeg" class="button-89 w-100" multiple
+              style="margin: 0 !important;" onchange="angular.element(this).scope().setImage(event)" id="prepareImg">
+          </div>
+          <button class="m-1 btn btn-primary" ng-click="post('contents','id','imagecontent')">Thêm</button>
+          <button class="m-1 btn btn-warning" ng-click="put('contents','id','imagecontent')">Sửa</button>
+          <button class="m-1 btn btn-danger" ng-click="delete(entity.id,'contents','id','imagecontent')">Xóa</button>
+          <button class="m-1 ms-lg-3 btn btn-secondary" ng-click="clear2(entity)">làm mới</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Show data -->
+    <table class="table table-hover table-striped" style="vertical-align: middle;">
+      <thead>
+        <tr>
+          <th>image</th>
+          <th>mã nội dung</th>
+          <th>tiêu đề</th>
+          <th>địa chỉ</th>
+          <th>tên tài khoản</th>
+          <th>điện thoại</th>
+          <th>email</th>
+          <th>control</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="(i,x) in data" ng-dblclick="read2(x)" class="bg-opacity-25 {{x.status ? 'bg-primary' : 'bg-danger'}}">
+          <td>
+            <img style="width: 64px;" class="o-fit-cover"
+              ng-src="{{getImage(x.image=x.content_images.length?x.content_images[0]:undefined)}}" alt="{{x.image}}">
+          </td>
+          <td>{{x.id}}</td>
+          <td>{{x.namecontent}}</td>
+          <td>{{x.address}}</td>
+          <td>{{x.usernameid}}</td>
+          <td>{{x.phone}}</td>
+          <td>{{x.email}}</td>
+          <td class="text-end">
+            <button class="btn btn-outline-danger" ng-click="delete(x.id,'contents','id','imagecontent')">delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</main>

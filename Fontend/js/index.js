@@ -38,6 +38,10 @@ app.controller('appController', function ($scope, $rootScope, $window, $location
 
                 }
             })
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
     }
     $scope.checkinfo = function () {
         if (info == null) {
@@ -45,7 +49,7 @@ app.controller('appController', function ($scope, $rootScope, $window, $location
             // alert('Bạn cần bổ sung thông tin cá nhân')
             // location.href = "http://127.0.0.1:5500/index.html#!/login/account"
         }
-         if (info.name == null || info.address == null || info.email == null || info.phone == null) {
+        if (info.name == null || info.address == null || info.email == null || info.phone == null) {
             swal({
                 title: "Thông Báo !",
                 text: "Bạn cần bổ sung thông tin cá nhân!",
@@ -55,18 +59,23 @@ app.controller('appController', function ($scope, $rootScope, $window, $location
             })
                 .then((willDelete) => {
                     if (willDelete) {
+<<<<<<< Updated upstream
                         location.href = (`http://127.0.0.1:5500/index.html#!/account/${info.username}`) 
+=======
+                        location.href = ("http://127.0.0.1:5500/index.html#!/account/hoa")
+>>>>>>> Stashed changes
                     }
                 })
 
         }
-        else{
-            location.href = ("http://127.0.0.1:5500/index.html#!/create/content") 
+        else {
+            location.href = ("http://127.0.0.1:5500/index.html#!/create/content")
         }
 
     }
 
 });
+
 app.config(function ($routeProvider) {
     $routeProvider
         .when("/", {
@@ -104,6 +113,7 @@ app.config(function ($routeProvider) {
         })
         .when("/shopping/cart", {
             templateUrl: "./html/shoping-cart.html"
+<<<<<<< Updated upstream
         })
         .when("/order/list",{
             templateUrl: "./html/listorder.html"
@@ -112,6 +122,9 @@ app.config(function ($routeProvider) {
             templateUrl: "./html/listorderdetail.html"
         })
         .otherwise({
+=======
+        }).otherwise({
+>>>>>>> Stashed changes
             templateUrl: "./html/account.html"
         });
 });

@@ -3,9 +3,13 @@ package com.lovepink.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import org.springframework.data.annotation.Reference;
 import org.springframework.stereotype.Component;
 import com.lovepink.model.request.createOrderDetailsRequest;
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.lovepink.entity.Orders;
 
 @Data
@@ -23,7 +27,7 @@ public class OrderDetails {
     @ManyToOne
     @JoinColumn(name = "contentid")
     Content content;
-    @ManyToOne
+    @ManyToOne 
     @JoinColumn(name = "orderid")
     Orders orders;
     public static OrderDetails toOrderDetail(createOrderDetailsRequest req){

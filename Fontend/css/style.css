@@ -9,7 +9,7 @@ nav{
 /* nav 1 */
 nav ul.navbar-nav a.nav-link{
     color: aliceblue;
-    margin-left: 60px;
+    margin: 0 .75rem;
     font-size: 20px;
 }
 ul.navbar-nav a.nav-link i{
@@ -23,7 +23,7 @@ div.logo a.nav-link img{
 
 form.input-group.mb-3 {
     margin-top: 15px;
-    width: 800px;
+    width: auto;
     height: 40px;
 }
 
@@ -65,7 +65,7 @@ div.row nav{
 }
 div.row nav ul.navbar-nav a.nav-link{
     color: rgb(0, 120, 225);
-    margin-left: 60px;
+    margin: 0 .75rem;
     font-size: 20px;
     text-align: center;
 }
@@ -221,7 +221,4 @@ div.imagedetail img{
     width: 700px;
     height: 500px;
     object-fit: contain;
-}
-div.dropdown{
-    left: 30px;
 }

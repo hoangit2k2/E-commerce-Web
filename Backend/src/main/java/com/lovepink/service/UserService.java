@@ -3,12 +3,8 @@ package com.lovepink.service;
 import java.util.List;
 
 import com.lovepink.entity.Users;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import com.lovepink.model.request.createUserRequest;
-import com.lovepink.model.request.updatepassword;
-
-public interface UserService {
+public interface UserService{
 	Users findById(String username);
 	List<Users> findAll();
 	String deleteUser(String username);

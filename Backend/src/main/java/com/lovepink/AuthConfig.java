@@ -25,7 +25,7 @@ public class AuthConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
     @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws  Exception{
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception{
         auth.userDetailsService(service);
     }
     @Override

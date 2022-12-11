@@ -1,6 +1,5 @@
 package com.lovepink.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,10 +7,10 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.lovepink.model.request.createOrderRequest;
 @Data
 @Table
@@ -24,13 +23,11 @@ public class Orders {
     @Id
     Integer id;
     String usernameid;
-    @Temporal(TemporalType.DATE)
-    @Column(name= "datetime")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     Date datetime = new Date();
 
     String address;
-    @JsonIgnore
-    @OneToMany(mappedBy = "orders")
+    @JsonIgnore @OneToMany(mappedBy = "orders", cascade = CascadeType.ALL)
     List<OrderDetails> orderDetails;
     String note;
     boolean pay;

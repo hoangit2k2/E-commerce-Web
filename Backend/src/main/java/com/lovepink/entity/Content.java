@@ -1,7 +1,7 @@
 package com.lovepink.entity;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -11,14 +11,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.stereotype.Component;
-
-import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 import com.lovepink.model.request.createContenRequest;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -27,7 +23,6 @@ import lombok.NoArgsConstructor;
 @Table
 @NoArgsConstructor
 @AllArgsConstructor
-@Component
 @Entity(name = "CONTENTS")
 public class Content {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,15 +38,17 @@ public class Content {
 	private String email;
 	private String phone;
 	private String address;
-	@DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
-	@Column(name = "datetime")
-	private LocalDateTime datetime;
+	private Date datetime = new Date();
 	private Boolean status;
 	@ElementCollection
 	@Column(name = "image")
 	@JoinTable(name = "image", joinColumns = @JoinColumn(name = "contentid"))
 	private Set<String> content_images;
 
+	public void setDatetime(Date datetime) {
+		this.datetime = datetime;
+	}
+	
 	@ElementCollection
 	@Column(name = "usernameid")
 	@JoinTable(name = "likes", joinColumns = @JoinColumn(name = "contentid"))
@@ -67,9 +64,9 @@ public class Content {
 		content.setEmail(req.getEmail());
 		content.setPhone(req.getPhone());
 		content.setAddress(req.getAddress());
-		content.setDatetime(java.time.LocalDateTime.now());
 		content.setStatus(req.isStatus());		
 		content.setContent_images(req.getContent_images());
 		return content;
 	}
+	
 }

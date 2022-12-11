@@ -5,7 +5,7 @@ import java.util.List;
 import com.lovepink.entity.Category;
 import com.lovepink.model.request.createCategory;
 
-public interface CategoryService {
+public interface CategoryService{
 
 	List<Category> finAll();
 
