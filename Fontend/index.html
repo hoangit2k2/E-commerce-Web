@@ -21,28 +21,30 @@
   <script src="js/account.js"></script>
   <script src="js/cart.js"></script>
 </head>
-
 <body style="background-color:rgb(33, 183, 131) ;" ng-controller="appController" class="container-sm">
-  <nav class="navbar navbar-expand-sm" style="background-color: rgb(33, 183, 131)">
+  <nav class="text-nowrap navbar navbar-expand-sm" style="background-color: rgb(33, 183, 131)">
     <div class="logo">
       <a class="nav-link" href="#">
         <img src="logo.png">
       </a>
     </div>
-    <ul class="navbar-nav">
+    <ul class="ms-auto navbar-nav flex-wrap justify-content-end">
       <li class="nav-item">
         <a class="nav-link" href="#"><i class="bi bi-house-door"></i> Trang chủ</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link"  href="/index.html#!/manager/contens/">
-        Quản Lý Tin
-      </a>
+        <a class="nav-link" href="/html/admin"><i class="bi bi-house-door"></i>Quản lý</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/index.html#!/manager/contens/">
+          Quản Lý Tin
+        </a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="/index.html#!/order/list"><i class="bi bi-bag"></i> Đơn Hàng</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link"  ng-href="/index.html#!/list/content/like" > Danh Sách Yêu Thích
+        <a class="nav-link" ng-href="/index.html#!/list/content/like"> Danh Sách Yêu Thích
         </a>
       </li>
       <li class="nav-item">
@@ -53,7 +55,7 @@
       </li>
     </ul>
   </nav>
-  <nav class="navbar navbar-expand-sm" style="background-color: rgb(33, 183, 131)">
+  <nav class="text-nowrap navbar justify-content-between navbar-expand-sm text-light" style="background-color: #21b783">
 
     <form class="input-group mb-3">
       <input type="text" class="form-control" placeholder="Tìm kiếm trên rao vặt">
@@ -61,42 +63,29 @@
         <i class="bi bi-search">Search</i></button>
     </form>
 
-    <ul class="navbar-nav">
-      <div class="dropdown">
+    <div class="ms-auto dropdown">
+      <a type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">
+        <i class="bi bi-person-circle">Tài Khoản</i>
+      </a>
+      <ul class="dropdown-menu">
+        <li><a class="dropdown-item" href="" ng-hide="{{checktrue}}">Xin Chào {{info.name}}</a></li>
+        <li><a class="dropdown-item" href="/index.html#!/account/{{info.username}}" ng-hide="{{checktrue}}">Thông Tin Tài Khoản</a></li>
+        <li><a class="dropdown-item" href="/index.html#!/account/{{info.username}}/password" ng-hide="{{checktrue}}">Thay đổi mật khẩu</a></li>
+        <li><a class="dropdown-item" href="" ng-click="logout()" ng-hide="{{checktrue}}">Đăng Xuất</a></li>
+        <li><a class="dropdown-item" href="/index.html#!/login/account" ng-hide="{{checkfalse}}">Đăng Nhập & đăng
+            ký</a></li>
+      </ul>
+    </div>
 
-        <a type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">
-
-          <i class="bi bi-person-circle">Tài Khoản</i>
-        </a>
-        <ul class="dropdown-menu">
-          <li><a class="dropdown-item" href="" ng-hide="{{checktrue}}">Xin Chào {{info.name}}</a></li>
-          <li><a class="dropdown-item" href="/index.html#!/account/{{info.username}}" ng-hide="{{checktrue}}">Thông Tin Tài Khoản</a></li>
-          <li><a class="dropdown-item" href="/index.html#!/account/{{info.username}}/password" ng-hide="{{checktrue}}">Thay đổi mật khẩu</a></li>
-          <li><a class="dropdown-item" href="" ng-click="logout()" ng-hide="{{checktrue}}">Đăng Xuất</a></li>
-          <li><a class="dropdown-item" href="/index.html#!/login/account" ng-hide="{{checkfalse}}">Đăng Nhập & đăng
-              ký</a></li>
-        </ul>
-
-      </div>
-      <!-- <li class="nav-bar1">
-                <a class="nav-link"> Tài Khoản</a>
-              </li> -->
-    </ul>
-
-    <div class="panel">
-      <a class="nav-link" ng-click="checkinfo()" style="cursor: pointer;"><i class="bi bi-arrow-up-left-square" > ĐĂNG TIN</i>
+    <div class="ps-5 nav-item">
+      <a class="nav-link" ng-click="checkinfo()" style="cursor: pointer;">
+        <i class="bi bi-arrow-up-left-square"> ĐĂNG TIN</i>
       </a>
     </div>
-    
-    <div class="panel">
-      <a class="nav-link" href="http://127.0.0.1:5500/index.html#!/shopping/cart">
-        <i class="fa-solid fa-cart-shopping" data-notify="{{cart.length}}">
-          {{cart.length}}
         </i>
       </a>
     </div>
-  </nav>
-  <ng-view></ng-view>
+  <ng-view class="text-wrap"/>
   <br>
   <footer>
     <div class="container-sm">
@@ -176,6 +165,8 @@
       </div>
     </div>
   </footer>
+
+  <script src="js/admin/adminControl.js"></script>
 </body>
 
 </html>
