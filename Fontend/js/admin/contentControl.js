@@ -1,5 +1,15 @@
 app.controller('contentControl', ($scope) => {
-    pathImg = 'uploads/imagecontent';
+    
+    (async (...getTo) => {
+        pathImg = 'uploads/imagecontent';
+        $scope.breadcrumbs.splice(2, 2, {name:'sản phẩm'});
+        $scope.entity.id = Math.round((Math.random()-1)*1000)
+        for (to of getTo) if (typeof (to) == 'string') await $scope.get(to);
+        else {
+            let keys = Object.keys(to)
+            for (k of keys) await $scope.get(to[k], k);
+        };
+    })('contents', { cates: 'categories' })
 
     $scope.read2 = (e) => {
         $scope.read(e);
@@ -18,13 +28,4 @@ app.controller('contentControl', ($scope) => {
         e.likes = []; e.content_images = [];
         e.id = Math.round((Math.random()-1)*1000);
     }
-
-    (async (...getTo) => {
-        $scope.entity.id = Math.round((Math.random()-1)*1000)
-        for (to of getTo) if (typeof (to) == 'string') await $scope.get(to);
-        else {
-            let keys = Object.keys(to)
-            for (k of keys) await $scope.get(to[k], k);
-        };
-    })('contents', { cates: 'categories' })
 });

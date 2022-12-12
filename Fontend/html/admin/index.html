@@ -20,7 +20,8 @@
 <body>
   <div class="container-xxl" ng-app="app" ng-controller="control">
     <div ng-include="'components/_navbar.htm'"></div>
-    <ng-view />
+    <div ng-include="'components/_breadcrumb.htm'"></div>
+    <ng-view/>
   </div>
 
   <!-- Bootstrapt -->
@@ -44,6 +45,7 @@
   <script src="/js/admin/categoryControl.js"></script>
   <script src="/js/admin/contentControl.js"></script>
   <script src="/js/admin/orderControl.js"></script>
+  <script src="/js/admin/statisticControl.js"></script>
 </body>
 
 </html>

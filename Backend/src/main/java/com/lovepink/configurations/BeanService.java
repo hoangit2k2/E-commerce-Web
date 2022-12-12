@@ -39,12 +39,22 @@ public class BeanService {
 		};
 	}
 	
-	@Bean // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ CONTENTS
+	@Bean // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ ORDERS
 	public InterDAO<Orders, Integer> OrderService() {
 		return new AbstractService<Orders, Integer>() {
 			@Override
 			public Integer getId(Orders entity) {
 				return entity.getId();
+			};
+		};
+	}
+	
+	@Bean // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ ORDER_DETAILS
+	public InterDAO<OrderDetails, Integer> OrderDetailService() {
+		return new AbstractService<OrderDetails, Integer>() {
+			@Override
+			public Integer getId(OrderDetails entity) {
+				return entity.getID();
 			};
 		};
 	}

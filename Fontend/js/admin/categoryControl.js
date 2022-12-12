@@ -1,6 +1,10 @@
 app.controller('categoryControl', ($rootScope, $scope) => {
-    $scope.entity.id = Math.round((Math.random()-1)*1000);
-    pathImg = 'uploads/imagecategory';
+    (() => {
+        $scope.get('categories'); 
+        pathImg = 'uploads/imagecategory';
+        $scope.entity.id = Math.round((Math.random()-1)*1000);
+        $scope.breadcrumbs.splice(2, 2, {name:'phân loại nội dung'});
+    })()
 
     // clear form
     $scope.clear2 = (e) => {
@@ -16,6 +20,4 @@ app.controller('categoryControl', ($rootScope, $scope) => {
             ? ($scope.entity.image = URL.createObjectURL(url[0]))
             : util.getImage(undefined)
     }
-
-    $scope.get('categories');
 });

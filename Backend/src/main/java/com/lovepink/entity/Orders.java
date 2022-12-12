@@ -10,7 +10,6 @@ import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.lovepink.model.request.createOrderRequest;
 @Data
 @Table
@@ -25,9 +24,8 @@ public class Orders {
     String usernameid;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     Date datetime = new Date();
-
     String address;
-    @JsonIgnore @OneToMany(mappedBy = "orders", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "orders", cascade = CascadeType.ALL)
     List<OrderDetails> orderDetails;
     String note;
     boolean pay;
@@ -38,4 +36,9 @@ public class Orders {
         orders.setAddress(req.getAddress());
         return orders;
     }
+	public Orders(Integer id) {
+		this.id = id;
+	}
+    
+	
 }

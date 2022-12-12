@@ -38,10 +38,6 @@ app.controller('appController', function ($scope, $rootScope, $window, $location
 
                 }
             })
-<<<<<<< Updated upstream
-=======
-
->>>>>>> Stashed changes
     }
     $scope.checkinfo = function () {
         if (info == null) {
@@ -59,11 +55,7 @@ app.controller('appController', function ($scope, $rootScope, $window, $location
             })
                 .then((willDelete) => {
                     if (willDelete) {
-<<<<<<< Updated upstream
-                        location.href = (`http://127.0.0.1:5500/index.html#!/account/${info.username}`) 
-=======
                         location.href = ("http://127.0.0.1:5500/index.html#!/account/hoa")
->>>>>>> Stashed changes
                     }
                 })
 
@@ -113,18 +105,7 @@ app.config(function ($routeProvider) {
         })
         .when("/shopping/cart", {
             templateUrl: "./html/shoping-cart.html"
-<<<<<<< Updated upstream
-        })
-        .when("/order/list",{
-            templateUrl: "./html/listorder.html"
-        })
-        .when("/order/list/:id",{
-            templateUrl: "./html/listorderdetail.html"
-        })
-        .otherwise({
-=======
         }).otherwise({
->>>>>>> Stashed changes
             templateUrl: "./html/account.html"
         });
 });

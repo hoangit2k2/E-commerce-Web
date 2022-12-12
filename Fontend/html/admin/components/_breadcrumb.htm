@@ -1,0 +1,7 @@
+<nav class="mt-3" aria-label="breadcrumb" style="font-size: 1.5rem;">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item {{i==breadcrumbs.length-1?'active':''}}" ng-repeat="(i,e) in breadcrumbs">
+            <a href="{{e.href}}" ng-bind="e.name"></a>
+        </li>
+    </ol>
+</nav>

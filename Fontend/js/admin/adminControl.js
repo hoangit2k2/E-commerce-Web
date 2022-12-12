@@ -23,7 +23,7 @@ app.directive('convertToNumber', () => {
 
 app.config(($routeProvider, $httpProvider) => {
     $routeProvider.when(
-        '/', { templateUrl: './views/home.htm' }
+        '/', { templateUrl: './views/home.htm', controller: 'homeControl'}
     ).when(
         '/user', { templateUrl: './views/user.htm' }
     ).when(
@@ -32,15 +32,28 @@ app.config(($routeProvider, $httpProvider) => {
         '/content', { templateUrl: './views/content.htm' }
     ).when(
         '/order', { templateUrl: './views/order.htm' }
+    ).when(
+        '/statistic', { templateUrl: './views/statistic.htm' }
     ).otherwise({
         redirectTo: "/"
     });
 })
 
-app.controller('control', ($scope, $http) => {
+app.controller('homeControl', ($scope) => {
+    $scope.breadcrumbs.splice(2,2);
+});
 
-    $scope.data = [];
-    $scope.entity = {};
+app.controller('control', ($scope, $http) => {
+    ((...set) => {
+        for(e of set) {
+            let keys = Object.keys(e)
+            for(k of keys) $scope[k] = e[k];
+        }
+    })({data:[], entity: {}, breadcrumbs: [
+        {href: '/', name: 'Trang chủ'},
+        {href: '#/home', name: 'quản lý'}
+    ]});
+
     $scope.clear = $scope.setImage = (evt) => { }
     $scope.getImage = (name) => util.getImage(name);
     $scope.read = (e) => $scope.entity = angular.copy(e);
@@ -140,14 +153,15 @@ const util = {
     },
     // create parameters: default File:<files=...> & directory: <dir=...>
     getMultipart: (entity, input, dir) => {
+        if(!input.files) return [entity];
+
         let files = input.files;
         let data = new FormData();
         let keys = Object.keys(entity);
 
-        if (!input) {
-            data.append('dir', dir)
-            for (f of files) data.append('files', f) // prepare files
-        } for (k of keys) data.append(k, entity[k]) // prepare entity's fields
+        data.append('dir', dir)
+        for (f of files) data.append('files', f) // prepare files
+        for (k of keys) data.append(k, entity[k]) // prepare entity's fields
 
         return [data, {
             TransformRequest: angular.identity,

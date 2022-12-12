@@ -21,6 +21,7 @@
   <script src="js/account.js"></script>
   <script src="js/cart.js"></script>
 </head>
+
 <body style="background-color:rgb(33, 183, 131) ;" ng-controller="appController" class="container-sm">
   <nav class="text-nowrap navbar navbar-expand-sm" style="background-color: rgb(33, 183, 131)">
     <div class="logo">
@@ -69,8 +70,10 @@
       </a>
       <ul class="dropdown-menu">
         <li><a class="dropdown-item" href="" ng-hide="{{checktrue}}">Xin Chào {{info.name}}</a></li>
-        <li><a class="dropdown-item" href="/index.html#!/account/{{info.username}}" ng-hide="{{checktrue}}">Thông Tin Tài Khoản</a></li>
-        <li><a class="dropdown-item" href="/index.html#!/account/{{info.username}}/password" ng-hide="{{checktrue}}">Thay đổi mật khẩu</a></li>
+        <li><a class="dropdown-item" href="/index.html#!/account/{{info.username}}" ng-hide="{{checktrue}}">Thông Tin
+            Tài Khoản</a></li>
+        <li><a class="dropdown-item" href="/index.html#!/account/{{info.username}}/password"
+            ng-hide="{{checktrue}}">Thay đổi mật khẩu</a></li>
         <li><a class="dropdown-item" href="" ng-click="logout()" ng-hide="{{checktrue}}">Đăng Xuất</a></li>
         <li><a class="dropdown-item" href="/index.html#!/login/account" ng-hide="{{checkfalse}}">Đăng Nhập & đăng
             ký</a></li>
@@ -82,10 +85,11 @@
         <i class="bi bi-arrow-up-left-square"> ĐĂNG TIN</i>
       </a>
     </div>
-        </i>
-      </a>
+    </i>
+    </a>
     </div>
-  <ng-view class="text-wrap"/>
+  </nav>
+  <ng-view class="text-wrap" />
   <br>
   <footer>
     <div class="container-sm">

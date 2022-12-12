@@ -1,0 +1,36 @@
+<main class="container-fluid" ng-controller="statisticControl">
+
+    <!-- heading -->
+    <h1 class="p-3 text-center font-effect-fire-animation">
+        {{heading || 'Quản lý thống kê'}}
+    </h1>
+
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <button class="nav-link" data-bs-toggle="tab"
+                ng-click="statistic('LIKE', 'Thống kê nội dung được thích', 'namecontent', 'quantity')">
+                Lượt thích
+            </button>
+        </li>
+        <li class="nav-item">
+            <button class="nav-link" data-bs-toggle="tab"
+                ng-click="statistic('TURNOVER', 'Thống kê doanh thu', 'namecontent', 'amount', {t:'line'})">
+                Doanh số
+            </button>
+        </li>
+        <li class="nav-item">
+            <select class="nav-link text-center" data-bs-toggle="tab" ng-model="by" ng-init="by=0+''"
+                ng-change="statistic('UPCONTENT', 'Thống kê doanh thu', 'month', {n:'quantity',t:'line'})">
+                <option class="bg-warning" value="0">lựa chọn</option>
+                <option value="1">Theo năm</option>
+                <option value="2">Theo tháng</option>
+                <option value="3">Theo ngày</option>
+            </select>
+        </li>
+    </ul>
+
+    <!-- Show chartJS -->
+    <div id="showChart" style="min-width: 960px;"></div>
+
+</main>

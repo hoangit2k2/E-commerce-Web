@@ -1,10 +1,10 @@
 <main ng-controller="orderControl">
-  <h1 class="p-3 text-center font-effect-fire-animation">Quản lý phân loại sản phẩm</h1>
+  <h1 class="p-3 text-center font-effect-fire-animation">Quản lý đơn hàng</h1>
   <div class="container-fluid">
     <div hidden id="prepareImg"></div>
     <!-- Show detail-->
     <div class="d-flex flex-wrap align-items-center justify-content-center">
-      <form class="form p-3 col-lg-9 border-start border-end border-info">
+      <form class="form p-3 col-lg-12 border-start border-end border-info">
         <h3 class="text-warning text-center" ng-if="entity.name">Thông tin "{{entity.name}}"</h3>
         <!-- FIELDS -->
         <div class="row align-items-end mt-1 bg-transparent">
@@ -12,7 +12,7 @@
             <label class="form-label fw-bold">id</label>
             <input class="form-control text-center" ng-value="entity.id" disabled>
           </div>
-          <div class="col-lg-10">
+          <div class="col-lg-8">
             <label class="form-label fw-bold">tài khoản mua</label>
             <select class="form-control bg-primary bg-opacity-25" ng-model="entity.usernameid">
               <option value="{{u.username}}" ng-repeat="u in users">
@@ -20,9 +20,17 @@
               </option>
             </select>
           </div>
+          <div class="col-lg-2">
+            <label class="form-label fw-bold">Thanh toán</label>
+            <input class="form-check m-auto" style="width: 2.45rem; height: 2.45rem;" ng-model="entity.pay" type="checkbox">
+          </div>
           <div class="mt-1 col-lg-12">
             <label class="form-label fw-bold">địa chỉ</label>
             <input class="form-control" ng-model="entity.address">
+          </div>
+          <div class="mt-1 col-lg-12">
+            <label class="form-label fw-bold">Ghi chú</label>
+            <textarea class="form-control" ng-model="entity.note" rows="3"></textarea>
           </div>
         </div>
         <!-- ORDER DETAILS -->
@@ -38,7 +46,7 @@
               <div class="accordion-body">
                 <table class="table table-hover">
                   <thead>
-                    <tr>
+                    <tr class="text-center">
                       <th>Hình ảnh</th>
                       <th>Tên hàng</th>
                       <th>Đơn giá</th>
@@ -101,7 +109,6 @@
 
         <!-- CRUD CONTROL -->
         <div class="mt-3 pt-3 border-top d-flex flex-wrap text-nowrap justify-content-end align-items-center">
-          <button class="m-1 btn btn-primary" ng-click="post('orders','id')">Thêm</button>
           <button class="m-1 btn btn-warning" ng-click="put('orders','id')">Sửa</button>
           <button class="m-1 btn btn-danger" ng-click="delete(entity.id,'orders','id')">Xóa</button>
         </div>
@@ -109,21 +116,23 @@
     </div>
 
     <!-- Show data -->
-    <table class="table table-hover table-info table-striped" style="vertical-align: middle;">
+    <table class="table table-hover table-striped" style="vertical-align: middle;">
       <thead>
         <tr>
           <th>id</th>
           <th>người mua</th>
           <th>ngày mua</th>
+          <th>số đơn</th>
           <th>địa chỉ</th>
           <th class="text-center">control</th>
         </tr>
       </thead>
       <tbody>
-        <tr ng-repeat="(i,x) in data" ng-dblclick="read(x)">
+        <tr class="bg-opacity-25 text-nowrap {{x.pay?'bg-success':'bg-warning'}}" ng-repeat="(i,x) in data" ng-dblclick="read(x)">
           <td>{{x.id}}</td>
           <td>{{x.usernameid}}</td>
           <td>{{x.datetime | dateRelative:'dddd, DD-MM-yyyy'}}</td>
+          <td class="text-center">{{x.orderDetails.length}}</td>
           <td>{{x.address}}</td>
           <td class="text-end">
             <button class="btn btn-outline-danger" ng-click="delete(x.id,'orders','id')">delete</button>

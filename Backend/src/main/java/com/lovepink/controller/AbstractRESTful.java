@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.lovepink.Dao.InterDAO;
@@ -45,21 +44,22 @@ public abstract class AbstractRESTful<E, K> {
 		} else return ResponseEntity.ok(dao.getList());
 	}
 	
-	@PostMapping({"","/{id}"}) // Post method to create entity
-	public ResponseEntity<E> save(E entity, @RequestParam(required = false) String dir, MultipartFile[] files)
+	@PostMapping(value = {"","/{id}"}) // Post method to create entity
+	public ResponseEntity<E> save(E entity, String dir, MultipartFile[] files)
 	throws IllegalArgumentException {
+		System.out.println(req.getContentType());
 		return this.update(dao.save(entity), dir, files);
 	}
 	
 	@PutMapping(value = {"","/{id}"}) // Put method to update entity
-	public ResponseEntity<E> update(E entity, @RequestParam(required = false) String dir, MultipartFile[] files)
+	public ResponseEntity<E> update(E entity, String dir, MultipartFile[] files)
 	throws IllegalArgumentException	{
 		this.saveFile(entity, dir, files);
 		return ResponseEntity.ok(dao.update(entity));
 	}
 	
 	@DeleteMapping({"/{id}"}) // Delete method to remove entity
-	public ResponseEntity<Void> delete(@PathVariable(required = false) K id, @RequestParam(required = false) String dir) 
+	public ResponseEntity<Void> delete(@PathVariable(required = false) K id, String dir) 
 	throws IllegalArgumentException {
 		if(id != null) {
 			Optional<E> optional = dao.getOptional(id);
@@ -71,7 +71,6 @@ public abstract class AbstractRESTful<E, K> {
 	
 
 	// ---------------------------------------------------------- SUPPORT METHODS
-	
 	// get user is logged
 	protected String getUser(String defaultUser) {
 		Principal p = req.getUserPrincipal();
