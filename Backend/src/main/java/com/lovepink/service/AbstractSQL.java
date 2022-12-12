@@ -2,7 +2,6 @@ package com.lovepink.service;
 
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -12,7 +11,6 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowCallbackHandler;
 
 public abstract class AbstractSQL {
 
@@ -28,15 +26,12 @@ public abstract class AbstractSQL {
 	
 	private Object get(String sql) {
 		List<Object> list = new LinkedList<>();
-		jdbc.query(sql, new RowCallbackHandler() {
-			@Override
-			public void processRow(ResultSet rs) throws SQLException {
-				ResultSetMetaData mt = rs.getMetaData();
-				int count = mt.getColumnCount();
-				Map<String, Object> map = new HashMap<>();
-				for (int i = 0; i < count;) map.put(mt.getColumnName(++i), rs.getObject(i));
-				list.add(map);
-			}
+		jdbc.query(sql, (ResultSet rs) -> {
+			ResultSetMetaData mt = rs.getMetaData();
+			int count = mt.getColumnCount();
+			Map<String, Object> map = new HashMap<>();
+			for (int i = 0; i < count;) map.put(mt.getColumnName(++i), rs.getObject(i));
+			list.add(map);
 		});
 		return list;
 	};
